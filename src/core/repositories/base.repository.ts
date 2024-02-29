@@ -1,30 +1,47 @@
 import {IPaginationParams} from "../interfaces/pagination";
 import {IBaseRepository} from "../interfaces/base.repository";
+import {Model, ModelCtor} from "sequelize-typescript";
 
-export class BaseRepository implements IBaseRepository {
+export class BaseRepository<T extends Model> implements IBaseRepository {
 
-
-    public async create(data) {
-        return true
+    constructor(protected readonly model: ModelCtor<T>) {
     }
 
-    public async delete(id: number) {
-        return true
+    async findAll(): Promise<T[]> {
+        return this.model.findAll();
     }
 
-    public async update(id: number) {
-        return true
+    public async create(data: any): Promise<T> {
+        return this.model.create(data);
     }
 
-    public async findById(id: number) {
-        return true
+    public async delete(id: number): Promise<void> {
+        const record = await this.model.findByPk(id);
+        if (!record) {
+            throw new Error(`Record with id ${id} not found`);
+        }
+        await record.destroy();
     }
 
-    public async find(searchParams) {
-
+    public async update(id: number, data: any): Promise<T> {
+        const record = await this.model.findByPk(id);
+        if (!record) {
+            throw new Error(`Record with id ${id} not found`);
+        }
+        await record.update(data);
+        return record;
     }
 
-    public async list(paginationParams: IPaginationParams, searchParams: any) {
+    public async findById(id: number): Promise<T> {
+        return this.model.findByPk(id);
+    }
 
+    public async findOne(searchParams): Promise<T> {
+        return this.model.findOne(searchParams)
+    }
+
+
+    public async list( searchParams: any, paginationParams: IPaginationParams): Promise<T[]> {
+        return this.model.findAll({where: searchParams, limit: paginationParams.limit, offset: paginationParams.offset})
     }
 }

@@ -1,9 +1,10 @@
-import {BaseRepository} from "../repositories/base.repository";
 import {IPaginationParams} from "../interfaces/pagination";
+import {BaseRepository} from "../repositories/base.repository";
+import {Model} from "sequelize-typescript";
 
-export class BaseService {
+export class BaseService<T extends Model> {
 
-    constructor(protected repository: BaseRepository) {
+    constructor(protected readonly repository: BaseRepository<T>) {
     }
 
     public async create(data: any) {
@@ -22,7 +23,11 @@ export class BaseService {
         return true
     }
 
-    public async list(paginationParams: IPaginationParams) {
+    public async list(paginationParams: IPaginationParams | undefined) {
+        return this.repository.findAll()
+    }
 
+    public async findOne(searchParams: object) {
+        return this.repository.findOne(searchParams);
     }
 }

@@ -12,7 +12,7 @@ export class AuthController {
     @Post('signup')
     async signUp(@Body() userSignUpDTO: UserSignUpDto) {
         try {
-            const user = this.authService.create(userSignUpDTO);
+            const user = this.authService.signUp(userSignUpDTO);
             return user
         } catch (error) {
             return error
@@ -22,10 +22,9 @@ export class AuthController {
     @Post('signin')
     async signIn(@Body() userSignInDto: UserSignInDto) {
         try {
-            const user = this.authService.create(userSignInDto);
-            return user
+            return this.authService.signIn(userSignInDto);
         } catch (error) {
-            return error
+            return error;
         }
     }
 
