@@ -8,6 +8,7 @@ import {Industry} from "../../core/models/industry";
 import {Location} from "../../core/models/location";
 import {Role} from "../../core/models/role";
 import {ProjectMember} from "../models/project-member";
+import {Pagination} from "../../core/models/pagination";
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
@@ -24,7 +25,7 @@ export class ProjectService extends BaseService<Project> {
         this.repository.findAll()
     }
 
-    public async searchProjects(searchQuery: SearchDto) {
+    public async searchProjects(searchQuery: SearchDto, pagination:Pagination) {
         const {query, industryId, locationId, equity, roleId} = searchQuery;
 
 
@@ -63,7 +64,7 @@ export class ProjectService extends BaseService<Project> {
             include: includes
         }
 
-        return this.repository.list(findOptions)
+        return this.repository.list(findOptions, pagination)
     }
 }
 

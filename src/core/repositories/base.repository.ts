@@ -42,6 +42,6 @@ export class BaseRepository<T extends Model> implements IBaseRepository {
 
 
     public async list( searchParams: any, paginationParams: IPaginationParams): Promise<T[]> {
-        return this.model.findAll({where: searchParams, limit: paginationParams.limit, offset: paginationParams.offset})
+        return this.model.findAll({where: searchParams, limit: paginationParams.limit, offset: paginationParams.page})
     }
 }
