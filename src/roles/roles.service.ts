@@ -8,4 +8,10 @@ export class RolesService extends BaseService<Roles>{
     constructor(repository : RolesRepository){
         super(repository)
     }
+
+
+    async getAll() : Promise<Roles[]>{
+        return this.repository.findAll();
+    }
+
 }

@@ -8,4 +8,11 @@ export class EquityService  extends BaseService<Equity>{
     constructor(repository : EquityRepository){
         super(repository)
     }
+
+
+    async getAll(): Promise<Equity[]>{
+        return this.repository.findAll();
+    }
+
 }
+

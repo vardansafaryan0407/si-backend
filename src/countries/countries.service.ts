@@ -9,4 +9,12 @@ export class CountriesService  extends BaseService<Countries>{
     constructor(repository : CountriesRepository){
         super(repository)
     }
+
+
+
+    async getAll() : Promise<Countries[]>{
+        return this.repository.findAll();
+    }
+
+
 }

@@ -8,4 +8,9 @@ export class SkillsService  extends BaseService<Skills>{
     constructor (repository : SkillsRepository){
         super(repository)
     }
+
+
+    async getAll() : Promise<Skills[]>{
+        return this.repository.findAll();
+    }
 }

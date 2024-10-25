@@ -8,4 +8,8 @@ export class ProjectsService extends BaseService<Projects> {
     constructor(repository : ProjectsRepository){
         super(repository)
     }
+
+    async getAll() : Promise<Projects[]> {
+        return this.repository.findAll();
+    }
 }

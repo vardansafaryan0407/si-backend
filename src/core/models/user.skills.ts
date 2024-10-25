@@ -1,4 +1,6 @@
 import { AutoIncrement, Column, ForeignKey, PrimaryKey, Table,Model } from "sequelize-typescript";
+import { Users } from "./users";
+import { Skills } from "./skills";
 
 
 @Table

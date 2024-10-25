@@ -9,4 +9,8 @@ export class ProjectMembersService extends BaseService<ProjectMembers> {
     constructor(repository : ProjectMembersRepository){
         super(repository)
     }
+
+    async getAll() : Promise<ProjectMembers[]>{
+        return this.repository.findAll();
+    }
 }
