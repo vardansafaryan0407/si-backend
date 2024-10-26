@@ -4,7 +4,7 @@ export const CONFIG_DB = {
     port: 3306,
     username: 'root',
     password: 'root',
-    database: 'si',
+    database: 'si-core',
     autoLoadModels: true,
     synchronize: true,
 }
