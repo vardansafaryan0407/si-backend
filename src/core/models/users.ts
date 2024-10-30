@@ -1,41 +1,26 @@
-import { AutoIncrement, Column, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { Column, DataType,  Model,Table, Unique } from "sequelize-typescript";
 
-@Table
-export class Users extends Model<Users> {
+@Table({tableName : 'user'})
+export class User extends Model<User> {
 
-    @PrimaryKey
-    @AutoIncrement
-    @Column
+ 
+    @Column({type: DataType.INTEGER,autoIncrement: true,primaryKey : true})
     id: number;
 
-    @Column({
-        type: 'VARCHAR(50)',
-        allowNull: false
-    })
+    @Column({type: DataType.STRING(50), allowNull: false})
     firstName: string;
 
-    @Column({
-        type: 'VARCHAR(100)',
-        allowNull: false
-    })
+    @Column({type: DataType.STRING(100),  allowNull: false})
     lastName: string;
 
-    @Column({
-        type: 'VARCHAR(50)',
-        allowNull: false
-    })
+    @Column({type: DataType.STRING(50),allowNull: false})
     location: string;
 
     @Unique({ name: 'email', msg: 'This email is already registered, please sign in' })
-    @Column({
-        type: 'VARCHAR(50)',
-        allowNull: false
-    })
+    @Column({type: DataType.STRING(50),allowNull: false})
     email: string;
 
-    @Column({
-        type: 'VARCHAR(255)',
-        allowNull: false
-    })
+    @Column({ type: DataType.STRING(255), allowNull: false})
     password: string;
+
 }

@@ -1,38 +1,31 @@
-import { AutoIncrement, Column, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
-import { Users } from "./users";      
-import { Countries } from "./countries";
+import { BelongsTo, Column, DataType, ForeignKey, Model,Table } from "sequelize-typescript";
+import { User } from "./users";      
+import { Country } from "./countries";
 
-@Table
-export class Projects extends Model<Projects> {
+@Table({tableName : 'project'})
 
-    @PrimaryKey
-    @AutoIncrement
-    @Column
+export class Project extends Model<Project> {
+
+    @Column({ type: DataType.INTEGER,autoIncrement : true, primaryKey : true })
     id: number;
 
-    @Column({
-        type: 'VARCHAR(50)',
-        allowNull: false
-    })
+    @Column({ type: DataType.STRING(50), allowNull: false })
     title: string;
 
-    @Column({
-        type: 'VARCHAR(100)',
-        allowNull: false
-    })
+    @Column({ type: DataType.STRING(100), allowNull: false })
     description: string;
 
-    @ForeignKey(() => Users)
-    @Column({
-        type: 'INT',
-        allowNull: false
-    })
+    @ForeignKey(() => User)
+    @Column({ type: DataType.INTEGER, allowNull: false })
     owner_id: number;
 
-    @ForeignKey(() => Countries)
-    @Column({
-        type: 'INT',
-        allowNull: false
-    })
+    @ForeignKey(() => Country)
+    @Column({ type: DataType.INTEGER, allowNull: false })
     country_id: number;
+
+    @BelongsTo(() => User)
+    owner: User;
+
+    @BelongsTo(() => Country)
+    country: Country;
 }

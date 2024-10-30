@@ -1,21 +1,11 @@
-import { AutoIncrement, Column, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 
+@Table({tableName : 'roles'})
+export class Role extends Model<Role> {
 
-@Table
-export class Roles extends Model<Roles>{
+    @Column({ type: DataType.INTEGER, autoIncrement: true,primaryKey : true})
+    id: number;
 
-    @PrimaryKey
-    @AutoIncrement
-    @Column
-    id : number;
-
-
-    @Column({
-     type : 'VARCHAR(50)',
-     allowNull : false
-    })
-    name : string
-
-
-    
+    @Column({ type: DataType.STRING,allowNull: false})
+    name: string;
 }

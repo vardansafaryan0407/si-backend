@@ -1,22 +1,14 @@
-import { AutoIncrement, Column, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 
-@Table
-export class Countries extends Model<Countries> {
+@Table({tableName : 'country'})
+export class Country extends Model<Country> {
 
-    @PrimaryKey
-    @AutoIncrement
-    @Column
+    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
     id: number;
 
-    @Column({
-        type: 'VARCHAR(100)',
-        allowNull: false
-    })
-    country: string;
+    @Column({ type: DataType.STRING(100), allowNull: false })
+    country_name: string;
 
-    @Column({
-        type: 'VARCHAR(10)',
-        allowNull: false
-    })
+    @Column({ type: DataType.STRING(10), allowNull: false })
     country_code: string;
 }

@@ -1,10 +1,9 @@
-import {Column, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
 
-@Table
+@Table({tableName: "role"})
 export class Role extends Model<Role> {
 
-    @PrimaryKey
-    @Column({autoIncrement: true})
+    @Column({type : DataType.INTEGER,autoIncrement: true,primaryKey : true})
     id: number
 
     @Column({allowNull: false})

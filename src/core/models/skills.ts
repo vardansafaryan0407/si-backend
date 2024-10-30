@@ -1,18 +1,14 @@
-import { AutoIncrement, Column, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, Column,  DataType,  Model, PrimaryKey, Table } from "sequelize-typescript";
 
 
-@Table
-export class Skills extends Model<Skills>{
+@Table({tableName : 'skill'})
+export class Skill extends Model<Skill>{
 
 
-    @PrimaryKey
-    @AutoIncrement
-    @Column
+
+    @Column({type : DataType.INTEGER,autoIncrement : true, primaryKey:true})
     id :number;
 
-    @Column({
-        type : 'VARCHAR(50)',
-        allowNull : false
-    })
+    @Column({type : DataType.STRING(50),allowNull : false })
     skill_name : string;
 }
