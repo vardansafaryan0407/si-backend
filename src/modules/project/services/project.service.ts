@@ -1,14 +1,14 @@
 import {Injectable} from "@nestjs/common";
-import {BaseService} from "../../core/services/base.service";
+import {BaseService} from "../../../core/services/base.service";
 import {Project} from "../project";
 import {ProjectRepository} from "../repositories/project.repository";
 import {SearchDto} from "../dto/search-project.dto";
 import {FindOptions, Op} from "sequelize";
-import {Industry} from "../../core/models/industry";
-import {Location} from "../../core/models/location";
-import {Role} from "../../core/models/role";
+import {Industry} from "../../../core/models/industry";
+import {Location} from "../../../core/models/location";
+import {Role} from "../../../core/models/role";
 import {ProjectMember} from "../models/project-member";
-import {Pagination} from "../../core/models/pagination";
+import {Pagination} from "../../../core/models/pagination";
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {

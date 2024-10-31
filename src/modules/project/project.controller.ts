@@ -3,7 +3,7 @@ import {ProjectService} from "./services/project.service";
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {query} from "express";
 import {SearchDto} from "./dto/search-project.dto";
-import {Pagination} from "../core/models/pagination";
+import {Pagination} from "../../core/models/pagination";
 
 @Controller('project')
 export class ProjectController {

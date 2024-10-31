@@ -11,8 +11,8 @@ import {
     Unique
 } from "sequelize-typescript";
 import {ProjectMember} from "./models/project-member";
-import {Industry} from "../core/models/industry";
-import {Location} from "../core/models/location";
+import {Industry} from "../../core/models/industry";
+import {Location} from "../../core/models/location";
 
 @Table
 export class Project extends Model<Project> {

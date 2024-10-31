@@ -2,7 +2,7 @@ import {  BelongsTo, Column, DataType, ForeignKey, Model,Table } from "sequelize
 import { Equity } from "./equity";
 import { Role } from "./role";
 import {Project} from "./project"
-import { User } from "src/user/user";
+import { User } from "src/modules/user/user";
 
 @Table({tableName : 'project-member'})
 export class ProjectMember extends Model<ProjectMember> {
