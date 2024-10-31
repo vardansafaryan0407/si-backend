@@ -3,15 +3,15 @@ import {AuthRepository} from "../repositories/auth.repository";
 import {BaseService} from "../../core/services/base.service";
 import {UserSignInDto} from "../dto/user-sign-in.dto";
 import {JwtService} from "@nestjs/jwt";
-import { UsersService } from 'src/core-database/users/users.service';
 import {PasswordUtils} from "../../utils/password.utils";
-import { User } from 'src/core/models/user';
 import {UserSignUpDto} from "../dto/user-signup.dto";
+import {User} from "../../modules/user/user";
+import {UserService} from "../../modules/user/user.service";
 
 @Injectable()
 export class AuthService extends BaseService<User> {
 
-    constructor(repository: AuthRepository, private jwtService: JwtService, private userService: UsersService) {
+    constructor(repository: AuthRepository, private jwtService: JwtService, private userService: UserService) {
         super(repository)
     }
 
