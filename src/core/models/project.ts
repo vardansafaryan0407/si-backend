@@ -1,6 +1,6 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model,Table } from "sequelize-typescript";
-import { User } from "./users";      
-import { Country } from "./countries";
+import { User } from "./user";      
+import { Country } from "./country";
 
 @Table({tableName : 'project'})
 
@@ -23,9 +23,7 @@ export class Project extends Model<Project> {
     @Column({ type: DataType.INTEGER, allowNull: false })
     country_id: number;
 
-    @BelongsTo(() => User)
+    @BelongsTo(() => User,{foreignKey : 'onwer_id'})
     owner: User;
 
-    @BelongsTo(() => Country)
-    country: Country;
 }

@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from 'src/core/models/users';
+import { User } from 'src/core/models/user';
 
 @Controller('users')
 export class UsersController {
@@ -9,6 +9,18 @@ export class UsersController {
 
     @Get()
     async getAll() : Promise<User[]>{
-        return this.usersService.getAll();
+        return this.usersService.findAll();
+    }
+
+
+    @Post('')
+    public async createUser() {
+
+    }
+
+
+    @Put('')
+    public async updateCurrentUser() {
+
     }
 }

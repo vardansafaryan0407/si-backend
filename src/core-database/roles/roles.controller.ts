@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { Role } from 'src/core/models/roles';
+import { Role } from 'src/core/models/role';
 
 @Controller('roles')
 export class RolesController {
@@ -9,6 +9,6 @@ export class RolesController {
 
     @Get()
     async getAll(): Promise<Role[]> {
-        return this.rolesService.getAll();
+        return this.rolesService.findAll();
     }
 }

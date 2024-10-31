@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/core/models/users';
+import { User } from 'src/core/models/user';
 import { BaseService } from 'src/core/services/base.service';
 import { UsersRepository } from './users.repository';
 
@@ -7,10 +7,5 @@ import { UsersRepository } from './users.repository';
 export class UsersService extends BaseService<User> {
     constructor (repository : UsersRepository){
         super(repository)
-    }
-
-
-    async getAll() : Promise<User[]>{
-        return this.repository.findAll();
     }
 }
