@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {AuthModule} from './auth/auth.module';
-import { UsersModule } from './core-database/users/users.module';
+import {UserModule} from './user/user.module';
 import {SequelizeModule} from "@nestjs/sequelize";
 import {CONFIG_DB} from "./config/config.db";
 import {SequelizeOptions} from "sequelize-typescript";
@@ -14,7 +14,7 @@ import {CoreModule} from "./core/core.module";
     imports: [
         SequelizeModule.forRoot(CONFIG_DB as SequelizeOptions),
         AuthModule,
-        UsersModule,
+        UserModule,
         JwtSharedModule,
         ProjectModule,
         CoreModule

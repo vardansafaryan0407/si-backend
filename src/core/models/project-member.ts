@@ -1,8 +1,8 @@
 import {  BelongsTo, Column, DataType, ForeignKey, Model,Table } from "sequelize-typescript";
-import { User } from "./user";
 import { Equity } from "./equity";
 import { Role } from "./role";
 import {Project} from "./project"
+import { User } from "src/user/user";
 
 @Table({tableName : 'project-member'})
 export class ProjectMember extends Model<ProjectMember> {

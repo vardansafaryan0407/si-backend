@@ -1,6 +1,6 @@
-import { AutoIncrement, Column, ForeignKey, PrimaryKey, Table, Model, DataType } from "sequelize-typescript";
-import { User } from "./user";
+import { Column, ForeignKey,Table, Model, DataType } from "sequelize-typescript";
 import { Skill } from "./skill";
+import { User } from "src/user/user";
 
 @Table({tableName : "user-skill"})
 export class UserSkill extends Model<UserSkill> {

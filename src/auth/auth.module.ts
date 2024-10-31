@@ -3,11 +3,11 @@ import {AuthController} from "./auth.controller";
 import {AuthService} from './services/auth.service';
 import {AuthRepository} from './repositories/auth.repository';
 import {JwtSharedModule} from "../core/modules/jwt.module";
-import { UsersModule } from 'src/core-database/users/users.module';
+import { UserModule } from 'src/user/user.module';
 import {SequelizeModule} from "@nestjs/sequelize";
-import { User } from 'src/core/models/user';
+import { User } from 'src/user/user';
 @Module({
-    imports: [JwtSharedModule, UsersModule, SequelizeModule.forFeature([User])],
+    imports: [JwtSharedModule, UserModule, SequelizeModule.forFeature([User])],
     controllers: [AuthController],
     providers: [AuthService, AuthRepository]
 })
