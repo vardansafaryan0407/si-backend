@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Country } from "src/core/models/countries";
+import { Country } from "src/core/models/country";
 import { BaseRepository } from "src/core/repositories/base.repository";
 
 @Injectable()

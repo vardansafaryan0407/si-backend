@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { CountriesService } from './countries.service';
-import { Country } from 'src/core/models/countries';
+import { Country } from 'src/core/models/country';
 
 @Controller('countries')
 export class CountriesController {
@@ -11,7 +11,7 @@ export class CountriesController {
 
  @Get()
  async getAll() : Promise<Country[]>{
-    return this.countriesService.getAll();
+    return this.countriesService.findAll()
  }
 
  }   

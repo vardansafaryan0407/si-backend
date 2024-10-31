@@ -10,7 +10,7 @@ constructor (private equityService : EquityService){}
 
    @Get()
     async getAll() : Promise<Equity[]>{
-        return this.equityService.getAll();
+        return this.equityService.findAll();
    } 
 
 }

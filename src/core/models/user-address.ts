@@ -1,8 +1,8 @@
 import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { Country } from "./countries";
-import { User } from "./users";
+import { Country } from "./country";
+import { User } from "src/user/user";
 
-@Table({tableName : 'useraddress'})
+@Table({tableName : 'user-address'})
 export class UserAddress extends Model<UserAddress> {
 
     @Column({  type: DataType.INTEGER, primaryKey: true, autoIncrement: true})
@@ -22,7 +22,7 @@ export class UserAddress extends Model<UserAddress> {
     @Column({ type: DataType.STRING(30),allowNull: false})
     address_line_1: string;
 
-    @Column({ type: DataType.STRING(30),allowNull: false})
+    @Column({ type: DataType.STRING(30),allowNull: true})
     address_line_2: string;
 
     @Column({ type: DataType.STRING(60), allowNull: false})

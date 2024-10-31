@@ -1,15 +1,24 @@
-import {Column, Model, Table, Unique} from 'sequelize-typescript';
-import {isEmail} from "class-validator";
+import { Column, DataType,  Model,Table, Unique } from "sequelize-typescript";
 
-@Table({timestamps: true})
+@Table({tableName : 'user'})
 export class User extends Model<User> {
-    @Column({primaryKey: true, autoIncrement: true})
+
+    @Column({type: DataType.INTEGER,autoIncrement: true,primaryKey : true})
     id: number;
 
-    @Unique({name:'email', msg:'This email is already registered, please signin'})
-    @Column({allowNull: false,  primaryKey: true})
+    @Column({type: DataType.STRING(50), allowNull: false})
+    firstName: string;
+
+    @Column({type: DataType.STRING(100),  allowNull: false})
+    lastName: string;
+
+    @Column({type: DataType.STRING(50),allowNull: false})
+    location: string;
+
+    @Unique({ name: 'email', msg: 'This email is already registered, please sign in' })
+    @Column({type: DataType.STRING(50),allowNull: false})
     email: string;
 
-    @Column({allowNull: false})
-    password: string
+    @Column({ type: DataType.STRING(255), allowNull: false})
+    password: string;
 }

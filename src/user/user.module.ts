@@ -1,8 +1,8 @@
 import {Module} from '@nestjs/common';
-import {UserRepository} from "./user.repository";
+import { UserRepository } from './user.repository';
 import {UserService} from "./user.service";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {User} from "./user";
+import { User } from './user';
 import {UserController} from "./user.controller";
 
 @Module({
@@ -13,3 +13,5 @@ import {UserController} from "./user.controller";
 })
 export class UserModule {
 }
+
+
