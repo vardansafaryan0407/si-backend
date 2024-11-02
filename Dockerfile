@@ -17,4 +17,4 @@ COPY . .
 RUN npm run build
 
 # The command to run your app
-CMD ["node", "dist/main"]
+CMD ["npm","run", "start:dev"]

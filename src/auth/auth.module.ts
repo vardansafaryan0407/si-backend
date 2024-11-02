@@ -3,9 +3,10 @@ import {AuthController} from "./auth.controller";
 import {AuthService} from './services/auth.service';
 import {AuthRepository} from './repositories/auth.repository';
 import {JwtSharedModule} from "../core/modules/jwt.module";
-import { UserModule } from 'src/modules/user/user.module';
+import {UserModule} from 'src/modules/user/user.module';
 import {SequelizeModule} from "@nestjs/sequelize";
-import { User } from 'src/modules/user/user';
+import {User} from 'src/modules/user/user';
+
 @Module({
     imports: [JwtSharedModule, UserModule, SequelizeModule.forFeature([User])],
     controllers: [AuthController],

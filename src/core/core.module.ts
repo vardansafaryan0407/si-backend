@@ -5,8 +5,9 @@ import {Industry} from "./models/industry";
 import {Role} from "./models/role";
 
 @Module({
-    imports:[
+    imports: [
         SequelizeModule.forFeature([Location, Industry, Role])
     ]
 })
-export class CoreModule{}
+export class CoreModule {
+}

@@ -31,7 +31,7 @@ export class BaseService<T extends Model> {
         return this.repository.findOne(searchParams);
     }
 
-    public async findAll(){
+    public async findAll() {
         return this.repository.findAll()
     }
 }

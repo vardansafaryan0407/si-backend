@@ -1,7 +1,7 @@
-import {Controller, Get, Post, Put, UseGuards, Request} from "@nestjs/common";
+import {Controller, Get, Post, Put, Request, UseGuards} from "@nestjs/common";
 import {UserService} from "./user.service";
 import {AuthGuard} from "../../core/guards/auth,guard";
-import { User } from "./user";
+import {User} from "./user";
 
 @Controller('user')
 export class UserController {
@@ -17,10 +17,10 @@ export class UserController {
 
 
     @Get()
-    async getAll() : Promise<User[]>{
+    async getAll(): Promise<User[]> {
         return this.userService.findAll();
-   } 
-    
+    }
+
 
     @Post('')
     public async createUser() {

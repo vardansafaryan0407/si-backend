@@ -4,8 +4,6 @@ import {Project} from "../project";
 import {ProjectRepository} from "../repositories/project.repository";
 import {SearchDto} from "../dto/search-project.dto";
 import {FindOptions, Op} from "sequelize";
-import {Industry} from "../../../core/models/industry";
-import {Location} from "../../../core/models/location";
 import {Role} from "../../../core/models/role";
 import {ProjectMember} from "../models/project-member";
 import {Pagination} from "../../../core/models/pagination";
@@ -25,7 +23,7 @@ export class ProjectService extends BaseService<Project> {
         this.repository.findAll()
     }
 
-    public async searchProjects(searchQuery: SearchDto, pagination:Pagination) {
+    public async searchProjects(searchQuery: SearchDto, pagination: Pagination) {
         const {query, industryId, locationId, equity, roleId} = searchQuery;
 
 
@@ -41,7 +39,6 @@ export class ProjectService extends BaseService<Project> {
         }
 
         const includes = []
-
 
 
         // join project members
