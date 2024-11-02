@@ -1,5 +1,4 @@
-import {IsOptional, IsString, IsNumber, Min, Max} from 'class-validator';
-import {Equity} from "../models/equity";
+import {IsNumber, IsOptional, IsString, Max, Min} from 'class-validator';
 
 export class SearchDto {
     @IsOptional()

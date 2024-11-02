@@ -23,11 +23,15 @@ export class BaseService<T extends Model> {
         return true
     }
 
-    public async list(paginationParams: IPaginationParams | undefined) {
+    public async list(paginationParams: IPaginationParams = {}) {
         return this.repository.findAll()
     }
 
     public async findOne(searchParams: object) {
         return this.repository.findOne(searchParams);
+    }
+
+    public async findAll() {
+        return this.repository.findAll()
     }
 }

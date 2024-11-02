@@ -1,9 +1,9 @@
-import {Column, ForeignKey, HasOne, Model, PrimaryKey, Sequelize, Table} from "sequelize-typescript";
+import {Column, ForeignKey, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
 import {Equity} from "./equity";
-import {Location} from "../../core/models/location";
+import {Location} from "../../../core/models/location";
 import {Project} from "../project";
 
-@Table({timestamps: true, tableName:'project_members'})
+@Table({timestamps: true, tableName: 'project_members'})
 export class ProjectMember extends Model<ProjectMember> {
     @PrimaryKey
     @Column({autoIncrement: true})

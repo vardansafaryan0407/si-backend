@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {BaseRepository} from "../core/repositories/base.repository";
+import {BaseRepository} from "../../core/repositories/base.repository";
 import {User} from "./user";
 import {InjectModel} from "@nestjs/sequelize";
 
@@ -9,4 +9,3 @@ export class UserRepository extends BaseRepository<User> {
         super(model);
     }
 }
-

@@ -1,4 +1,4 @@
-import {BaseRepository} from "../../core/repositories/base.repository";
+import {BaseRepository} from "../../../core/repositories/base.repository";
 import {Project} from "../project";
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";

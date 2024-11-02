@@ -1,18 +1,7 @@
-import {
-    AutoIncrement,
-    BelongsToMany,
-    Column,
-    DataType,
-    HasMany,
-    HasOne,
-    Model,
-    PrimaryKey,
-    Table,
-    Unique
-} from "sequelize-typescript";
+import {AutoIncrement, BelongsToMany, Column, DataType, HasMany, Model, PrimaryKey, Table} from "sequelize-typescript";
 import {ProjectMember} from "./models/project-member";
-import {Industry} from "../core/models/industry";
-import {Location} from "../core/models/location";
+import {Industry} from "../../core/models/industry";
+import {Location} from "../../core/models/location";
 
 @Table
 export class Project extends Model<Project> {
