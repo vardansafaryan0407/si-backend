@@ -1,9 +1,11 @@
-import {Body, Controller, Get, Post, Query} from "@nestjs/common";
+import {Body, Controller, Get, Post, Query, UseGuards} from "@nestjs/common";
 import {ProjectService} from "./services/project.service";
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {SearchDto} from "./dto/search-project.dto";
 import {Pagination} from "../../core/models/pagination";
+import {AuthGuard} from "../../core/guards/auth,guard";
 
+@UseGuards(AuthGuard)
 @Controller('project')
 export class ProjectController {
 
@@ -27,5 +29,4 @@ export class ProjectController {
 
         }
     }
-
 }

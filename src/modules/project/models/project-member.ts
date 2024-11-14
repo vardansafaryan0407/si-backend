@@ -1,7 +1,7 @@
 import {Column, ForeignKey, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
 import {Equity} from "./equity";
-import {Location} from "../../../core/models/location";
 import {Project} from "../project";
+import {Country} from "../../../core/models/country";
 
 @Table({timestamps: true, tableName: 'project_members'})
 export class ProjectMember extends Model<ProjectMember> {
@@ -9,9 +9,9 @@ export class ProjectMember extends Model<ProjectMember> {
     @Column({autoIncrement: true})
     id: number;
 
-    @ForeignKey(() => Location)
+    @ForeignKey(() => Country)
     @Column
-    location: number
+    country: number
 
     @HasOne(() => Equity)
     equity: Equity

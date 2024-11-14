@@ -5,6 +5,12 @@ export class UserSignUpDto {
     email: string;
 
     @IsNotEmpty()
+    firstName: string
+
+    @IsNotEmpty()
+    lastName: string;
+
+    @IsNotEmpty()
     @MinLength(8)
     password: string;
 }

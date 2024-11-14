@@ -2,7 +2,7 @@ import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {Skill} from "./skill";
 import {User} from "src/modules/user/user";
 
-@Table({tableName: "user-skill"})
+@Table({tableName: "user_skills"})
 export class UserSkill extends Model<UserSkill> {
 
 
