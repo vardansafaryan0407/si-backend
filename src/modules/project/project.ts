@@ -1,6 +1,5 @@
 import {
-    AutoIncrement,
-    BelongsToMany,
+    AutoIncrement, BelongsTo,
     Column,
     DataType,
     HasMany,
@@ -28,10 +27,10 @@ export class Project extends Model<Project> {
     @Column
     description: string
 
-    @HasOne(() => Industry, 'industry_id')
-    industries: Industry[]
+    @BelongsTo(() => Industry, 'industry_id')
+    industry: Industry
 
-    @HasOne(() => Country, 'country_id')
+    @BelongsTo(() => Country, 'country_id')
     location: Country
 
     @HasMany(() => ProjectMember)

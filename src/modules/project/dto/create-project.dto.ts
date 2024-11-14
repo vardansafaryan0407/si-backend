@@ -9,7 +9,7 @@ export class CreateProjectDto {
     description: string;
 
     @IsNotEmpty()
-    industries: number[];
+    industry: number;
 
     @IsNotEmpty()
     members: CreateProjectMemberDto[]
