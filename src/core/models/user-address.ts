@@ -2,7 +2,7 @@ import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {Country} from "./country";
 import {User} from "src/modules/user/user";
 
-@Table({tableName: 'user-address'})
+@Table({tableName: 'user_address'})
 export class UserAddress extends Model<UserAddress> {
 
     @Column({type: DataType.INTEGER, primaryKey: true, autoIncrement: true})

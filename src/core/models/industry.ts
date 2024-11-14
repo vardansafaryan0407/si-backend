@@ -1,6 +1,6 @@
 import {Column, DataType, Model, Table} from "sequelize-typescript";
 
-@Table({tableName: 'industry'})
+@Table({tableName: 'industry', timestamps:false})
 export class Industry extends Model<Industry> {
 
 

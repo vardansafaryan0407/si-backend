@@ -9,12 +9,16 @@ export class Equity extends Model<Equity> {
     id!: number;
 
     @Default(0)
-    @Column(DataType.INTEGER)
-    min: number;
+    @Column({type:DataType.INTEGER, allowNull:false})
+    min_percent: number;
 
     @Default(0)
-    @Column(DataType.INTEGER)
-    max: number
+    @Column({type:DataType.INTEGER, allowNull:false})
+    max_percent: number
+
+    @Default(0)
+    @Column({type:DataType.INTEGER, allowNull:true})
+    actual_percent: number
 
     @Column({})
     @ForeignKey(() => ProjectMember)

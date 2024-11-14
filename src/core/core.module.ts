@@ -1,12 +1,12 @@
 import {Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {Location} from "./models/location";
 import {Industry} from "./models/industry";
 import {Role} from "./models/role";
+import {Country} from "./models/country";
 
 @Module({
     imports: [
-        SequelizeModule.forFeature([Location, Industry, Role])
+        SequelizeModule.forFeature([Country, Industry, Role])
     ]
 })
 export class CoreModule {

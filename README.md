@@ -1,75 +1,138 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+const readmeContent = `# Startups Incubator
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+## Overview
 
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+The **Startups Incubator** project is a Node.js application built with NestJS and Sequelize. This application is designed to manage various entities within a startup incubator platform, providing structured API endpoints and database management. The project is configured with TypeScript, ESLint, Prettier, and testing capabilities.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Node.js** and **npm** are required.
+- **MySQL** or any other SQL database supported by Sequelize should be set up and configured.
 
 ## Installation
 
-```bash
-$ npm install
-```
+1. Clone the repository.
+2. Install the dependencies:
 
-## Running the app
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-```bash
-# development
-$ npm run start
+3. Configure the \`sequelize.config.js\` file for database connections.
 
-# watch mode
-$ npm run start:dev
+## Scripts and Commands
 
-# production mode
-$ npm run start:prod
-```
+The \`package.json\` includes several commands for building, testing, linting, formatting, and managing the database.
 
-## Test
+### Development Commands
 
-```bash
-# unit tests
-$ npm run test
+- **Start Development Server**: Starts the server with live reloading enabled.
 
-# e2e tests
-$ npm run test:e2e
+  \`\`\`bash
+  npm run start:dev
+  \`\`\`
 
-# test coverage
-$ npm run test:cov
-```
+- **Build Application**: Compiles the application.
 
-## Support
+  \`\`\`bash
+  npm run build
+  \`\`\`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If
-you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Start Production Server**: Runs the compiled application in production mode.
 
-## Stay in touch
+  \`\`\`bash
+  npm run start:prod
+  \`\`\`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Formatting and Linting
+
+- **Format Code**: Uses Prettier to format all TypeScript files in the \`src\` and \`test\` directories.
+
+  \`\`\`bash
+  npm run format
+  \`\`\`
+
+- **Lint Code**: Uses ESLint to lint all TypeScript files in \`src\`, \`apps\`, \`libs\`, and \`test\` directories, applying automatic fixes where possible.
+
+  \`\`\`bash
+  npm run lint
+  \`\`\`
+
+### Testing Commands
+
+- **Run Tests**: Executes all tests.
+
+  \`\`\`bash
+  npm run test
+  \`\`\`
+
+- **Test Coverage**: Runs tests and generates a code coverage report.
+
+  \`\`\`bash
+  npm run test:cov
+  \`\`\`
+
+- **Debug Tests**: Runs tests with debugging enabled.
+
+  \`\`\`bash
+  npm run test:debug
+  \`\`\`
+
+- **E2E Tests**: Executes end-to-end tests using the configuration in \`test/jest-e2e.json\`.
+
+  \`\`\`bash
+  npm run test:e2e
+  \`\`\`
+
+### Database Management Commands
+
+These commands manage the Sequelize migrations and seed data. Note: The last two commands require a \`--name\` parameter.
+
+- **Run Migrations**: Applies all pending migrations to the database.
+
+  \`\`\`bash
+  npm run db:migrate
+  \`\`\`
+
+- **Undo Last Migration**: Reverts the most recent migration.
+
+  \`\`\`bash
+  npm run db:migrate:undo
+  \`\`\`
+
+- **Run All Seeders**: Seeds all the data files to the database.
+
+  \`\`\`bash
+  npm run db:seed:all
+  \`\`\`
+
+- **Undo All Seeders**: Removes all seeded data from the database.
+
+  \`\`\`bash
+  npm run db:seed:undo:all
+  \`\`\`
+
+- **Create a New Migration**: Generates a new migration file. You must specify the \`--name\` parameter to name your migration file.
+
+  \`\`\`bash
+  npm run db:migrate:create --name <migration_name>
+  \`\`\`
+
+- **Create a New Seeder**: Generates a new seed file. You must specify the \`--name\` parameter to name your seed file.
+
+  \`\`\`bash
+  npm run db:seed:create --name <seed_name>
+  \`\`\`
+
+## Project Structure
+
+The project follows the standard NestJS structure:
+
+- **src**: Contains the main application code.
+- **test**: Includes unit and end-to-end tests.
+- **dist**: Compiled output folder, generated after running the build command.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is unlicensed and is intended for internal use only.
+`;

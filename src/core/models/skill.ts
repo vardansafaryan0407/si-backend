@@ -8,5 +8,5 @@ export class Skill extends Model<Skill> {
     id: number;
 
     @Column({type: DataType.STRING(50), allowNull: false})
-    skill_name: string;
+    name: string;
 }

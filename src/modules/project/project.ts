@@ -1,9 +1,20 @@
-import {AutoIncrement, BelongsToMany, Column, DataType, HasMany, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {
+    AutoIncrement,
+    BelongsToMany,
+    Column,
+    DataType,
+    HasMany,
+    HasOne,
+    Model,
+    PrimaryKey,
+    Table
+} from "sequelize-typescript";
 import {ProjectMember} from "./models/project-member";
 import {Industry} from "../../core/models/industry";
-import {Location} from "../../core/models/location";
+import {Country} from "../../core/models/country";
 
-@Table
+
+@Table({tableName:'project'})
 export class Project extends Model<Project> {
 
     @AutoIncrement
@@ -17,11 +28,11 @@ export class Project extends Model<Project> {
     @Column
     description: string
 
-    @BelongsToMany(() => Industry, 'project_industries', 'project_id', 'industry_id')
+    @HasOne(() => Industry, 'industry_id')
     industries: Industry[]
 
-    @BelongsToMany(() => Location, 'project_locations', 'project_id', 'location_id')
-    locations: Location
+    @HasOne(() => Country, 'country_id')
+    location: Country
 
     @HasMany(() => ProjectMember)
     members: ProjectMember[]
