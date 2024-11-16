@@ -1,15 +1,14 @@
 'use strict';
 
-const countries  =  require("./constants/countries");
+const skills = require('./constants/skills');
 
 /** @type {import('sequelize-cli').Migration} */
-
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('country', countries)
+  await queryInterface.bulkInsert('skill',skills)
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('country')
+  await queryInterface.bulkDelete('skill')
   }
 };
