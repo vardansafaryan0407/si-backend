@@ -12,8 +12,5 @@ export class CreateProjectDto {
     industry: number;
 
     @IsNotEmpty()
-    location : number;
-
-    @IsNotEmpty()
     members: CreateProjectMemberDto[]
 }
