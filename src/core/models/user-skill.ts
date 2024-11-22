@@ -1,4 +1,4 @@
-import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {Skill} from "./skill";
 import {User} from "src/modules/user/user";
 
@@ -19,4 +19,10 @@ export class UserSkill extends Model<UserSkill> {
 
     @Column({type: DataType.STRING(30), allowNull: false})
     skill_level: string;
+
+    @BelongsTo(() => User)
+    user: User;
+
+    @BelongsTo(() => Skill)
+    skill: Skill;
 }

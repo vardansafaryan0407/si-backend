@@ -10,6 +10,12 @@ export class CreateProjectDto {
 
     @IsNotEmpty()
     industry: number;
+     
+    @IsNotEmpty()
+    location : number;
+ 
+    @IsNotEmpty()
+    skills : number;
 
     @IsNotEmpty()
     members: CreateProjectMemberDto[]
