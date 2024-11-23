@@ -15,8 +15,5 @@ export class CreateProjectDto {
     location : number;
  
     @IsNotEmpty()
-    skills : number;
-
-    @IsNotEmpty()
     members: CreateProjectMemberDto[]
 }

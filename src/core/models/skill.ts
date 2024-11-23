@@ -11,6 +11,4 @@ export class Skill extends Model<Skill> {
     @Column({type: DataType.STRING(50), allowNull: false})
     name: string;
 
-    @HasMany(() => UserSkill)
-    userSkills: UserSkill[];
 }

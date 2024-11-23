@@ -23,6 +23,4 @@ export class UserSkill extends Model<UserSkill> {
     @BelongsTo(() => User)
     user: User;
 
-    @BelongsTo(() => Skill)
-    skill: Skill;
 }
