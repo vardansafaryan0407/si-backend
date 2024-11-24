@@ -11,7 +11,6 @@ import {
 import {ProjectMember} from "./models/project-member";
 import {Industry} from "../../core/models/industry";
 import {Country} from "../../core/models/country";
-import { Skill } from "src/core/models/skill";
 
 
 @Table({tableName:'project'})
@@ -33,9 +32,6 @@ export class Project extends Model<Project> {
 
     @BelongsTo(() => Country, 'country_id')
     location: Country
-
-    @BelongsTo(() => Skill,'skill_id')
-    skills : Skill
 
     @HasMany(() => ProjectMember)
     members: ProjectMember[]
