@@ -15,7 +15,7 @@ export class ProjectService extends BaseService<Project> {
         super(repository);
     }
 
-    public async createProject(data: any) {
+    public async createProject(data :any) {
         await this.repository.createProject(data)
     }
 

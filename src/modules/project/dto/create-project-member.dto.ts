@@ -12,4 +12,8 @@ export class CreateProjectMemberDto {
 
     @IsNotEmpty()
     location: number
+
+    @IsNotEmpty()
+    skills : number
+    
 }

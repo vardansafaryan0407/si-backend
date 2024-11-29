@@ -2,8 +2,8 @@ import {
     AutoIncrement, BelongsTo,
     Column,
     DataType,
+    ForeignKey,
     HasMany,
-    HasOne,
     Model,
     PrimaryKey,
     Table
@@ -13,7 +13,7 @@ import {Industry} from "../../core/models/industry";
 import {Country} from "../../core/models/country";
 
 
-@Table({tableName:'project'})
+@Table({tableName:'project',timestamps : false})
 export class Project extends Model<Project> {
 
     @AutoIncrement
@@ -26,12 +26,23 @@ export class Project extends Model<Project> {
 
     @Column
     description: string
+  
 
-    @BelongsTo(() => Industry, 'industry_id')
-    industry: Industry
+    @ForeignKey(() => Country) 
+    @Column({type: DataType.INTEGER,allowNull: false})
+    country_id : number;
 
-    @BelongsTo(() => Country, 'country_id')
-    location: Country
+    @BelongsTo(() => Country, 'country_id') 
+    country: Country;
+
+    @ForeignKey(() => Industry)
+    @Column({type: DataType.INTEGER,allowNull: false})
+    industry_id : number
+
+
+    @BelongsTo(() => Industry,'industry_id')
+    industry : Industry
+
 
     @HasMany(() => ProjectMember)
     members: ProjectMember[]

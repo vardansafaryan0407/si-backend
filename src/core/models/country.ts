@@ -1,4 +1,6 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
+import { Col } from "sequelize/types/utils";
+import { Project } from "src/modules/project/project";
 
 @Table({tableName: 'country', timestamps:false})
 export class Country extends Model<Country> {
@@ -11,4 +13,10 @@ export class Country extends Model<Country> {
 
     @Column({type: DataType.STRING(10), allowNull: false})
     code: string;
+
+    @ForeignKey(() => Project)
+    project_id : number
+
+    @HasMany(() => Project)
+    project : Project[]
 }
