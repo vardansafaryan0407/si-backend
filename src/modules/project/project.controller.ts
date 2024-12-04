@@ -15,7 +15,7 @@ export class ProjectController {
     @Post('create')
     async createProject(@Body() createProjectDto: CreateProjectDto): Promise<void> {
         try {
-            await this.projectService.createProject(createProjectDto);            
+          await this.projectService.createProject(createProjectDto);            
         } catch (error) {
             return error
         }

@@ -8,10 +8,10 @@ export class Industry extends Model<Industry> {
     @Column({type: DataType.INTEGER, autoIncrement: true, primaryKey: true})
     id: number
 
-    @Column({allowNull: false})
+    @Column({type:DataType.STRING,allowNull: false})
     name: string
 
     @HasMany(() => Project)
-    project : Project[]
+    projects: Project[];
 }
 
