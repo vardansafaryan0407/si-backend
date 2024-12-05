@@ -1,5 +1,4 @@
-import {BelongsTo, Column, DataType, Model, Table} from "sequelize-typescript";
-import { Project } from "src/modules/project/project";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 @Table({tableName: 'role', timestamps: false})
 export class Role extends Model<Role> {
