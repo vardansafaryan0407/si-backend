@@ -10,6 +10,4 @@ export class Role extends Model<Role> {
     @Column({type: DataType.STRING, allowNull: false})
     name: string;
 
-    @BelongsTo(() => Project,'project_id')
-    project : Project
 }

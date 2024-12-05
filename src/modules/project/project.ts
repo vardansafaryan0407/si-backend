@@ -5,7 +5,7 @@ import {Industry} from "../../core/models/industry";
 import {Country} from "../../core/models/country";
 
 
-@Table({tableName:'project', timestamps : false})
+@Table({tableName:'project'})
 export class Project extends Model<Project> {
 
     @AutoIncrement

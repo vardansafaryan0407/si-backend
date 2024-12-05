@@ -18,8 +18,6 @@ export class ProjectRepository extends BaseRepository<Project> {
                 include: [Equity]
             }
         });
-
-    
     }
 
     public async getProjectList() {

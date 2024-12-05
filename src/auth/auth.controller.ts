@@ -24,7 +24,7 @@ export class AuthController {
         try {
             return this.authService.signIn(userSignInDto);
         } catch (error) {
-            throw error;
+            return error;
         }
     }
 
