@@ -26,7 +26,6 @@ export class ProjectMember extends Model<ProjectMember> {
     @HasOne(() => Equity)
     equity: Equity
 
-    
     @ForeignKey(() => Project)
     @Column
     public projectId: number

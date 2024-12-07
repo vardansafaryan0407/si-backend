@@ -1,4 +1,4 @@
-import { AutoIncrement,Column, DataType,ForeignKey,HasMany, HasOne, Model, PrimaryKey, Table,} from "sequelize-typescript";
+import { AutoIncrement,Column, DataType,ForeignKey,HasMany,Model, PrimaryKey, Table,} from "sequelize-typescript";
   import { ProjectMember } from "./models/project-member";
 import { Country } from "src/core/models/country";
 import { Industry } from "src/core/models/industry";
@@ -19,14 +19,15 @@ import { Industry } from "src/core/models/industry";
     @HasMany(() => ProjectMember)
     members: ProjectMember[];
 
-    @ForeignKey(() => Industry)
-    @Column
-    industries : number
-
-
     @ForeignKey(() => Country)
-    @Column
-    location : number
+    @Column(DataType.INTEGER)
+    location: number;
 
+
+    @ForeignKey(() => Industry)
+    @Column(DataType.INTEGER)
+    industries: number;
+  
+ 
   }
   
