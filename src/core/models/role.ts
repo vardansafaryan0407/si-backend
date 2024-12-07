@@ -1,4 +1,5 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
+import { ProjectMember } from "src/modules/project/models/project-member";
 
 @Table({tableName: 'role', timestamps: false})
 export class Role extends Model<Role> {
@@ -9,4 +10,6 @@ export class Role extends Model<Role> {
     @Column({type: DataType.STRING, allowNull: false})
     name: string;
 
+  @HasMany(() => ProjectMember)
+ projectMembers : ProjectMember[]
 }

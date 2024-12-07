@@ -1,4 +1,4 @@
-import {Column, ForeignKey, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {Column, ForeignKey,HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
 import {Equity} from "./equity";
 import {Project} from "../project";
 import {Country} from "../../../core/models/country";
@@ -13,7 +13,7 @@ export class ProjectMember extends Model<ProjectMember> {
 
     @ForeignKey(() => Country)
     @Column
-    country: number
+    location: number
 
     @ForeignKey(() => Role)
     @Column
@@ -21,11 +21,12 @@ export class ProjectMember extends Model<ProjectMember> {
 
     @ForeignKey(() => Skill)
     @Column
-    skill : number
+    skills : number
 
     @HasOne(() => Equity)
     equity: Equity
 
+    
     @ForeignKey(() => Project)
     @Column
     public projectId: number

@@ -12,7 +12,7 @@ export class ProjectController {
     constructor(private projectService: ProjectService) {
     }
 
-    @Post('create')
+    @Post('')
     async createProject(@Body() createProjectDto: CreateProjectDto): Promise<void> {
         try {
           await this.projectService.createProject(createProjectDto);            
