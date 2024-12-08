@@ -8,8 +8,12 @@ export class CreateProjectMemberDto {
     }
 
     @IsNotEmpty()
-    role: number
+    role: number[]
 
     @IsNotEmpty()
     location: number
+
+    @IsNotEmpty()
+    skills : number[]
+    
 }

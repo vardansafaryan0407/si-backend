@@ -10,11 +10,11 @@ export class Equity extends Model<Equity> {
 
     @Default(0)
     @Column({type:DataType.INTEGER, allowNull:false})
-    min_percent: number;
+    min: number;
 
     @Default(0)
     @Column({type:DataType.INTEGER, allowNull:false})
-    max_percent: number
+    max: number
 
     @Default(0)
     @Column({type:DataType.INTEGER, allowNull:true})

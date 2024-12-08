@@ -7,6 +7,7 @@ import {FindOptions, Op} from "sequelize";
 import {Role} from "../../../core/models/role";
 import {ProjectMember} from "../models/project-member";
 import {Pagination} from "../../../core/models/pagination";
+import { CreateProjectDto } from "../dto/create-project.dto";
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
@@ -15,7 +16,7 @@ export class ProjectService extends BaseService<Project> {
         super(repository);
     }
 
-    public async createProject(data: any) {
+    public async createProject(data:CreateProjectDto) {
         await this.repository.createProject(data)
     }
 

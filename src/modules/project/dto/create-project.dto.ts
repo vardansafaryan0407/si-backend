@@ -9,7 +9,7 @@ export class CreateProjectDto {
     description: string;
 
     @IsNotEmpty()
-    industry: number;
+    industries: number[]
      
     @IsNotEmpty()
     location : number;

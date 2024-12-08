@@ -3,7 +3,7 @@ import {ProjectService} from "./services/project.service";
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {SearchDto} from "./dto/search-project.dto";
 import {Pagination} from "../../core/models/pagination";
-import {AuthGuard} from "../../core/guards/auth,guard";
+import { AuthGuard } from "src/core/guards/auth.guard";
 
 @UseGuards(AuthGuard)
 @Controller('project')
@@ -15,7 +15,7 @@ export class ProjectController {
     @Post('')
     async createProject(@Body() createProjectDto: CreateProjectDto): Promise<void> {
         try {
-            await this.projectService.createProject(createProjectDto);
+          await this.projectService.createProject(createProjectDto);            
         } catch (error) {
             return error
         }
