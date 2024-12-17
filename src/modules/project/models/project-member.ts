@@ -1,4 +1,4 @@
-import {Column, ForeignKey,HasMany,HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, ForeignKey, HasMany, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
 import {Equity} from "./equity";
 import {Project} from "../project";
 import {Country} from "../../../core/models/country";
@@ -19,9 +19,7 @@ export class ProjectMember extends Model<ProjectMember> {
     @Column
     role : number
 
-    @ForeignKey(() => Skill)
-    @Column
-    skills : number
+
 
     @HasOne(() => Equity)
     equity: Equity
@@ -29,4 +27,8 @@ export class ProjectMember extends Model<ProjectMember> {
     @ForeignKey(() => Project)
     @Column
     public projectId: number
+
+    @BelongsToMany(()=>Skill, {through: 'project_members_skills', foreignKey:'member_id', otherKey:' skill_id'})
+    skills: Skill[]
+
 }
