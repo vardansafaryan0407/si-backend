@@ -12,7 +12,7 @@ export class CreateProjectDto {
     industries: number[]
      
     @IsNotEmpty()
-    location : number;
+    country : number;
  
     @IsNotEmpty()
     members: CreateProjectMemberDto[]

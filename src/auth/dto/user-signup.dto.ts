@@ -15,5 +15,5 @@ export class UserSignUpDto {
     password: string;
 
     @IsNotEmpty()
-    location : number
+    country : number
 }

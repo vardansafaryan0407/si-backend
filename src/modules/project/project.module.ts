@@ -8,11 +8,12 @@ import {ProjectMember} from "./models/project-member";
 import {Equity} from "./models/equity";
 import { Industry } from 'src/core/models/industry';
 import { Country } from 'src/core/models/country';
+import { Skill } from 'src/core/models/skill';
 
 
 @Module({
     imports: [
-        SequelizeModule.forFeature([Project, ProjectMember, Equity,Country,Industry])
+        SequelizeModule.forFeature([Project, ProjectMember, Equity,Country,Industry,Skill])
     ],
     providers: [
         ProjectRepository, ProjectService
