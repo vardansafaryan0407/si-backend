@@ -1,5 +1,4 @@
-import { Column, DataType,HasMany,Model, Table} from "sequelize-typescript";
-import { Project } from "src/modules/project/project";
+import { Column, DataType,Model, Table} from "sequelize-typescript";
 
 @Table({tableName: 'industry', timestamps:false})
 export class Industry extends Model<Industry> {

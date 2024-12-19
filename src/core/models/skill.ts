@@ -1,5 +1,4 @@
-import {BelongsTo, Column, DataType,HasMany,Model, Table} from "sequelize-typescript";
-import { ProjectMember } from "src/modules/project/models/project-member";
+import { Column, DataType,Model, Table} from "sequelize-typescript";
 
 
 @Table({tableName: 'skill', timestamps:false})
