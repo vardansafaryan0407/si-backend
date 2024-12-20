@@ -1,9 +1,9 @@
-import {BelongsToMany, Column, ForeignKey, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, ForeignKey, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
 import {Equity} from "./equity";
 import {Project} from "../project";
 import {Country} from "../../../core/models/country";
-import { Skill } from "src/core/models/skill";
-import { Role } from "src/core/models/role";
+import {Skill} from "src/core/models/skill";
+import {Role} from "src/core/models/role";
 
 @Table({timestamps: true, tableName: 'project_members'})
 export class ProjectMember extends Model<ProjectMember> {
@@ -12,12 +12,20 @@ export class ProjectMember extends Model<ProjectMember> {
     id: number;
 
     @ForeignKey(() => Country)
-    @Column
+    @Column({
+        type: DataType.INTEGER,
+        references: {
+            model: 'country',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
+    })
     country: number
 
     @ForeignKey(() => Role)
     @Column
-    role : number
+    role: number
 
     @HasOne(() => Equity)
     equity: Equity
@@ -26,7 +34,7 @@ export class ProjectMember extends Model<ProjectMember> {
     @Column
     public projectId: number
 
-    @BelongsToMany(()=>Skill, {through: 'project_members_skills', foreignKey:'member_id', otherKey:' skill_id'})
+    @BelongsToMany(() => Skill, {through: 'project_members_skills', foreignKey: 'member_id', otherKey: ' skill_id'})
     skills: Skill[]
 
 }

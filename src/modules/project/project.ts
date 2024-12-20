@@ -36,8 +36,7 @@ export class Project extends Model<Project> {
     @ForeignKey(() => Country)
     @Column(DataType.INTEGER)
     country_id: number
-    
+
     @BelongsToMany(() => Industry, {through: 'project_industries', foreignKey: 'project_id', otherKey: 'industry_id'})
     industries: Industry[]
 }
- 

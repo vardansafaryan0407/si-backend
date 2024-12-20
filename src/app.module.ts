@@ -8,7 +8,6 @@ import {CONFIG_DB} from "./config/config.db";
 import {SequelizeOptions} from "sequelize-typescript";
 import {JwtSharedModule} from "./core/modules/jwt.module";
 import {ProjectModule} from './modules/project/project.module';
-import {CoreModule} from "./core/core.module";
 import {RouterModule} from "@nestjs/core";
 import {appRoutes} from "./app.routes";
 import {SharedModule} from "./modules/shared/shared.module";
@@ -22,7 +21,6 @@ import {SharedModule} from "./modules/shared/shared.module";
         UserModule,
         JwtSharedModule,
         ProjectModule,
-        CoreModule,
         SharedModule
     ],
     controllers: [AppController],

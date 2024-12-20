@@ -14,6 +14,6 @@ export class CreateProjectMemberDto {
     country: number
 
     @IsNotEmpty()
-    skills : number[]
-    
+    skills: number[]
+
 }
