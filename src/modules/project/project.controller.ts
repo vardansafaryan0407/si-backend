@@ -29,4 +29,9 @@ export class ProjectController {
 
         }
     }
+
+    @Get('all')
+    async getAllProjects(){
+        return await this.projectService.listAllProjects();
+    }
 }

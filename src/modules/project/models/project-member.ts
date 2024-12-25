@@ -23,8 +23,18 @@ export class ProjectMember extends Model<ProjectMember> {
     })
     country: number
 
+
+    
     @ForeignKey(() => Role)
-    @Column
+    @Column({
+        type: DataType.INTEGER,
+        references: {
+            model: 'role',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
+    })
     role: number
 
     @HasOne(() => Equity)

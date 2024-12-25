@@ -4,6 +4,8 @@ import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {ProjectMember} from "../models/project-member";
 import {Equity} from "../models/equity";
+import { Skill } from "src/core/models/skill";
+
 
 @Injectable()
 export class ProjectRepository extends BaseRepository<Project> {
@@ -21,6 +23,24 @@ export class ProjectRepository extends BaseRepository<Project> {
     }
 
     public async getProjectList() {
-        return this.model.findAll()
+        return this.model.findAll({
+            include: [
+                {
+                    model: ProjectMember,
+                    include: [
+                        {
+                            model: Skill,
+                        },
+                        {
+                            model: Equity,
+                        },
+                    ],
+                },
+            ],
+        });
     }
-}
+    
+    
+    
+           
+    }

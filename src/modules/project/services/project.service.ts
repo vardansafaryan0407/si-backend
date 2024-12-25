@@ -21,8 +21,12 @@ export class ProjectService extends BaseService<Project> {
     }
 
     public listAllProjects() {
-        this.repository.findAll()
+      return  this.repository.findAll()
     }
+
+     public all(){
+        return this.repository.getProjectList();
+     }
 
     public async searchProjects(searchQuery: SearchDto, pagination: Pagination) {
         const {query, industryId, locationId, equity, roleId} = searchQuery;
