@@ -28,6 +28,10 @@ export class ProjectService extends BaseService<Project> {
         return this.repository.getProjectList();
      }
 
+     public findById(id : number){
+        return this.repository.findById(id)
+     }
+
     public async searchProjects(searchQuery: SearchDto, pagination: Pagination) {
         const {query, industryId, locationId, equity, roleId} = searchQuery;
 

@@ -1,9 +1,9 @@
 export const CONFIG_DB = {
     dialect: 'mysql',
-    host: 'mysql',
+    host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'root',
+    password: '',
     database: 'si-core',
     autoLoadModels: true,
     synchronize: true,

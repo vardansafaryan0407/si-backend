@@ -1,9 +1,8 @@
-import {Body, Controller,Get,HttpStatus,Post, Req, Res} from '@nestjs/common';
+import {Body, Controller,Post} from '@nestjs/common';
 import {UserSignUpDto} from "./dto/user-signup.dto";
 import {UserSignInDto} from "./dto/user-sign-in.dto";
 import {UserResetPasswordDto} from "./dto/user-reset-password.dto";
 import {AuthService} from "./services/auth.service";
-import { Response } from 'express';
 
 
 @Controller('auth')
@@ -36,13 +35,5 @@ export class AuthController {
 
     }
 
-    
-    @Get('logout')
-    async logout(@Res() res : Response) : Promise<void>{
 
-     res.status(HttpStatus.OK).json({
-        message : "Logout"
-     })
-
-    }
 }
