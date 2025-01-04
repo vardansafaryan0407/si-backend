@@ -21,7 +21,7 @@ export class ProjectController {
         }
     }
 
-    @Get('')
+  /*  @Get('')
     async listProjects(@Query() query: SearchDto, @Query() pagination: Pagination) {
         try {
             return await this.projectService.searchProjects(query, pagination)
@@ -30,7 +30,8 @@ export class ProjectController {
         }
     }
 
-    @Get('projects')
+    */
+    @Get('')
     async getAllProjects(){
         return await this.projectService.listAllProjects();
     }
