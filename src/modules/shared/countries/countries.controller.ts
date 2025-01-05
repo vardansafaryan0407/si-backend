@@ -6,7 +6,8 @@ import {Country} from 'src/core/models/country';
 export class CountriesController {
 
 
-    constructor(private countriesService: CountriesService) {}
+    constructor(private countriesService: CountriesService) {
+    }
 
 
     @Get()

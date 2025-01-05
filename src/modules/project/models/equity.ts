@@ -9,15 +9,15 @@ export class Equity extends Model<Equity> {
     id!: number;
 
     @Default(0)
-    @Column({type:DataType.INTEGER, allowNull:false})
+    @Column({type: DataType.INTEGER, allowNull: false})
     min: number;
 
     @Default(0)
-    @Column({type:DataType.INTEGER, allowNull:false})
+    @Column({type: DataType.INTEGER, allowNull: false})
     max: number
 
     @Default(0)
-    @Column({type:DataType.INTEGER, allowNull:true})
+    @Column({type: DataType.INTEGER, allowNull: true})
     actual_percent: number
 
     @Column({})

@@ -1,7 +1,7 @@
-import {Column, DataType,Model, Table} from "sequelize-typescript";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 
-@Table({tableName: 'skill', timestamps:false})
+@Table({tableName: 'skill', timestamps: false})
 export class Skill extends Model<Skill> {
 
     @Column({type: DataType.INTEGER, autoIncrement: true, primaryKey: true})

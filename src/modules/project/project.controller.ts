@@ -1,9 +1,9 @@
-import {Body, Controller, Get, Post, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Query, UseGuards} from "@nestjs/common";
 import {ProjectService} from "./services/project.service";
 import {CreateProjectDto} from "./dto/create-project.dto";
+import {AuthGuard} from "src/core/guards/auth.guard";
 import {SearchDto} from "./dto/search-project.dto";
 import {Pagination} from "../../core/models/pagination";
-import { AuthGuard } from "src/core/guards/auth.guard";
 
 @UseGuards(AuthGuard)
 @Controller('project')
@@ -15,7 +15,7 @@ export class ProjectController {
     @Post('')
     async createProject(@Body() createProjectDto: CreateProjectDto): Promise<void> {
         try {
-          await this.projectService.createProject(createProjectDto);            
+            await this.projectService.createProject(createProjectDto);
         } catch (error) {
             return error
         }
@@ -26,7 +26,13 @@ export class ProjectController {
         try {
             return await this.projectService.searchProjects(query, pagination)
         } catch (error) {
-
+            return error
         }
+    }
+
+
+    @Get(':id')
+    async getId(@Param('id') id : number){
+        return await this.projectService.findById(id)
     }
 }

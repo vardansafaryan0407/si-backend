@@ -11,9 +11,9 @@ export class CreateProjectMemberDto {
     role: number[]
 
     @IsNotEmpty()
-    location: number
+    country: number
 
     @IsNotEmpty()
-    skills : number[]
-    
+    skills: number[]
+
 }
