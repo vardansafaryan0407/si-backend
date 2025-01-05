@@ -22,14 +22,6 @@ export class ProjectService extends BaseService<Project> {
         await this.repository.createProject(data)
     }
 
-    public listAllProjects() {
-      return  this.repository.findAll()
-    }
-
-     public all(){
-        return this.repository.getProjectList();
-     }
-
      public findById(id : number){
         return this.repository.findById(id)
      }

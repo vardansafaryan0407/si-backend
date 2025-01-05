@@ -21,26 +21,4 @@ export class ProjectRepository extends BaseRepository<Project> {
             }
         });
     }
-
-    public async getProjectList() {
-        return this.model.findAll({
-            include: [
-                {
-                    model: ProjectMember,
-                    include: [
-                        {
-                            model: Skill,
-                        },
-                        {
-                            model: Equity,
-                        },
-                    ],
-                },
-            ],
-        });
-    }
-    
-    
-    
-           
-    }
+}

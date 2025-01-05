@@ -26,7 +26,6 @@ export class ProjectController {
         try {
             return await this.projectService.searchProjects(query, pagination)
         } catch (error) {
-            console.log(error)
             return error
         }
     }
