@@ -1,9 +1,9 @@
 import {Body, Controller, Get, Param, Post, Query, UseGuards} from "@nestjs/common";
 import {ProjectService} from "./services/project.service";
 import {CreateProjectDto} from "./dto/create-project.dto";
+import {AuthGuard} from "src/core/guards/auth.guard";
 import {SearchDto} from "./dto/search-project.dto";
 import {Pagination} from "../../core/models/pagination";
-import {AuthGuard} from "src/core/guards/auth.guard";
 
 @UseGuards(AuthGuard)
 @Controller('project')
@@ -21,19 +21,14 @@ export class ProjectController {
         }
     }
 
-  /*  @Get('')
+    @Get('')
     async listProjects(@Query() query: SearchDto, @Query() pagination: Pagination) {
         try {
             return await this.projectService.searchProjects(query, pagination)
         } catch (error) {
-
+            console.log(error)
+            return error
         }
-    }
-
-    */
-    @Get('')
-    async getAllProjects(){
-        return await this.projectService.listAllProjects();
     }
 
 

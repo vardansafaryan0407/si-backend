@@ -41,7 +41,10 @@ export class BaseRepository<T extends Model> implements IBaseRepository {
     }
 
 
+    // TODO refactor list methods to receive separate params
+    // create interface for params
+
     public async list(searchParams: any, paginationParams: IPaginationParams): Promise<T[]> {
-        return this.model.findAll({where: searchParams, limit: paginationParams.limit, offset: paginationParams.page})
+        return this.model.findAll({where: searchParams.where, include:searchParams.include, limit: paginationParams.limit, offset: paginationParams.page})
     }
 }

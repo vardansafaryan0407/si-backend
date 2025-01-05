@@ -8,6 +8,8 @@ import {Role} from "../../../core/models/role";
 import {ProjectMember} from "../models/project-member";
 import {Pagination} from "../../../core/models/pagination";
 import {CreateProjectDto} from "../dto/create-project.dto";
+import {Equity} from "../models/equity";
+import {Skill} from "../../../core/models/skill";
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
@@ -49,21 +51,25 @@ export class ProjectService extends BaseService<Project> {
 
         const includes = []
 
-
-        // join project members
-
         const joinMembers: any = {
             model: ProjectMember,
-            include: {
-                model: Role
-            },
+            include: [
+                {
+                    model: Skill
+                },
+                {
+                    model: Role
+                },
+                {
+                    model: Equity
+                }
+            ],
 
         }
         if (roleId) {
             joinMembers.where = {role: roleId}
         }
         includes.push(joinMembers)
-
 
         const findOptions: FindOptions = {
             where,

@@ -1,4 +1,14 @@
-import {BelongsToMany, Column, DataType, ForeignKey, HasOne, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {
+    BelongsTo,
+    BelongsToMany,
+    Column,
+    DataType,
+    ForeignKey,
+    HasOne,
+    Model,
+    PrimaryKey,
+    Table
+} from "sequelize-typescript";
 import {Equity} from "./equity";
 import {Project} from "../project";
 import {Country} from "../../../core/models/country";
@@ -24,7 +34,6 @@ export class ProjectMember extends Model<ProjectMember> {
     country: number
 
 
-    
     @ForeignKey(() => Role)
     @Column({
         type: DataType.INTEGER,
@@ -35,7 +44,10 @@ export class ProjectMember extends Model<ProjectMember> {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
     })
-    role: number
+    role_id: number
+
+    @BelongsTo(() => Role)
+    role: Role
 
     @HasOne(() => Equity)
     equity: Equity
