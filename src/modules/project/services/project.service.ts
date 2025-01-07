@@ -10,21 +10,29 @@ import {Pagination} from "../../../core/models/pagination";
 import {CreateProjectDto} from "../dto/create-project.dto";
 import {Equity} from "../models/equity";
 import {Skill} from "../../../core/models/skill";
+import {Sequelize} from "sequelize-typescript";
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
 
-    constructor(protected readonly repository: ProjectRepository) {
+    constructor(protected readonly repository: ProjectRepository, private sequelize: Sequelize) {
         super(repository);
     }
 
     public async createProject(data: CreateProjectDto) {
-        await this.repository.createProject(data)
+
+        await this.sequelize.transaction(async () => {
+            const project = await this.repository.createProject(data);
+            for (let i = 0; i < project.members.length; i++) {
+                const projectMember = project.members[i];
+                await projectMember.addSkills(data.members[i].skills);
+            }
+        })
     }
 
-     public findById(id : number){
+    public findById(id: number) {
         return this.repository.findById(id)
-     }
+    }
 
     public async searchProjects(searchQuery: SearchDto, pagination: Pagination) {
         const {query, industryId, locationId, equity, roleId} = searchQuery;
@@ -47,7 +55,10 @@ export class ProjectService extends BaseService<Project> {
             model: ProjectMember,
             include: [
                 {
-                    model: Skill
+                    model: Skill,
+                    through: {
+                        attributes: []
+                    }
                 },
                 {
                     model: Role
@@ -67,7 +78,6 @@ export class ProjectService extends BaseService<Project> {
             where,
             include: includes
         }
-
         return this.repository.list(findOptions, pagination)
     }
 }

@@ -14,6 +14,7 @@ import {Project} from "../project";
 import {Country} from "../../../core/models/country";
 import {Skill} from "src/core/models/skill";
 import {Role} from "src/core/models/role";
+import {BelongsToManyAddAssociationsMixin} from "sequelize";
 
 @Table({timestamps: true, tableName: 'project_members'})
 export class ProjectMember extends Model<ProjectMember> {
@@ -56,7 +57,9 @@ export class ProjectMember extends Model<ProjectMember> {
     @Column
     public projectId: number
 
-    @BelongsToMany(() => Skill, {through: 'project_members_skills', foreignKey: 'member_id', otherKey: ' skill_id'})
+    @BelongsToMany(() => Skill, {through: 'project_members_skills', foreignKey: 'member_id', otherKey: 'skill_id'})
     skills: Skill[]
 
+
+    declare public addSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }

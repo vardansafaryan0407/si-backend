@@ -14,7 +14,8 @@ export class ProjectRepository extends BaseRepository<Project> {
     }
 
     public async createProject(createProjectData) {
-        await this.model.create(createProjectData, {
+
+        return await this.model.create(createProjectData, {
             include: {
                 model: ProjectMember,
                 include: [Equity]
