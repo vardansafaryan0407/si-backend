@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Put, Request, UseGuards} from "@nestjs/common";
+import {Controller, Get,Post, Put, Request, UseGuards} from "@nestjs/common";
 import {UserService} from "./user.service";
 import {User} from "./user";
 import {AuthGuard} from "src/core/guards/auth.guard";
@@ -10,16 +10,22 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard)
-    @Get('')
+    @Get('current')
     public async getCurrentUser(@Request() req) {
-        return req.user
+        
+     const userId = req.user.id 
+
+     return this.userService.findOne(userId)
+
     }
 
 
-    @Get()
+    @Get('')
     async getAll(): Promise<User[]> {
         return this.userService.findAll();
     }
+
+
 
 
     @Post('')
@@ -31,4 +37,5 @@ export class UserController {
     public async updateCurrentUser() {
 
     }
+
 }
