@@ -1,5 +1,6 @@
 import {BelongsTo, Column, DataType, ForeignKey, Model, Table, Unique} from "sequelize-typescript";
 import {Country} from "src/core/models/country";
+import { Skill } from "src/core/models/skill";
 
 
 @Table({tableName: 'user'})
@@ -24,6 +25,13 @@ export class User extends Model<User> {
     @Column
     @ForeignKey(() => Country)
     country_id: number
+
+    @BelongsTo(() => Skill)
+    skills : Skill
+
+    @Column
+    @ForeignKey(() => Skill)
+    skill_id : number
 
     @Column({type: DataType.STRING(255), allowNull: false})
     password: string;

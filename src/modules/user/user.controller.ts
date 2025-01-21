@@ -10,7 +10,7 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard)
-    @Get('current')
+    @Get('')
     public async getCurrentUser(@Request() req) {
         
      const userId = req.user.id 
@@ -20,7 +20,7 @@ export class UserController {
     }
 
 
-    @Get('')
+    @Get('list')
     async getAll(): Promise<User[]> {
         return this.userService.findAll();
     }
