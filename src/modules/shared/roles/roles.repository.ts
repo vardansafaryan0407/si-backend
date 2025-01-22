@@ -1,12 +1,12 @@
-import {Injectable} from "@nestjs/common";
-import {InjectModel} from "@nestjs/sequelize";
-import {Role} from "src/core/models/role";
-import {BaseRepository} from "src/core/repositories/base.repository";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Role } from 'src/core/models/role';
+import { BaseRepository } from 'src/core/repositories/base.repository';
 
-Injectable()
+Injectable();
 
 export class RolesRepository extends BaseRepository<Role> {
-    constructor(@InjectModel(Role) model: typeof Role) {
-        super(model)
-    }
+  constructor(@InjectModel(Role) model: typeof Role) {
+    super(model);
+  }
 }

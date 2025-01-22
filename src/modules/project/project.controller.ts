@@ -1,38 +1,66 @@
-import {Body, Controller, Get, Param, Post, Query, UseGuards} from "@nestjs/common";
-import {ProjectService} from "./services/project.service";
-import {CreateProjectDto} from "./dto/create-project.dto";
-import {AuthGuard} from "src/core/guards/auth.guard";
-import {SearchDto} from "./dto/search-project.dto";
-import {Pagination} from "../../core/models/pagination";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ProjectService } from './services/project.service';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { AuthGuard } from 'src/core/guards/auth.guard';
+import { SearchDto } from './dto/search-project.dto';
+import { Pagination } from '../../core/models/pagination';
+import { GetUser } from '../../core/decorators/get-user.decorator';
+import { IUserSession } from '../../core/interfaces/user-session';
 
-@UseGuards(AuthGuard)
 @Controller('project')
 export class ProjectController {
+  constructor(private projectService: ProjectService) {}
 
-    constructor(private projectService: ProjectService) {
+  @UseGuards(AuthGuard)
+  @Post('')
+  async createProject(
+    @Body() createProjectDto: CreateProjectDto,
+    @GetUser() user: IUserSession,
+  ): Promise<void> {
+    try {
+      await this.projectService.createProject(createProjectDto, user.id);
+    } catch (error) {
+      return error;
     }
+  }
 
-    @Post('')
-    async createProject(@Body() createProjectDto: CreateProjectDto): Promise<void> {
-        try {
-            await this.projectService.createProject(createProjectDto);
-        } catch (error) {
-            return error
-        }
+  @Get('')
+  async listProjects(
+    @Query() query: SearchDto,
+    @Query() pagination: Pagination,
+  ) {
+    try {
+      return await this.projectService.searchProjects(query, pagination);
+    } catch (error) {
+      return error;
     }
+  }
 
-    @Get('')
-    async listProjects(@Query() query: SearchDto, @Query() pagination: Pagination) {
-        try {
-            return await this.projectService.searchProjects(query, pagination)
-        } catch (error) {
-            return error
-        }
+  @UseGuards(AuthGuard)
+  @Get('/mine')
+  async getMyProjects(
+    @Query() query: SearchDto,
+    @Query() pagination: Pagination,
+    @GetUser() user: IUserSession,
+  ) {
+    try {
+      console.log(user);
+      return await this.projectService.getUserProjects(user.id, pagination);
+    } catch (error) {
+      return error;
     }
+  }
 
-
-    @Get(':id')
-    async getId(@Param('id') id : number){
-        return await this.projectService.findById(id)
-    }
+  @Get(':id')
+  async getId(@Param('id') id: number) {
+    return await this.projectService.findById(id);
+  }
 }

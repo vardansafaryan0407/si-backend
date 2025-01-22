@@ -1,19 +1,19 @@
-import {IsNotEmpty} from "class-validator";
-import {CreateProjectMemberDto} from "./create-project-member.dto";
+import { IsNotEmpty } from 'class-validator';
+import { CreateProjectMemberDto } from './create-project-member.dto';
 
 export class CreateProjectDto {
-    @IsNotEmpty()
-    title: string;
+  @IsNotEmpty()
+  title: string;
 
-    @IsNotEmpty()
-    description: string;
+  @IsNotEmpty()
+  description: string;
 
-    @IsNotEmpty()
-    industries: number[]
+  @IsNotEmpty()
+  industries: number[];
 
-    @IsNotEmpty()
-    country: number;
+  @IsNotEmpty()
+  country: number;
 
-    @IsNotEmpty()
-    members: CreateProjectMemberDto[]
+  @IsNotEmpty()
+  members: CreateProjectMemberDto[];
 }

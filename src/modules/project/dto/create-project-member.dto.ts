@@ -1,19 +1,18 @@
-import {IsNotEmpty} from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateProjectMemberDto {
-    @IsNotEmpty()
-    equity: {
-        min: number;
-        max: number
-    }
+  @IsNotEmpty()
+  equity: {
+    min: number;
+    max: number;
+  };
 
-    @IsNotEmpty()
-    role: number[]
+  @IsNotEmpty()
+  role: number[];
 
-    @IsNotEmpty()
-    country: number
+  @IsNotEmpty()
+  country: number;
 
-    @IsNotEmpty()
-    skills: number[]
-
+  @IsNotEmpty()
+  skills: number[];
 }

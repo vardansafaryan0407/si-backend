@@ -1,11 +1,10 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table({tableName: 'industry', timestamps: false})
+@Table({ tableName: 'industry', timestamps: false })
 export class Industry extends Model<Industry> {
+  @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
+  id: number;
 
-    @Column({type: DataType.INTEGER, autoIncrement: true, primaryKey: true})
-    id: number
-
-    @Column({type: DataType.STRING, allowNull: false})
-    name: string
+  @Column({ type: DataType.STRING, allowNull: false })
+  name: string;
 }
