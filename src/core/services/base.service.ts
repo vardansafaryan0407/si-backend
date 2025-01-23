@@ -1,3 +1,4 @@
+import { User } from "src/modules/user/user";
 import {IPaginationParams} from "../interfaces/pagination";
 import {BaseRepository} from "../repositories/base.repository";
 import {Model} from "sequelize-typescript";
@@ -15,12 +16,12 @@ export class BaseService<T extends Model> {
         return true
     }
 
-    public async update(id: number) {
-        return true
+    public async update(id : number,userData : User) {
+       return  this.repository.update(id,userData)
     }
 
-    public async getById(id: number) {
-        return true
+    public async getById(id: number){
+        this.repository.findById(id)
     }
 
     public async list(paginationParams: IPaginationParams = {}) {

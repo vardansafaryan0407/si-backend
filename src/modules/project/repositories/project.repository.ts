@@ -4,7 +4,6 @@ import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {ProjectMember} from "../models/project-member";
 import {Equity} from "../models/equity";
-import { Skill } from "src/core/models/skill";
 
 
 @Injectable()
