@@ -1,25 +1,23 @@
-import {BaseRepository} from "../../../core/repositories/base.repository";
-import {Project} from "../project";
-import {Injectable} from "@nestjs/common";
-import {InjectModel} from "@nestjs/sequelize";
-import {ProjectMember} from "../models/project-member";
-import {Equity} from "../models/equity";
-import { Skill } from "src/core/models/skill";
-
+import { BaseRepository } from '../../../core/repositories/base.repository';
+import { Project } from '../project';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { ProjectMember } from '../models/project-member';
+import { Equity } from '../models/equity';
+import { IProjectCreateData } from '../interfaces/project-create.data';
 
 @Injectable()
 export class ProjectRepository extends BaseRepository<Project> {
-    constructor(@InjectModel(Project) model: typeof Project) {
-        super(model);
-    }
+  constructor(@InjectModel(Project) model: typeof Project) {
+    super(model);
+  }
 
-    public async createProject(createProjectData) {
-
-        return await this.model.create(createProjectData, {
-            include: {
-                model: ProjectMember,
-                include: [Equity]
-            }
-        });
-    }
+  public async createProject(createProjectData) {
+    return await this.model.create(createProjectData, {
+      include: {
+        model: ProjectMember,
+        include: [Equity],
+      },
+    });
+  }
 }
