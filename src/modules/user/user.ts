@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -11,6 +12,7 @@ import {
 import { Country } from 'src/core/models/country';
 import { Skill } from 'src/core/models/skill';
 import { Project } from '../project/project';
+import { UserSkill } from 'src/core/models/user-skill';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -37,12 +39,12 @@ export class User extends Model<User> {
   @ForeignKey(() => Country)
   country_id: number;
 
-  @BelongsTo(() => Skill)
-  skills: Skill;
+  @BelongsToMany(() => Skill, () => UserSkill)
+  skills: Skill[];
 
   @Column
   @ForeignKey(() => Skill)
-  skill_id: number;
+  skills_id : number
 
   @Column({ type: DataType.STRING(255), allowNull: false })
   password: string;
