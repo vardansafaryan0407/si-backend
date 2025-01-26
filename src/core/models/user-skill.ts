@@ -24,7 +24,4 @@ export class UserSkill extends Model<UserSkill> {
 
   @Column({ type: DataType.STRING(30), allowNull: false })
   skill_level: string;
-
-  @BelongsTo(() => User)
-  user: User;
 }

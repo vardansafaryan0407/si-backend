@@ -42,10 +42,6 @@ export class User extends Model<User> {
   @BelongsToMany(() => Skill, () => UserSkill)
   skills: Skill[];
 
-  @Column
-  @ForeignKey(() => Skill)
-  skills_id : number
-
   @Column({ type: DataType.STRING(255), allowNull: false })
   password: string;
 

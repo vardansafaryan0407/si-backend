@@ -2,7 +2,7 @@ import { BaseService } from '../../core/services/base.service';
 import { UserRepository } from './user.repository';
 import { User } from './user';
 import { Injectable } from '@nestjs/common';
-import { UserDto } from './user.dto';
+import { UserUpdateDto } from './user.dto';
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -10,9 +10,7 @@ export class UserService extends BaseService<User> {
     super(repository);
   }
 
-  public async updateUser(id: number,userData : UserDto) {
-    return  this.repository.update(id,userData)
+  public async updateUser(id: number, userData: UserUpdateDto) {
+    return this.repository.update(id, userData);
   }
-
-
 }
