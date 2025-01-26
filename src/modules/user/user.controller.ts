@@ -12,7 +12,9 @@ import {
 import { UserService } from './user.service';
 import { User } from './user';
 import { AuthGuard } from 'src/core/guards/auth.guard';
-import { UserUpdateDto } from './user.dto';
+import { UserUpdateDto } from './user-update.dto';
+import { GetUser } from '../../core/decorators/get-user.decorator';
+import { IUserSession } from '../../core/interfaces/user-session';
 
 @Controller('user')
 export class UserController {
@@ -40,7 +42,10 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Put('update')
-  async updateCurrentUser(@Body() userData: UserUpdateDto): Promise<User> {
-    return this.userService.updateUser(id, userData);
+  async updateCurrentUser(
+    @Body() userData: UserUpdateDto,
+    @GetUser() user: IUserSession,
+  ): Promise<User> {
+    return this.userService.updateUser(user.id, userData);
   }
 }

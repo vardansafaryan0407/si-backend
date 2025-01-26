@@ -52,7 +52,10 @@ export class ProjectService extends BaseService<Project> {
     return this.repository.list(findOptions);
   }
 
-  public async searchProjects(searchQuery: ProjectQuery, pagination: Pagination) {
+  public async searchProjects(
+    searchQuery: ProjectQuery,
+    pagination: Pagination,
+  ) {
     const { query, industryId, locationId, equity, roleId } = searchQuery;
 
     if (industryId) {

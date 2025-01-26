@@ -10,7 +10,7 @@ export class UserUpdateDto {
   lastName: string;
 
   @IsNotEmpty()
-  skills_id: number;
+  skills: number[];
 
   @IsNotEmpty()
   country_id: number;
