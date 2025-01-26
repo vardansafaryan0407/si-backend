@@ -10,7 +10,7 @@ import {
 import { ProjectService } from './services/project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { AuthGuard } from 'src/core/guards/auth.guard';
-import { SearchDto } from './dto/search-project.dto';
+import { ProjectQuery } from './dto/project-query.dto';
 import { Pagination } from '../../core/models/pagination';
 import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
@@ -34,7 +34,7 @@ export class ProjectController {
 
   @Get('')
   async listProjects(
-    @Query() query: SearchDto,
+    @Query() query: ProjectQuery,
     @Query() pagination: Pagination,
   ) {
     try {
@@ -47,7 +47,7 @@ export class ProjectController {
   @UseGuards(AuthGuard)
   @Get('/mine')
   async getMyProjects(
-    @Query() query: SearchDto,
+    @Query() query: ProjectQuery,
     @Query() pagination: Pagination,
     @GetUser() user: IUserSession,
   ) {

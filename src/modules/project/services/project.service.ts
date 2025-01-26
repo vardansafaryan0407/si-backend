@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../../core/services/base.service';
 import { Project } from '../project';
 import { ProjectRepository } from '../repositories/project.repository';
-import { SearchDto } from '../dto/search-project.dto';
+import { ProjectQuery } from '../dto/project-query.dto';
 import { Op } from 'sequelize';
 import { Role } from '../../../core/models/role';
 import { ProjectMember } from '../models/project-member';
@@ -52,7 +52,7 @@ export class ProjectService extends BaseService<Project> {
     return this.repository.list(findOptions);
   }
 
-  public async searchProjects(searchQuery: SearchDto, pagination: Pagination) {
+  public async searchProjects(searchQuery: ProjectQuery, pagination: Pagination) {
     const { query, industryId, locationId, equity, roleId } = searchQuery;
 
     if (industryId) {
