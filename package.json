@@ -22,8 +22,8 @@
     "db:migrate:undo": "sequelize db:migrate:undo --config sequelize.config.js",
     "db:seed:all": "sequelize db:seed:all",
     "db:seed:undo:all": "sequelize db:seed:undo:all",
-    "db:migrate:create":  "sequelize migration:generate",
-    "db:seed:create":  "sequelize seed:generate"
+    "db:migrate:create": "sequelize migration:generate",
+    "db:seed:create": "sequelize seed:generate"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.8",

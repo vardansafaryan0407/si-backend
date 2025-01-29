@@ -24,7 +24,7 @@ export class UserController {
   @Get('')
   public async getCurrentUser(@Request() req) {
     const userId = req.user.id;
-    return this.userService.findOne(userId);
+    return this.userService.find(userId);
   }
 
   @Get('list')
@@ -37,15 +37,12 @@ export class UserController {
     return this.userService.getById(id);
   }
 
-  @Post('')
-  public async createUser() {}
-
   @UseGuards(AuthGuard)
   @Put('update')
   async updateCurrentUser(
     @Body() userData: UserUpdateDto,
     @GetUser() user: IUserSession,
   ): Promise<User> {
-    return this.userService.updateUser(user.id, userData);
+    return this.userService.updateUserWithSkills(user.id, userData);
   }
 }
