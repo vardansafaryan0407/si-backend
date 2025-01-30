@@ -40,9 +40,6 @@ export class BaseRepository<T extends Model> implements IBaseRepository {
     return this.model.findOne(searchParams);
   }
 
-  // TODO refactor list methods to receive separate params
-  // create interface for params
-
   public async list(searchParams: IBaseSearchParams): Promise<T[]> {
     const options: FindOptions = {};
     const { where, include, pagination, order } = searchParams;

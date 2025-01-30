@@ -40,7 +40,7 @@ export class User extends Model<User> {
   country_id: number;
 
   @BelongsToMany(() => Skill, {
-    through: 'userSkills',
+    through: 'user_skills',
     foreignKey: 'user_id',
     otherKey: 'skill_id',
   })
@@ -52,7 +52,5 @@ export class User extends Model<User> {
   @HasMany(() => Project, { foreignKey: 'owner_id' })
   projects: Project[];
 
-
-  
-  declare public addSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
+  public declare setSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }

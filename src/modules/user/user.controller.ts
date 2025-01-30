@@ -12,7 +12,7 @@ import {
 import { UserService } from './user.service';
 import { User } from './user';
 import { AuthGuard } from 'src/core/guards/auth.guard';
-import { UserUpdateDto } from './user-update.dto';
+import { UserUpdateDto } from './dto/user-update.dto';
 import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
 

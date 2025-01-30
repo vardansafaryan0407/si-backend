@@ -63,5 +63,5 @@ export class ProjectMember extends Model<ProjectMember> {
   })
   skills: Skill[];
 
-  declare public addSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
+  public declare addSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }
