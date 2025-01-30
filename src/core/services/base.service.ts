@@ -19,7 +19,7 @@ export class BaseService<T extends Model> {
   }
 
   public async getById(id: number) {
-    return true;
+    return this.repository.findById(id);
   }
 
   public async list(paginationParams: IPaginationParams = {}) {

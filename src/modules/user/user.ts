@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -11,6 +12,7 @@ import {
 import { Country } from 'src/core/models/country';
 import { Skill } from 'src/core/models/skill';
 import { Project } from '../project/project';
+import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -37,16 +39,18 @@ export class User extends Model<User> {
   @ForeignKey(() => Country)
   country_id: number;
 
-  @BelongsTo(() => Skill)
-  skills: Skill;
-
-  @Column
-  @ForeignKey(() => Skill)
-  skill_id: number;
+  @BelongsToMany(() => Skill, {
+    through: 'user_skills',
+    foreignKey: 'user_id',
+    otherKey: 'skill_id',
+  })
+  skills: Skill[];
 
   @Column({ type: DataType.STRING(255), allowNull: false })
   password: string;
 
   @HasMany(() => Project, { foreignKey: 'owner_id' })
   projects: Project[];
+
+  public declare setSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }

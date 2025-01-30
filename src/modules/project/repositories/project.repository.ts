@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ProjectMember } from '../models/project-member';
 import { Equity } from '../models/equity';
-import { IProjectCreateData } from '../interfaces/project-create.data';
 
 @Injectable()
 export class ProjectRepository extends BaseRepository<Project> {

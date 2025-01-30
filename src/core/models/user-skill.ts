@@ -22,9 +22,6 @@ export class UserSkill extends Model<UserSkill> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   skill_id: number;
 
-  @Column({ type: DataType.STRING(30), allowNull: false })
+  @Column({ type: DataType.STRING(30), allowNull: false, defaultValue: null })
   skill_level: string;
-
-  @BelongsTo(() => User)
-  user: User;
 }

@@ -1,7 +1,20 @@
-import { Controller, Get, Post, Put, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user';
 import { AuthGuard } from 'src/core/guards/auth.guard';
+import { UserUpdateDto } from './dto/user-update.dto';
+import { GetUser } from '../../core/decorators/get-user.decorator';
+import { IUserSession } from '../../core/interfaces/user-session';
 
 @Controller('user')
 export class UserController {
@@ -11,8 +24,7 @@ export class UserController {
   @Get('')
   public async getCurrentUser(@Request() req) {
     const userId = req.user.id;
-
-    return this.userService.findOne(userId);
+    return this.userService.find(userId);
   }
 
   @Get('list')
@@ -20,9 +32,17 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Post('')
-  public async createUser() {}
+  @Get(':id')
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getById(id);
+  }
 
-  @Put('')
-  public async updateCurrentUser() {}
+  @UseGuards(AuthGuard)
+  @Put('update')
+  async updateCurrentUser(
+    @Body() userData: UserUpdateDto,
+    @GetUser() user: IUserSession,
+  ): Promise<User> {
+    return this.userService.updateUserWithSkills(user.id, userData);
+  }
 }

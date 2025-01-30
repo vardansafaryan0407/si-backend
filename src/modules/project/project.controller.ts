@@ -52,7 +52,6 @@ export class ProjectController {
     @GetUser() user: IUserSession,
   ) {
     try {
-      console.log(user);
       return await this.projectService.getUserProjects(user.id, pagination);
     } catch (error) {
       return error;
