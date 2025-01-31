@@ -11,6 +11,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { RouterModule } from '@nestjs/core';
 import { appRoutes } from './app.routes';
 import { SharedModule } from './modules/shared/shared.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SharedModule } from './modules/shared/shared.module';
     JwtSharedModule,
     ProjectModule,
     SharedModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
