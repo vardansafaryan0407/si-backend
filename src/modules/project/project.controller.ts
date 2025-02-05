@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Query,
   UseGuards,
@@ -15,15 +14,10 @@ import { ProjectQuery } from './dto/project-query.dto';
 import { Pagination } from '../../core/models/pagination';
 import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
-import { ProjectApplyDto } from './dto/project-apply.dto';
-import { ProjectMemberApplicationService } from './services/project-member-application.service';
 
 @Controller('project')
 export class ProjectController {
-  constructor(
-    private projectService: ProjectService,
-    private projectMemberApplicationService: ProjectMemberApplicationService,
-  ) {}
+  constructor(private projectService: ProjectService) {}
 
   @UseGuards(AuthGuard)
   @Post('')
@@ -67,19 +61,5 @@ export class ProjectController {
   @Get(':id')
   async getId(@Param('id') id: number) {
     return await this.projectService.findById(id);
-  }
-
-  @UseGuards(AuthGuard)
-  @Post('/apply/:id')
-  async applyProject(
-    @Param('id', ParseIntPipe) projectId: number,
-    @Body() projectApplyData: ProjectApplyDto,
-    @GetUser() user: IUserSession,
-  ) {
-    return await this.projectMemberApplicationService.projectApply(
-      projectId,
-      user.id,
-      projectApplyData,
-    );
   }
 }

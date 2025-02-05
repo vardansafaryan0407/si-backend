@@ -7,20 +7,21 @@ dotenv.config();
 @Injectable()
 export class EmailService {
   private transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: process.env.EMAIL_SERVICE,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
   });
 
-  async sendMail(to: string, text: string) {
+  async sendMail(ownerEmail: string, email: string, equity: number) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to,
-      subject: 'sms',
-      text,
+      to: ownerEmail,
+      subject: 'New request',
+      text: `User ${email} want to joins with  this ${equity}`,
     };
+
     return await this.transporter.sendMail(mailOptions);
   }
 }
