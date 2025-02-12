@@ -21,27 +21,26 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
     userId: number,
     projectApplyData: ProjectApplyDto,
   ) {
-    const application = await this.repository.create({
-      member_id: memberId,
-      user_id: userId,
-      ...projectApplyData,
-    });
-
     const project = await this.projectService.findById(
       projectApplyData.projectId,
     );
 
-    if (project.owner.id === userId) {
+    if (project?.owner.id === userId) {
       throw new Error('you cant apply');
     }
 
     if (project?.owner.email) {
       await this.emailService.sendMail(
         project.owner.email,
-        projectApplyData.email,
         projectApplyData.equity,
       );
     }
+
+    const application = await this.repository.create({
+      member_id: memberId,
+      user_id: userId,
+      ...projectApplyData,
+    });
 
     return application;
   }

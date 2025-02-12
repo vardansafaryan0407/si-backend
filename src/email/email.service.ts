@@ -14,12 +14,12 @@ export class EmailService {
     },
   });
 
-  async sendMail(ownerEmail: string, email: string, equity: number) {
+  async sendMail(ownerEmail: string, equity: number) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: ownerEmail,
       subject: 'New request',
-      text: `User ${email} want to joins with  this ${equity}`,
+      text: `User want to joins with  this ${equity}`,
     };
 
     return await this.transporter.sendMail(mailOptions);

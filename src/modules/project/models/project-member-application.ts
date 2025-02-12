@@ -66,13 +66,4 @@ export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
     allowNull: false,
   })
   message: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-    validate: {
-      isEmail: true,
-    },
-  })
-  email: string;
 }

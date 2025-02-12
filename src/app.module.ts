@@ -12,7 +12,6 @@ import { RouterModule } from '@nestjs/core';
 import { appRoutes } from './app.routes';
 import { SharedModule } from './modules/shared/shared.module';
 import { EmailModule } from './email/email.module';
-import { ProjectMemberController } from './modules/project/project-member/project-member.controller';
 import { ProjectMemberModule } from './modules/project/project-member/project-member.module';
 
 @Module({
@@ -27,7 +26,7 @@ import { ProjectMemberModule } from './modules/project/project-member/project-me
     SharedModule,
     EmailModule,
   ],
-  controllers: [AppController, ProjectMemberController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

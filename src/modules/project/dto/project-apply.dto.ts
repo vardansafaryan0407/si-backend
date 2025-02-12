@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class ProjectApplyDto {
   projectId: number;
@@ -9,8 +9,4 @@ export class ProjectApplyDto {
 
   @IsNotEmpty()
   message: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
 }
