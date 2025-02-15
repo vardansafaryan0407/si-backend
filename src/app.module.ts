@@ -13,6 +13,7 @@ import { appRoutes } from './app.routes';
 import { SharedModule } from './modules/shared/shared.module';
 import { EmailModule } from './email/email.module';
 import { ProjectMemberModule } from './modules/project/project-member/project-member.module';
+import { ProjectManagementModule } from './modules/project/project-management/project-management.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ProjectMemberModule } from './modules/project/project-member/project-me
     JwtSharedModule,
     ProjectModule,
     ProjectMemberModule,
+    ProjectManagementModule,
     SharedModule,
     EmailModule,
   ],
