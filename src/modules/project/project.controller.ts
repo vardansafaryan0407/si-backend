@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +16,7 @@ import { ProjectQuery } from './dto/project-query.dto';
 import { Pagination } from '../../core/models/pagination';
 import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
+import { UpdateProjectDto } from './dto/project-update.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -61,5 +64,13 @@ export class ProjectController {
   @Get(':id')
   async getId(@Param('id') id: number) {
     return await this.projectService.findById(id);
+  }
+
+  @Put('update/:id')
+  async updateProject(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() UpdateProjectDto: UpdateProjectDto,
+  ) {
+    return this.projectService.updateProject(id, UpdateProjectDto);
   }
 }

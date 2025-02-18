@@ -5,6 +5,7 @@ import { ProjectMemberApplicationRepository } from '../repositories/project-memb
 import { ProjectApplyDto } from '../dto/project-apply.dto';
 import { ProjectService } from './project.service';
 import { EmailService } from 'src/email/email.service';
+import { ProjectMemberService } from '../project-member/project-member.service';
 
 @Injectable()
 export class ProjectMemberApplicationService extends BaseService<ProjectMemberApplication> {
@@ -12,6 +13,7 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
     protected readonly repository: ProjectMemberApplicationRepository,
     private readonly projectService: ProjectService,
     private readonly emailService: EmailService,
+    private readonly projectMemberService: ProjectMemberService,
   ) {
     super(repository);
   }
@@ -21,9 +23,9 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
     userId: number,
     projectApplyData: ProjectApplyDto,
   ) {
-    const project = await this.projectService.findById(
-      projectApplyData.projectId,
-    );
+    const member = await this.projectMemberService.findById(memberId);
+
+    const project = await this.projectService.findById(member.projectId);
 
     if (project?.owner.id === userId) {
       throw new Error('you cant apply');

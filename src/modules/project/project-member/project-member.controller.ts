@@ -21,12 +21,12 @@ export class ProjectMemberController {
   @UseGuards(AuthGuard)
   @Post('/apply/:id')
   async applyProject(
-    @Param('id', ParseIntPipe) projectId: number,
+    @Param('id', ParseIntPipe) memberId: number,
     @Body() projectApplyData: ProjectApplyDto,
     @GetUser() user: IUserSession,
   ) {
     return await this.projectMemberApplicationService.projectApply(
-      projectId,
+      memberId,
       user.id,
       projectApplyData,
     );

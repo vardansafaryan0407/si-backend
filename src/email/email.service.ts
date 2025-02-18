@@ -1,25 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 @Injectable()
 export class EmailService {
-  private transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  private transporter: nodemailer.Transporter;
+
+  constructor(private configService: ConfigService) {
+    this.transporter = nodemailer.createTransport({
+      service: this.configService.get<string>('email.service'),
+      auth: {
+        user: this.configService.get<string>('email.user'),
+        pass: this.configService.get<string>('email.pass'),
+      },
+    });
+  }
 
   async sendMail(ownerEmail: string, equity: number) {
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: this.configService.get<string>('email.user'),
       to: ownerEmail,
       subject: 'New request',
-      text: `User want to joins with  this ${equity}`,
+      text: `User wants to join with this ${equity}`,
     };
 
     return await this.transporter.sendMail(mailOptions);
