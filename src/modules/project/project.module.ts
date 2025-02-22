@@ -11,5 +11,6 @@ import { Equity } from './models/equity';
   imports: [SequelizeModule.forFeature([Project, ProjectMember, Equity])],
   providers: [ProjectRepository, ProjectService],
   controllers: [ProjectController],
+  exports: [ProjectService],
 })
 export class ProjectModule {}

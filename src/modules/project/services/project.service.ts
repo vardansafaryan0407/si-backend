@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from '../../../core/services/base.service';
 import { Project } from '../project';
 import { ProjectRepository } from '../repositories/project.repository';
@@ -13,6 +13,7 @@ import { Skill } from '../../../core/models/skill';
 import { Sequelize } from 'sequelize-typescript';
 import { IBaseSearchParams } from '../../../core/interfaces/base-search-params';
 import { IPaginationParams } from '../../../core/interfaces/pagination';
+import { UpdateProjectDto } from '../dto/project-update.dto';
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
@@ -40,6 +41,16 @@ export class ProjectService extends BaseService<Project> {
 
   public findById(id: number) {
     return this.repository.findById(id);
+  }
+
+  async updateProject(id: number, updateProjectDto: UpdateProjectDto) {
+    const project = await this.repository.findById(id);
+    if (!project) {
+      throw new NotFoundException('project not found');
+    }
+
+    await project.update(updateProjectDto);
+    return project;
   }
 
   getUserProjects(userId: number, pagination: IPaginationParams) {
