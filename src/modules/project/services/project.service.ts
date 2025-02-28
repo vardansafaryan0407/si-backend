@@ -49,7 +49,8 @@ export class ProjectService extends BaseService<Project> {
       throw new NotFoundException('project not found');
     }
 
-    await project.update(updateProjectDto);
+    // TODO remove any and implement correct types
+    await project.update(updateProjectDto as any);
     return project;
   }
 

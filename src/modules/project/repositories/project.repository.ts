@@ -29,7 +29,7 @@ export class ProjectRepository extends BaseRepository<Project> {
           model: ProjectMember,
           as: 'members',
           include: [
-            { model: Skill, through: { attributes: [] } },
+            { model: Skill, through: { attributes: [] }, attributes:['id'] },
             { model: Role },
             { model: Equity },
           ],
