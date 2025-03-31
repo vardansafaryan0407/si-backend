@@ -6,28 +6,24 @@ import { ProjectMemberApplicationRepository } from '../repositories/project-memb
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ProjectMember } from '../models/project-member';
 import { ProjectModule } from '../project.module';
-import { EmailService } from 'src/email/email.service';
 import { ProjectMemberService } from './project-member.service';
 import { ProjectMemberRepository } from './project-member.repository';
+import { EmailModule } from '../../../core/email/email.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([ProjectMember, ProjectMemberApplication]),
     ProjectMemberApplication,
     ProjectModule,
+    EmailModule,
   ],
   providers: [
     ProjectMemberApplicationService,
     ProjectMemberApplicationRepository,
     ProjectMemberRepository,
-    EmailService,
     ProjectMemberService,
   ],
   controllers: [ProjectMemberController],
-  exports: [
-    ProjectMemberApplicationService,
-    EmailService,
-    ProjectMemberService,
-  ],
+  exports: [ProjectMemberApplicationService, ProjectMemberService],
 })
 export class ProjectMemberModule {}

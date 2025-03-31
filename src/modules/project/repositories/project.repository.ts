@@ -6,6 +6,7 @@ import { ProjectMember } from '../models/project-member';
 import { Equity } from '../models/equity';
 import { Skill } from 'src/core/models/skill';
 import { Role } from 'src/core/models/role';
+import { User } from '../../user/user';
 
 @Injectable()
 export class ProjectRepository extends BaseRepository<Project> {
@@ -26,10 +27,13 @@ export class ProjectRepository extends BaseRepository<Project> {
     return this.model.findByPk(id, {
       include: [
         {
+          model: User,
+        },
+        {
           model: ProjectMember,
           as: 'members',
           include: [
-            { model: Skill, through: { attributes: [] }, attributes:['id'] },
+            { model: Skill, through: { attributes: [] }, attributes: ['id'] },
             { model: Role },
             { model: Equity },
           ],

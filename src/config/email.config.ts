@@ -1,9 +1,11 @@
 import { registerAs } from '@nestjs/config';
+import * as process from 'node:process';
 
 export default registerAs('email', () => ({
-  host: process.env.EMAIL_HOST,
-  port: +process.env.EMAIL_PORT,
-  secure: process.env.EMAIL_SECURE === 'true',
-  user: process.env.EMAIL_USER,
-  pass: process.env.EMAIL_PASS,
+  SMTP_REGION: process.env.SMTP_REGION,
+  PORT: +process.env.EMAIL_PORT,
+  SECURE: process.env.EMAIL_SECURE,
+  SMTP_USER_NAME: process.env.SMTP_USER_NAME,
+  SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+  SMTP_HOST: process.env.SMTP_HOST,
 }));

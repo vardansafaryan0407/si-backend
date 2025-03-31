@@ -1,5 +1,5 @@
 import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
-import { IProjectQueryInterface } from '../interfaces/project-query.interface';
+import { IProjectQueryInterface } from 'si-shared-library';
 
 export class ProjectQuery implements IProjectQueryInterface {
   @IsOptional()

@@ -4,7 +4,7 @@ import { ProjectMemberApplication } from '../models/project-member-application';
 import { ProjectMemberApplicationRepository } from '../repositories/project-member-application.repository';
 import { ProjectApplyDto } from '../dto/project-apply.dto';
 import { ProjectService } from './project.service';
-import { EmailService } from 'src/email/email.service';
+import { EmailService } from 'src/core/email/email.service';
 import { ProjectMemberService } from '../project-member/project-member.service';
 
 @Injectable()
@@ -26,8 +26,7 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
     const member = await this.projectMemberService.findById(memberId);
 
     const project = await this.projectService.findById(member.projectId);
-
-    if (project?.owner.id === userId) {
+    if (project?.owner_id === userId) {
       throw new Error('you cant apply');
     }
 
@@ -37,7 +36,6 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
         projectApplyData.equity,
       );
     }
-
     const application = await this.repository.create({
       member_id: memberId,
       user_id: userId,
