@@ -44,7 +44,7 @@
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
     "sequelize-typescript": "^2.1.6",
-    "si-shared-library": "^1.0.4"
+    "si-shared-library": "^1.0.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.3.2",

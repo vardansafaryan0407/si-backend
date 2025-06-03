@@ -35,14 +35,15 @@ export class ProjectController {
     }
   }
 
-  @Get('')
+  @Post('/search')
   async listProjects(
-    @Query() query: ProjectQuery,
+    @Body() query: ProjectQuery,
     @Query() pagination: Pagination,
   ) {
     try {
       return await this.projectService.searchProjects(query, pagination);
     } catch (error) {
+      console.log(error)
       return error;
     }
   }
