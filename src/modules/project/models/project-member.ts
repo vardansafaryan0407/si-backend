@@ -1,9 +1,11 @@
 import {
+  AutoIncrement,
   BelongsTo,
   BelongsToMany,
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   PrimaryKey,
@@ -18,8 +20,9 @@ import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 
 @Table({ timestamps: true, tableName: 'project_members' })
 export class ProjectMember extends Model<ProjectMember> {
+  @AutoIncrement
   @PrimaryKey
-  @Column({ autoIncrement: true })
+  @Column
   id: number;
 
   @ForeignKey(() => Country)
@@ -49,7 +52,7 @@ export class ProjectMember extends Model<ProjectMember> {
   @BelongsTo(() => Role)
   role: Role;
 
-  @HasOne(() => Equity)
+  @HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
   equity: Equity;
 
   @ForeignKey(() => Project)

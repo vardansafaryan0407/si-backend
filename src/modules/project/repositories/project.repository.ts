@@ -35,7 +35,7 @@ export class ProjectRepository extends BaseRepository<Project> {
           include: [
             { model: Skill, through: { attributes: [] }, attributes: ['id'] },
             { model: Role },
-            { model: Equity },
+            { model: Equity, as: 'equity' },
           ],
         },
       ],
