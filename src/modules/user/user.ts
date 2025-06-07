@@ -46,7 +46,7 @@ export class User extends Model<User> {
   })
   skills: Skill[];
 
-  @Column({ type: DataType.STRING(255), allowNull: true })
+  @Column({ type: DataType.STRING(255), allowNull: false })
   password: string;
 
   @HasMany(() => Project, { foreignKey: 'owner_id' })

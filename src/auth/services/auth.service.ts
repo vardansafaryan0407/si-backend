@@ -9,6 +9,7 @@ import { User } from '../../modules/user/user';
 import { UserService } from '../../modules/user/user.service';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService extends BaseService<User> {
@@ -20,6 +21,7 @@ export class AuthService extends BaseService<User> {
   ) {
     super(repository);
   }
+
 
   private googleClient = new OAuth2Client(
     this.configService.get<string>('GOOGLE_CLIENT_ID'),
@@ -65,6 +67,8 @@ export class AuthService extends BaseService<User> {
   }
 
   public async loginWithGoogle(idToken: string) {
+    const randomPassword = await bcrypt.hash(Math.random().toString(36).slice(-8), 10);
+
     const ticket = await this.googleClient.verifyIdToken({
       idToken,
       audience: this.configService.get<string>('GOOGLE_CLIENT_ID'),
@@ -84,7 +88,7 @@ export class AuthService extends BaseService<User> {
         email: payload.email,
         firstName: payload.given_name,
         lastName: payload.family_name,
-        password: null,
+        password: randomPassword
       });
     }
 
