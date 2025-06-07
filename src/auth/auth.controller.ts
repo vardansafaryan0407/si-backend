@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { UserSignUpDto } from './dto/user-signup.dto';
 import { UserSignInDto } from './dto/user-sign-in.dto';
 import { UserResetPasswordDto } from './dto/user-reset-password.dto';
@@ -11,7 +11,7 @@ export class AuthController {
   @Post('signup')
   async signUp(@Body() userSignUpDTO: UserSignUpDto) {
     try {
-      const user = this.authService.signUp(userSignUpDTO);
+      const user = await this.authService.signUp(userSignUpDTO);
       return user;
     } catch (error) {
       return error;
@@ -21,7 +21,7 @@ export class AuthController {
   @Post('signin')
   async signIn(@Body() userSignInDto: UserSignInDto) {
     try {
-      return this.authService.signIn(userSignInDto);
+      return await this.authService.signIn(userSignInDto);
     } catch (error) {
       return error;
     }
@@ -29,4 +29,18 @@ export class AuthController {
 
   @Post('request-password')
   async requestPassword(@Body() userResetPassword: UserResetPasswordDto) {}
+
+  @Post('google')
+  async googleLogin(@Body('id_token') idToken: string) {
+    if (!idToken) {
+      throw new BadRequestException('No token provided');
+    }
+
+    try {
+      const userJwt = await this.authService.loginWithGoogle(idToken);
+      return userJwt;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
 }
