@@ -40,7 +40,6 @@ export class UserService extends BaseService<User> {
       if (userData.skills && userData.skills.length > 0) {
         await user.setSkills(userData.skills);
       }
-
       return user;
     });
   }
