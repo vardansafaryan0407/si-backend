@@ -9,7 +9,7 @@ import { User } from '../../modules/user/user';
 import { UserService } from '../../modules/user/user.service';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
+const bcrypt = require('bcryptjs');
 
 @Injectable()
 export class AuthService extends BaseService<User> {

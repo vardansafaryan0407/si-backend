@@ -15,7 +15,7 @@ export class ProjectQueryBuilder {
         ? {
             where: {
               ...(equity.min ? { min: { [Op.gte]: equity.min } } : {}),
-              ...(equity.max ? { max: { [Op.lte]: equity.max } } : {}),
+              ...(equity.max ? { max: { [Op.gte]: equity.max } } : {}),
             },
           }
         : {};
