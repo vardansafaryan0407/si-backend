@@ -6,6 +6,7 @@ import { ProjectApplyDto } from '../dto/project-apply.dto';
 import { ProjectService } from './project.service';
 import { EmailService } from 'src/core/email/email.service';
 import { ProjectMemberService } from '../project-member/project-member.service';
+import { Project } from '../project';
 
 @Injectable()
 export class ProjectMemberApplicationService extends BaseService<ProjectMemberApplication> {
@@ -30,12 +31,12 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
       throw new Error('you cant apply');
     }
 
-    if (project?.owner.email) {
-      await this.emailService.sendMail(
-        project.owner.email,
-        projectApplyData.equity,
-      );
-    }
+    //  if (project?.owner.email) {
+    //  await this.emailService.sendMail(
+    //  project.owner.email,
+    //    projectApplyData.equity,
+    //   );
+    //   }
     const application = await this.repository.create({
       member_id: memberId,
       user_id: userId,
@@ -43,5 +44,9 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
     });
 
     return application;
+  }
+
+  async allApplications(ownerId: number) {
+    return this.repository.getApplicationsByOwner(ownerId);
   }
 }

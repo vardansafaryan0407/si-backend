@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -30,5 +31,11 @@ export class ProjectMemberController {
       user.id,
       projectApplyData,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('applications')
+  async getApplications(@GetUser() user: IUserSession) {
+    return this.projectMemberApplicationService.allApplications(user.id);
   }
 }

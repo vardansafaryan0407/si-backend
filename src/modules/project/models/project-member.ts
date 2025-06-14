@@ -52,6 +52,9 @@ export class ProjectMember extends Model<ProjectMember> {
   @BelongsTo(() => Role)
   role: Role;
 
+  @BelongsTo(() => Project)
+  project: Project;
+
   @HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
   equity: Equity;
 
