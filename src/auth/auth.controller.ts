@@ -15,7 +15,7 @@ import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('signup')
   async signUp(@Body() userSignUpDTO: UserSignUpDto) {
@@ -36,7 +36,7 @@ export class AuthController {
   }
 
   @Post('request-password')
-  async requestPassword(@Body() userResetPassword: UserResetPasswordDto) { }
+  async requestPassword(@Body() userResetPassword: UserResetPasswordDto) {}
 
   @Post('google')
   async googleLogin(@Body('id_token') idToken: string) {
@@ -51,16 +51,13 @@ export class AuthController {
     }
   }
 
-  @Get('linkedin')
-  async linkedInLoginCallback(@Query('code') code: string, @Res() res: Response) {
+  @Post('linkedin')
+  async linkedInLoginCallback(@Body('code') code: string) {
     if (!code) throw new BadRequestException('No code provided');
     try {
-      const userJwt = await this.authService.loginWithLinkedIn(code);
-      return userJwt;
+      return await this.authService.loginWithLinkedIn(code);
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException(error.response?.data || error.message);
     }
   }
 }
-
-

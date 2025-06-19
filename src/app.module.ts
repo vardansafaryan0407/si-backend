@@ -32,7 +32,7 @@ import { PassportModule } from '@nestjs/passport';
     ProjectMemberModule,
     SharedModule,
     EmailModule,
-      PassportModule.register({ session: true }),
+    PassportModule.register({ session: true }),
   ],
   controllers: [AppController],
   providers: [AppService],

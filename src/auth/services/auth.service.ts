@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthRepository } from '../repositories/auth.repository';
 import { BaseService } from '../../core/services/base.service';
 import { UserSignInDto } from '../dto/user-sign-in.dto';
@@ -27,6 +31,7 @@ export class AuthService extends BaseService<User> {
   private googleClient = new OAuth2Client(
     this.configService.get<string>('GOOGLE_CLIENT_ID'),
   );
+
 
   public async signIn(userData: UserSignInDto) {
     const { email, password } = userData;
@@ -100,78 +105,73 @@ export class AuthService extends BaseService<User> {
     const accessToken = this.jwtService.sign(jwtPayload);
 
     return { accessToken };
-
-
-
   }
 
-
-public async loginWithLinkedIn(code: string) {
-  try {
-    const tokenResponse = await axios.post(
-      'https://www.linkedin.com/oauth/v2/accessToken',
-      new URLSearchParams({
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: this.configService.get<string>('LINKEDIN_REDIRECT_URI'),
-        client_id: this.configService.get<string>('LINKEDIN_CLIEN_ID'),
-        client_secret: this.configService.get<string>('LINKEDIN_CLIENT_SECRET'),
-      }),
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
-    );
-
-    const { access_token } = tokenResponse.data;
-    if (!access_token) {
-      throw new Error('No access_token received from LinkedIn');
-    }
-
-    const userInfoResponse = await axios.get(
-      'https://api.linkedin.com/v2/userinfo',
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
-    );
-
-    const userInfo = userInfoResponse.data;
-    const email = userInfo.email;
-    const firstName = userInfo.given_name || '';
-    const lastName = userInfo.family_name || '';
-
-    if (!email) {
-      throw new Error('Email not found in LinkedIn OIDC userinfo');
-    }
-
-    let user = await this.userService.findOne({ where: { email } });
-
-    if (!user) {
-      const randomPassword = await bcrypt.hash(
-        Math.random().toString(36).slice(-8),
-        10,
+  public async loginWithLinkedIn(code: string) {
+    try {
+      const tokenResponse = await axios.post(
+        'https://www.linkedin.com/oauth/v2/accessToken',
+        new URLSearchParams({
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: this.configService.get<string>('LINKEDIN_REDIRECT_URI'),
+          client_id: this.configService.get<string>('LINKEDIN_CLIENT_ID'),
+          client_secret: this.configService.get<string>('LINKEDIN_CLIENT_SECRET'),
+        }),
+        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
       );
-      user = await this.userService.create({
-        email,
-        firstName,
-        lastName,
-        password: randomPassword,
-      });
+
+      const { access_token } = tokenResponse.data;
+      if (!access_token) {
+        throw new Error('No access_token received from LinkedIn');
+      }
+
+      const userInfoResponse = await axios.get(
+        'https://api.linkedin.com/v2/userinfo',
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+
+      const userInfo = userInfoResponse.data;
+      const email = userInfo.email;
+      const firstName = userInfo.given_name || '';
+      const lastName = userInfo.family_name || '';
+
+      if (!email) {
+        throw new Error('Email not found in LinkedIn OIDC userinfo');
+      }
+
+      let user = await this.userService.findOne({ where: { email } });
+
+      if (!user) {
+        const randomPassword = await bcrypt.hash(
+          Math.random().toString(36).slice(-8),
+          10,
+        );
+        user = await this.userService.create({
+          email,
+          firstName,
+          lastName,
+          password: randomPassword,
+        });
+      }
+
+      const jwtPayload = {
+        email: user.email,
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      };
+      const accessTokenJwt = this.jwtService.sign(jwtPayload);
+
+      return {
+        token: { accessToken: accessTokenJwt },
+      };
+    } catch (error) {
+      throw new BadRequestException(error.response?.data || error.message);
     }
-
-    const jwtPayload = {
-      email: user.email,
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    };
-    const accessTokenJwt = this.jwtService.sign(jwtPayload);
-
-    return {
-      token: { accessToken: accessTokenJwt },
-    };
-  } catch (error) {
-    throw new BadRequestException(error.response?.data || error.message);
   }
-}
-
 }
