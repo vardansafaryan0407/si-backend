@@ -32,7 +32,6 @@ export class AuthService extends BaseService<User> {
     this.configService.get<string>('GOOGLE_CLIENT_ID'),
   );
 
-
   public async signIn(userData: UserSignInDto) {
     const { email, password } = userData;
     const user = await this.validateUser(email, password);
@@ -116,7 +115,9 @@ export class AuthService extends BaseService<User> {
           code,
           redirect_uri: this.configService.get<string>('LINKEDIN_REDIRECT_URI'),
           client_id: this.configService.get<string>('LINKEDIN_CLIENT_ID'),
-          client_secret: this.configService.get<string>('LINKEDIN_CLIENT_SECRET'),
+          client_secret: this.configService.get<string>(
+            'LINKEDIN_CLIENT_SECRET',
+          ),
         }),
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
       );
