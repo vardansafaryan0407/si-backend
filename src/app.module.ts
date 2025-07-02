@@ -15,6 +15,7 @@ import { EmailModule } from './core/email/email.module';
 import { ProjectMemberModule } from './modules/project/project-member/project-member.module';
 import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/email.config';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import emailConfig from './config/email.config';
     ProjectMemberModule,
     SharedModule,
     EmailModule,
+    PassportModule.register({ session: true }),
   ],
   controllers: [AppController],
   providers: [AppService],
