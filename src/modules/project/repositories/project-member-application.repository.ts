@@ -5,6 +5,7 @@ import { ProjectMemberApplication } from '../models/project-member-application';
 import { ProjectMember } from '../models/project-member';
 import { Project } from '../project';
 import { User } from 'src/modules/user/user';
+import { Country } from 'src/core/models/country';
 
 @Injectable()
 export class ProjectMemberApplicationRepository extends BaseRepository<ProjectMemberApplication> {
@@ -34,6 +35,30 @@ export class ProjectMemberApplicationRepository extends BaseRepository<ProjectMe
         {
           model: User,
           required: true,
+        },
+      ],
+    });
+  }
+
+  async findById(id: number) {
+    return this.model.findOne({
+      where: { id },
+      include: [
+        {
+          model: ProjectMember,
+          include: [
+            {
+              model: Project,
+            },
+          ],
+        },
+        {
+          model: User,
+          include: [
+            {
+              model: Country,
+            },
+          ],
         },
       ],
     });

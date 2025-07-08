@@ -66,4 +66,11 @@ export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
     allowNull: false,
   })
   message: string;
+
+  @Column({
+    type: DataType.ENUM('pending', 'rejected', 'approved'),
+    allowNull: false,
+    defaultValue: 'pending',
+  })
+  status: 'pending';
 }

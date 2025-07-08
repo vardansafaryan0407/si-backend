@@ -6,7 +6,6 @@ import { ProjectApplyDto } from '../dto/project-apply.dto';
 import { ProjectService } from './project.service';
 import { EmailService } from 'src/core/email/email.service';
 import { ProjectMemberService } from '../project-member/project-member.service';
-import { Project } from '../project';
 
 @Injectable()
 export class ProjectMemberApplicationService extends BaseService<ProjectMemberApplication> {
@@ -48,5 +47,9 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
 
   async allApplications(ownerId: number) {
     return this.repository.getApplicationsByOwner(ownerId);
+  }
+
+  async findById(id: number) {
+    return this.repository.findById(id);
   }
 }

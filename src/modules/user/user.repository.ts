@@ -15,4 +15,29 @@ export class UserRepository extends BaseRepository<User> {
       include: { model: Skill },
     });
   }
+
+  public async getById(id: number): Promise<User | null> {
+    return this.model.findOne({
+      where: { id },
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: Skill,
+          through: { attributes: [] },
+        },
+      ],
+    });
+  }
+
+  public async findAll(): Promise<User[]> {
+    return this.model.findAll({
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: Skill,
+          through: { attributes: [] },
+        },
+      ],
+    });
+  }
 }

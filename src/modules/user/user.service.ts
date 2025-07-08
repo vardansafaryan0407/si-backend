@@ -43,4 +43,12 @@ export class UserService extends BaseService<User> {
       return user;
     });
   }
+
+  public async findAll(): Promise<User[]> {
+    return this.repository.findAll();
+  }
+
+  public async getById(id: number): Promise<User> {
+    return this.repository.getById(id);
+  }
 }

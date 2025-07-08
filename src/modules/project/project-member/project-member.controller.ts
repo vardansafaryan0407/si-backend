@@ -38,4 +38,9 @@ export class ProjectMemberController {
   async getApplications(@GetUser() user: IUserSession) {
     return this.projectMemberApplicationService.allApplications(user.id);
   }
+
+  @Get(':id')
+  async getApplicationById(@Param('id') id: number) {
+    return this.projectMemberApplicationService.findById(id);
+  }
 }
