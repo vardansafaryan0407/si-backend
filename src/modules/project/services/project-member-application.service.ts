@@ -49,6 +49,12 @@ export class ProjectMemberApplicationService extends BaseService<ProjectMemberAp
     return this.repository.getApplicationsByOwner(ownerId);
   }
 
+  async updateStatus(id: number, status: 'approved' | 'rejected') {
+    const application = await this.repository.findById(id);
+    application.status = status;
+    return application.save();
+  }
+
   async findById(id: number) {
     return this.repository.findById(id);
   }

@@ -21,7 +21,7 @@ import { Pagination } from 'src/core/models/pagination';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   @UseGuards(AuthGuard)
   @Get('')
@@ -41,7 +41,9 @@ export class UserController {
   }
 
   @Post('search')
-  async searchUsers(@Body() body: { query: IUsersQueryInterface, pagination: Pagination }) {
+  async searchUsers(
+    @Body() body: { query: IUsersQueryInterface; pagination: Pagination },
+  ) {
     const { query, pagination } = body;
     return this.userService.searchUsers(query, pagination);
   }

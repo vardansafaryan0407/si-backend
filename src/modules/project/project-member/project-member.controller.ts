@@ -4,7 +4,9 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/core/guards/auth.guard';
@@ -37,6 +39,14 @@ export class ProjectMemberController {
   @Get('applications')
   async getApplications(@GetUser() user: IUserSession) {
     return this.projectMemberApplicationService.allApplications(user.id);
+  }
+
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: number,
+    @Body('status') status: 'approved' | 'rejected',
+  ) {
+    return this.projectMemberApplicationService.updateStatus(id, status);
   }
 
   @Get(':id')

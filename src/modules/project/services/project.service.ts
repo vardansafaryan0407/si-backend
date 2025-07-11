@@ -134,8 +134,4 @@ export class ProjectService extends BaseService<Project> {
     };
     return this.repository.list(findOptions);
   }
-
-
- 
-
 }

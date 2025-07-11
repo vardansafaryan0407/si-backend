@@ -72,5 +72,5 @@ export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
     allowNull: false,
     defaultValue: 'pending',
   })
-  status: 'pending';
+  status: 'pending' | 'approved' | 'rejected';
 }

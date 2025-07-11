@@ -10,6 +10,7 @@ import { IUsersQueryInterface } from 'si-shared-library';
 import { Pagination } from 'src/core/models/pagination';
 import { Op } from 'sequelize';
 import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
+import { ProjectQueryBuilder } from '../project/services/project-query-builder';
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -56,43 +57,38 @@ export class UserService extends BaseService<User> {
     return this.repository.getById(id);
   }
 
-
   public async searchUsers(
     searchQuery: IUsersQueryInterface,
-    pagination: Pagination
+    pagination: Pagination,
   ) {
-    const {
-      query = '',
-      firstName = '',
-      lastName = '',
-      email = ''
-    } = searchQuery;
+    const { query = '', locations = [], skills = [] } = searchQuery;
 
     const where: any = {};
 
     if (query) {
-      where[Op.or] = [
-        { firstName: { [Op.like]: `%${query}%` } },
-        { lastName: { [Op.like]: `%${query}%` } },
-        { email: { [Op.like]: `%${query}%` } },
-      ];
+      where['$or'] = [{ name: { [Op.like]: `%${query}%` } }];
     }
 
-    if (firstName) {
-      where.firstName = { [Op.like]: `%${firstName}%` };
+    if (locations.length) {
+      where['country_id'] = { [Op.in]: locations };
     }
 
-    if (lastName) {
-      where.lastName = { [Op.like]: `%${lastName}%` };
-    }
+    const includes = [];
 
-    if (email) {
-      where.email = { [Op.like]: `%${email}%` };
+    const skillsQuery = ProjectQueryBuilder.buildSkillsQuery(skills);
+
+    if (skills.length) {
+      includes.push({
+        model: Skill,
+        through: { attributes: [] },
+        ...skillsQuery,
+        required: true,
+      });
     }
 
     const findOptions: IBaseSearchParams = {
       where,
-      include: [],  
+      include: includes,
       pagination,
       subQuery: false,
     };
