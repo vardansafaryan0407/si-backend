@@ -4,7 +4,6 @@ import { Project } from '../project';
 import { ProjectRepository } from '../repositories/project.repository';
 import { Op } from 'sequelize';
 import { Role } from '../../../core/models/role';
-import { ProjectMember } from '../models/project-member';
 import { Pagination } from '../../../core/models/pagination';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { Equity } from '../models/equity';
@@ -15,6 +14,7 @@ import { IPaginationParams } from '../../../core/interfaces/pagination';
 import { UpdateProjectDto } from '../dto/project-update.dto';
 import { IProjectQueryInterface } from 'si-shared-library';
 import { ProjectQueryBuilder } from './project-query-builder';
+import { ProjectPosition } from '../models/project-position';
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
@@ -34,8 +34,8 @@ export class ProjectService extends BaseService<Project> {
     await this.sequelize.transaction(async () => {
       const project = await this.repository.createProject(projectCreationData);
       for (let i = 0; i < project.members.length; i++) {
-        const projectMember = project.members[i];
-        await projectMember.addSkills(data.members[i].skills);
+        const projectPosition = project.members[i];
+        await projectPosition.addSkills(data.members[i].skills);
       }
     });
   }
@@ -96,7 +96,7 @@ export class ProjectService extends BaseService<Project> {
     const skillsQuery = ProjectQueryBuilder.buildSkillsQuery(skills);
 
     const joinMembers: any = {
-      model: ProjectMember,
+      model: ProjectPosition,
       required: true,
       include: [
         {

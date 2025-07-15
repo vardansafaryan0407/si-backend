@@ -6,9 +6,17 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Project } from './project';
 import { ProjectMember } from './models/project-member';
 import { Equity } from './models/equity';
+import { ProjectPosition } from './models/project-position';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Project, ProjectMember, Equity])],
+  imports: [
+    SequelizeModule.forFeature([
+      Project,
+      ProjectMember,
+      Equity,
+      ProjectPosition,
+    ]),
+  ],
   providers: [ProjectRepository, ProjectService],
   controllers: [ProjectController],
   exports: [ProjectService],
