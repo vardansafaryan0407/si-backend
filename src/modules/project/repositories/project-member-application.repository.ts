@@ -6,6 +6,9 @@ import { ProjectMember } from '../models/project-member';
 import { Project } from '../project';
 import { User } from 'src/modules/user/user';
 import { Country } from 'src/core/models/country';
+import { Role } from 'src/core/models/role';
+import { Equity } from '../models/equity';
+import { Skill } from 'src/core/models/skill';
 
 @Injectable()
 export class ProjectMemberApplicationRepository extends BaseRepository<ProjectMemberApplication> {
@@ -30,11 +33,30 @@ export class ProjectMemberApplicationRepository extends BaseRepository<ProjectMe
               required: true,
               where: { owner_id: ownerId },
             },
+            {
+              model: Role,
+              required: true,
+            },
+            {
+              model: Equity,
+              as: 'equity',
+              required: false,
+            },
+            {
+              model: Skill,
+              through: { attributes: [] },
+              required: false,
+            },
           ],
         },
         {
           model: User,
           required: true,
+          include: [
+            {
+              model: Country,
+            },
+          ],
         },
       ],
     });
@@ -59,6 +81,36 @@ export class ProjectMemberApplicationRepository extends BaseRepository<ProjectMe
               model: Country,
             },
           ],
+        },
+      ],
+    });
+  }
+
+  async findApprovedByProjectId(
+    projectId: number,
+  ): Promise<ProjectMemberApplication[]> {
+    return this.model.findAll({
+      where: { status: 'approved' },
+      include: [
+        {
+          model: ProjectMember,
+          required: true,
+          where: { projectId },
+          include: [
+            {
+              model: Role,
+              required: true,
+            },
+            {
+              model: Equity,
+              as: 'equity',
+              required: false,
+            },
+          ],
+        },
+        {
+          model: User,
+          required: true,
         },
       ],
     });

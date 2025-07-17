@@ -53,4 +53,13 @@ export class ProjectMemberController {
   async getApplicationById(@Param('id') id: number) {
     return this.projectMemberApplicationService.findById(id);
   }
+
+  @Get('approved-members/:projectId')
+  async getApprovedMembers(
+    @Param('projectId', ParseIntPipe) projectId: number,
+  ) {
+    return this.projectMemberApplicationService.getApprovedMembersByProject(
+      projectId,
+    );
+  }
 }

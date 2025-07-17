@@ -97,7 +97,7 @@ export class ProjectService extends BaseService<Project> {
 
     const joinMembers: any = {
       model: ProjectPosition,
-      required: true,
+      required: false,
       include: [
         {
           model: Skill,
