@@ -10,11 +10,11 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Equity } from './equity';
 import { Project } from '../project';
 import { Country } from '../../../core/models/country';
 import { Skill } from 'src/core/models/skill';
 import { Role } from 'src/core/models/role';
+import { ProjectPositionApplication } from './project-position-application';
 import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 
 @Table({ timestamps: true, tableName: 'project_positions' })
@@ -23,6 +23,18 @@ export class ProjectPosition extends Model<ProjectPosition> {
   @PrimaryKey
   @Column
   id: number;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  title: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  description: string;
 
   @ForeignKey(() => Country)
   @Column({
@@ -34,7 +46,10 @@ export class ProjectPosition extends Model<ProjectPosition> {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   })
-  country: number;
+  country_id: number;
+
+  @BelongsTo(() => Country)
+  country: Country;
 
   @ForeignKey(() => Role)
   @Column({
@@ -51,22 +66,40 @@ export class ProjectPosition extends Model<ProjectPosition> {
   @BelongsTo(() => Role)
   role: Role;
 
+  @ForeignKey(() => Project)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  project_id: number;
+
   @BelongsTo(() => Project)
   project: Project;
 
-  @HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
-  equity: Equity;
-
-  @ForeignKey(() => Project)
-  @Column
-  public projectId: number;
+  @Column({
+    type: DataType.INTEGER,
+    validate: {
+      min: {
+        args: [1],
+        msg: 'Equity should be 1 percent minimum',
+      },
+      max: {
+        args: [100],
+        msg: 'Equity should be 100 percent maximum',
+      },
+    },
+  })
+  equity_percentage: number;
 
   @BelongsToMany(() => Skill, {
-    through: 'project_members_skills',
-    foreignKey: 'member_id',
+    through: 'project_position_skills',
+    foreignKey: 'position_id',
     otherKey: 'skill_id',
   })
   skills: Skill[];
+
+  @HasMany(() => ProjectPositionApplication)
+  applications: ProjectPositionApplication[];
 
   public declare addSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }

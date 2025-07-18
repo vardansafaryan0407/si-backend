@@ -8,10 +8,10 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { User } from '../../user/user';
-import { ProjectMember } from './project-member';
+import { ProjectPosition } from './project-position';
 
-@Table({ tableName: 'project_member_applications', timestamps: true })
-export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
+@Table({ tableName: 'project_position_applications', timestamps: true })
+export class ProjectPositionApplication extends Model<ProjectPositionApplication> {
   @PrimaryKey
   @Column({ autoIncrement: true })
   id: number;
@@ -31,20 +31,20 @@ export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
   })
   user_id: number;
 
-  @BelongsTo(() => ProjectMember)
-  project_member: ProjectMember;
+  @BelongsTo(() => ProjectPosition)
+  project_position: ProjectPosition;
 
-  @ForeignKey(() => ProjectMember)
+  @ForeignKey(() => ProjectPosition)
   @Column({
     type: DataType.INTEGER,
     references: {
-      model: 'project_members',
+      model: 'project_positions',
       key: 'id',
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   })
-  member_id: number;
+  position_id: number;
 
   @Column({
     type: DataType.INTEGER,

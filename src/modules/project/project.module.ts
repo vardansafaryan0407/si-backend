@@ -7,6 +7,7 @@ import { Project } from './project';
 import { ProjectMember } from './models/project-member';
 import { Equity } from './models/equity';
 import { ProjectPosition } from './models/project-position';
+import { ProjectPositionApplication } from './models/project-position-application';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ProjectPosition } from './models/project-position';
       ProjectMember,
       Equity,
       ProjectPosition,
+      ProjectPositionApplication,
     ]),
   ],
   providers: [ProjectRepository, ProjectService],

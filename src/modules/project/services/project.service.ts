@@ -27,16 +27,30 @@ export class ProjectService extends BaseService<Project> {
 
   public async createProject(data: CreateProjectDto, user_id: number) {
     const projectCreationData = {
-      ...data,
+      title: data.title,
+      description: data.description,
+      industries: data.industries,
+      country: data.country,
       owner_id: user_id,
     };
 
-    await this.sequelize.transaction(async () => {
+    return await this.sequelize.transaction(async () => {
       const project = await this.repository.createProject(projectCreationData);
-      for (let i = 0; i < project.members.length; i++) {
-        const projectPosition = project.members[i];
-        await projectPosition.addSkills(data.members[i].skills);
+      
+      if (data.positions && data.positions.length > 0) {
+        for (const positionData of data.positions) {
+          const position = await ProjectPosition.create({
+            ...positionData,
+            project_id: project.id,
+          });
+          
+          if (positionData.skill_ids && positionData.skill_ids.length > 0) {
+            await position.addSkills(positionData.skill_ids);
+          }
+        }
       }
+      
+      return project;
     });
   }
 

@@ -5,14 +5,14 @@ import {
   Column,
   DataType,
   ForeignKey,
-  HasMany,
-  HasOne,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Equity } from './equity';
 import { Project } from '../project';
+import { User } from '../../user/user';
+import { ProjectPosition } from './project-position';
+import { ProjectPositionApplication } from './project-position-application';
 import { Country } from '../../../core/models/country';
 import { Skill } from 'src/core/models/skill';
 import { Role } from 'src/core/models/role';
@@ -25,6 +25,70 @@ export class ProjectMember extends Model<ProjectMember> {
   @Column
   id: number;
 
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'user',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
+  user_id: number;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @ForeignKey(() => Project)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'project',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
+  project_id: number;
+
+  @BelongsTo(() => Project)
+  project: Project;
+
+  @ForeignKey(() => ProjectPosition)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'project_positions',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
+  position_id: number;
+
+  @BelongsTo(() => ProjectPosition)
+  position: ProjectPosition;
+
+  @ForeignKey(() => ProjectPositionApplication)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'project_position_applications',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
+  application_id: number;
+
+  @BelongsTo(() => ProjectPositionApplication)
+  application: ProjectPositionApplication;
+
   @ForeignKey(() => Country)
   @Column({
     type: DataType.INTEGER,
@@ -35,7 +99,10 @@ export class ProjectMember extends Model<ProjectMember> {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   })
-  country: number;
+  country_id: number;
+
+  @BelongsTo(() => Country)
+  country: Country;
 
   @ForeignKey(() => Role)
   @Column({
@@ -52,18 +119,37 @@ export class ProjectMember extends Model<ProjectMember> {
   @BelongsTo(() => Role)
   role: Role;
 
-  @BelongsTo(() => Project)
-  project: Project;
+  @Column({
+    type: DataType.INTEGER,
+    validate: {
+      min: {
+        args: [1],
+        msg: 'Equity should be 1 percent minimum',
+      },
+      max: {
+        args: [100],
+        msg: 'Equity should be 100 percent maximum',
+      },
+    },
+  })
+  equity: number;
 
-  @HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
-  equity: Equity;
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  application_message: string;
 
-  @ForeignKey(() => Project)
-  @Column
-  public projectId: number;
+
+  @Column({
+    type: DataType.ENUM('active', 'inactive', 'removed'),
+    allowNull: false,
+    defaultValue: 'active',
+  })
+  status: 'active' | 'inactive' | 'removed';
 
   @BelongsToMany(() => Skill, {
-    through: 'project_members_skills',
+    through: 'project_member_skills',
     foreignKey: 'member_id',
     otherKey: 'skill_id',
   })

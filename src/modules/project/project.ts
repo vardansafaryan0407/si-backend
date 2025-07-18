@@ -28,11 +28,11 @@ export class Project extends Model<Project> {
   @Column({ allowNull: false })
   description: string;
 
-  @HasMany(() => ProjectMember)
-  members: ProjectMember[];
-
   @HasMany(() => ProjectPosition)
   positions: ProjectPosition[];
+
+  @HasMany(() => ProjectMember)
+  members: ProjectMember[];
 
   @ForeignKey(() => Country)
   @Column({

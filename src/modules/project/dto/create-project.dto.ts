@@ -1,5 +1,6 @@
-import { IsNotEmpty } from 'class-validator';
-import { CreateProjectMemberDto } from './create-project-member.dto';
+import { IsNotEmpty, IsOptional, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CreateProjectPositionDto } from './create-project-position.dto';
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -14,6 +15,9 @@ export class CreateProjectDto {
   @IsNotEmpty()
   country: number;
 
-  @IsNotEmpty()
-  members: CreateProjectMemberDto[];
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProjectPositionDto)
+  positions?: CreateProjectPositionDto[];
 }

@@ -13,6 +13,7 @@ import { appRoutes } from './app.routes';
 import { SharedModule } from './modules/shared/shared.module';
 import { EmailModule } from './core/email/email.module';
 import { ProjectMemberModule } from './modules/project/project-member/project-member.module';
+import { ProjectPositionModule } from './modules/project/project-position/project-position.module';
 import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/email.config';
 import { PassportModule } from '@nestjs/passport';
@@ -30,6 +31,7 @@ import { PassportModule } from '@nestjs/passport';
     JwtSharedModule,
     ProjectModule,
     ProjectMemberModule,
+    ProjectPositionModule,
     SharedModule,
     EmailModule,
     PassportModule.register({ session: true }),
