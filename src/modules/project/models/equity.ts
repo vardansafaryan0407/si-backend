@@ -1,5 +1,6 @@
 import {
   AutoIncrement,
+  BelongsTo,
   Column,
   DataType,
   Default,
@@ -9,6 +10,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { ProjectMember } from './project-member';
+import { ProjectPosition } from './project-position';
 
 @Table({ timestamps: true, tableName: 'equity' })
 export class Equity extends Model<Equity> {
@@ -32,4 +34,12 @@ export class Equity extends Model<Equity> {
   @Column({})
   @ForeignKey(() => ProjectMember)
   member: number;
+
+
+  @ForeignKey(() => ProjectPosition)
+@Column
+project_position_id: number;
+
+@BelongsTo(() => ProjectPosition)
+projectPosition: ProjectPosition;
 }

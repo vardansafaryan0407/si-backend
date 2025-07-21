@@ -14,27 +14,13 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
   async create(data: CreateProjectPositionDto & { project_id: number }) {
     const position = await this.repository.create(data);
     
-    if (data.skill_ids && data.skill_ids.length > 0) {
-      await position.addSkills(data.skill_ids);
+    if (data.skills && data.skills.length > 0) {
+      await position.addSkills(data.skills);
     }
     
     return position;
   }
 
-  async updatePosition(id: number, data: UpdateProjectPositionDto) {
-    const position = await this.repository.findById(id);
-    if (!position) {
-      throw new Error('Position not found');
-    }
-
-    await position.update(data);
-
-    if (data.skill_ids) {
-      await position.addSkills(data.skill_ids);
-    }
-
-    return position;
-  }
 
   async findByProject(projectId: number) {
     return this.repository.findByProject(projectId);

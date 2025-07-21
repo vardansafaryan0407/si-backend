@@ -16,6 +16,7 @@ import { Skill } from 'src/core/models/skill';
 import { Role } from 'src/core/models/role';
 import { ProjectPositionApplication } from './project-position-application';
 import { BelongsToManyAddAssociationsMixin } from 'sequelize';
+import { Equity } from './equity';
 
 @Table({ timestamps: true, tableName: 'project_positions' })
 export class ProjectPosition extends Model<ProjectPosition> {
@@ -24,33 +25,17 @@ export class ProjectPosition extends Model<ProjectPosition> {
   @Column
   id: number;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  title: string;
-
-  @Column({
-    type: DataType.TEXT,
-    allowNull: true,
-  })
-  description: string;
-
   @ForeignKey(() => Country)
   @Column({
     type: DataType.INTEGER,
-    references: {
-      model: 'country',
-      key: 'id',
-    },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   })
-  country_id: number;
+  country: number;
 
   @BelongsTo(() => Country)
-  country: Country;
-
+  country_id: Country; 
+ 
   @ForeignKey(() => Role)
   @Column({
     type: DataType.INTEGER,
@@ -69,27 +54,18 @@ export class ProjectPosition extends Model<ProjectPosition> {
   @ForeignKey(() => Project)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
   })
-  project_id: number;
+  project_id?: number;
 
   @BelongsTo(() => Project)
   project: Project;
 
-  @Column({
-    type: DataType.INTEGER,
-    validate: {
-      min: {
-        args: [1],
-        msg: 'Equity should be 1 percent minimum',
-      },
-      max: {
-        args: [100],
-        msg: 'Equity should be 100 percent maximum',
-      },
-    },
-  })
-  equity_percentage: number;
+   @HasMany(() => Equity, { as: 'equity', foreignKey: 'project_position_id'})
+  equity: Equity;
+
+
+
 
   @BelongsToMany(() => Skill, {
     through: 'project_position_skills',

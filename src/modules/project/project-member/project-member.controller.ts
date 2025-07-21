@@ -15,11 +15,13 @@ import { UpdateProjectMemberDto } from '../dto/update-project-member.dto';
 import { GetUser } from 'src/core/decorators/get-user.decorator';
 import { IUserSession } from 'src/core/interfaces/user-session';
 import { ProjectMemberService } from './project-member.service';
+import { ProjectPositionApplicationService } from '../services/project-position-application.service';
 
 @Controller('project-member')
 export class ProjectMemberController {
   constructor(
     private projectMemberService: ProjectMemberService,
+     private ProjectPositionApplicationService : ProjectPositionApplicationService
   ) {}
 
   @UseGuards(AuthGuard)
@@ -59,4 +61,5 @@ export class ProjectMemberController {
   async deleteMember(@Param('id', ParseIntPipe) id: number) {
     return this.projectMemberService.delete(id);
   }
+
 }

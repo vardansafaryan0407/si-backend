@@ -38,6 +38,12 @@ export class ProjectPositionController {
     });
   }
 
+    @UseGuards(AuthGuard)
+  @Get('applications')
+  async getApplicationss(@GetUser() user: IUserSession) {
+    return this.projectPositionApplicationService.getApplicationsByPosition(user.id);
+  }
+
   @UseGuards(AuthGuard)
   @Get('/project/:projectId')
   async getPositionsByProject(
@@ -47,9 +53,9 @@ export class ProjectPositionController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('/:id')
-  async getPositionById(@Param('id', ParseIntPipe) id: number) {
-    return this.projectPositionService.findById(id);
+   @Get('/:id')
+  async getApplicationsByPositionId(@Param('id', ParseIntPipe) id: number) {
+    return this.projectPositionApplicationService.getApplicationById(id);
   }
 
   @UseGuards(AuthGuard)
@@ -58,7 +64,7 @@ export class ProjectPositionController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateData: UpdateProjectPositionDto,
   ) {
-    return this.projectPositionService.updatePosition(id, updateData);
+   // return this.projectPositionService.updatePosition(id, updateData);
   }
 
   @UseGuards(AuthGuard)
@@ -67,20 +73,19 @@ export class ProjectPositionController {
     return this.projectPositionService.deletePosition(id);
   }
 
-  // Project Position Application endpoints
   @UseGuards(AuthGuard)
-  @Post('/:id/apply')
-  async applyToPosition(
-    @Param('id', ParseIntPipe) positionId: number,
-    @Body() applicationData: CreateProjectPositionApplicationDto,
-    @GetUser() user: IUserSession,
-  ) {
-    return this.projectPositionApplicationService.createApplication(
-      { ...applicationData, position_id: positionId },
-      user.id,
-    );
-  }
-
+@Post('/:id/apply')
+async applyToPosition(
+  @Param('id', ParseIntPipe) positionId: number,
+  @Body() applicationData: CreateProjectPositionApplicationDto,
+  @GetUser() user: IUserSession,
+) {
+  return this.projectPositionApplicationService.createApplication(
+    applicationData,
+    positionId,
+    user.id,
+  );
+}
   @UseGuards(AuthGuard)
   @Get('/:id/applications')
   async getApplications(@Param('id', ParseIntPipe) positionId: number) {
@@ -104,4 +109,19 @@ export class ProjectPositionController {
   async getMyApplications(@GetUser() user: IUserSession) {
     return this.projectPositionApplicationService.getUserApplications(user.id);
   }
+
+
+    @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: number,
+    @Body('status') status: 'approved' | 'rejected',
+  ) {
+    return this.projectPositionApplicationService.updateStatus(id, status);
+  }
+
+
+  @Get('approved-members/:projectId')
+async getApprovedMembers(@Param('projectId') projectId: number) {
+  return this.projectPositionApplicationService.getApprovedMembers(+projectId);
+}
 }

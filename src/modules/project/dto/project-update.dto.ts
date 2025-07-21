@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { UpdateProjectMemberDto } from './update-project-member.dto';
+import { UpdateProjectPositionDto } from './update-project-position.dto';
 
 export class UpdateProjectDto {
   @IsString()
@@ -18,5 +18,5 @@ export class UpdateProjectDto {
 
   @IsArray()
   @IsNotEmpty()
-  members: UpdateProjectMemberDto[];
+  positions: UpdateProjectPositionDto[];
 }

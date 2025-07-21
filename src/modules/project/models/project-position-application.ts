@@ -3,12 +3,14 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { User } from '../../user/user';
 import { ProjectPosition } from './project-position';
+import { ProjectMember } from './project-member';
 
 @Table({ tableName: 'project_position_applications', timestamps: true })
 export class ProjectPositionApplication extends Model<ProjectPositionApplication> {
@@ -60,6 +62,11 @@ export class ProjectPositionApplication extends Model<ProjectPositionApplication
     },
   })
   equity: number;
+
+  @HasOne(() => ProjectMember, {
+  foreignKey: 'application_id',
+})
+member: ProjectMember;
 
   @Column({
     type: DataType.TEXT('long'),

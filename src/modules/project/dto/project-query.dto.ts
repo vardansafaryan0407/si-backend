@@ -21,16 +21,16 @@ export class ProjectQuery implements IProjectQueryInterface {
   @Min(1)
   roleId?: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  offset?: number;
+@IsOptional()
+@IsNumber()
+@Min(0)
+page?: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(1)
-  @Max(50)
-  limit?: number;
+@IsOptional()
+@IsNumber()
+@Min(1)
+@Max(50)
+limit?: number;
 
   @IsOptional()
   equity?: { min?: number; max?: number };

@@ -1,35 +1,21 @@
-import { IsNotEmpty, IsOptional, IsNumber, IsString, IsBoolean, IsArray, Min, Max } from 'class-validator';
+import { IsNotEmpty} from 'class-validator';
+
 
 export class CreateProjectPositionDto {
   @IsNotEmpty()
-  @IsString()
-  title: string;
-
-  @IsOptional()
-  @IsString()
-  description?: string;
+  equity: {
+    min: number;
+    max: number;
+  };
 
   @IsNotEmpty()
-  @IsNumber()
-  country_id: number;
-
-  @IsNotEmpty()
-  @IsNumber()
   role_id: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  project_id: number;
+  country: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  @Min(1, { message: 'Equity should be 1 percent minimum' })
-  @Max(100, { message: 'Equity should be 100 percent maximum' })
-  equity_percentage: number;
+  skills: number[];
 
-
-  @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  skill_ids?: number[];
+  project_id?:number
 }

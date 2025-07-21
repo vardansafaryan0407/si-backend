@@ -5,6 +5,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -17,6 +18,7 @@ import { Country } from '../../../core/models/country';
 import { Skill } from 'src/core/models/skill';
 import { Role } from 'src/core/models/role';
 import { BelongsToManyAddAssociationsMixin } from 'sequelize';
+import { Equity } from './equity';
 
 @Table({ timestamps: true, tableName: 'project_members' })
 export class ProjectMember extends Model<ProjectMember> {
@@ -119,26 +121,9 @@ export class ProjectMember extends Model<ProjectMember> {
   @BelongsTo(() => Role)
   role: Role;
 
-  @Column({
-    type: DataType.INTEGER,
-    validate: {
-      min: {
-        args: [1],
-        msg: 'Equity should be 1 percent minimum',
-      },
-      max: {
-        args: [100],
-        msg: 'Equity should be 100 percent maximum',
-      },
-    },
-  })
-  equity: number;
+@HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
+  equity: Equity;
 
-  @Column({
-    type: DataType.TEXT('long'),
-    allowNull: true,
-  })
-  application_message: string;
 
 
   @Column({
