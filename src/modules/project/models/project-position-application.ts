@@ -3,15 +3,17 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { User } from '../../user/user';
+import { ProjectPosition } from './project-position';
 import { ProjectMember } from './project-member';
 
-@Table({ tableName: 'project_member_applications', timestamps: true })
-export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
+@Table({ tableName: 'project_position_applications', timestamps: true })
+export class ProjectPositionApplication extends Model<ProjectPositionApplication> {
   @PrimaryKey
   @Column({ autoIncrement: true })
   id: number;
@@ -31,20 +33,20 @@ export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
   })
   user_id: number;
 
-  @BelongsTo(() => ProjectMember)
-  project_member: ProjectMember;
+  @BelongsTo(() => ProjectPosition)
+  project_position: ProjectPosition;
 
-  @ForeignKey(() => ProjectMember)
+  @ForeignKey(() => ProjectPosition)
   @Column({
     type: DataType.INTEGER,
     references: {
-      model: 'project_members',
+      model: 'project_positions',
       key: 'id',
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   })
-  member_id: number;
+  position_id: number;
 
   @Column({
     type: DataType.INTEGER,
@@ -61,9 +63,21 @@ export class ProjectMemberApplication extends Model<ProjectMemberApplication> {
   })
   equity: number;
 
+  @HasOne(() => ProjectMember, {
+  foreignKey: 'application_id',
+})
+member: ProjectMember;
+
   @Column({
     type: DataType.TEXT('long'),
     allowNull: false,
   })
   message: string;
+
+  @Column({
+    type: DataType.ENUM('pending', 'rejected', 'approved'),
+    allowNull: false,
+    defaultValue: 'pending',
+  })
+  status: 'pending' | 'approved' | 'rejected';
 }

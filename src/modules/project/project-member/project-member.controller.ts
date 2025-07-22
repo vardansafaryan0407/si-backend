@@ -5,37 +5,61 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
+  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/core/guards/auth.guard';
-import { ProjectApplyDto } from '../dto/project-apply.dto';
+import { CreateProjectMemberDto } from '../dto/create-project-member.dto';
+import { UpdateProjectMemberDto } from '../dto/update-project-member.dto';
 import { GetUser } from 'src/core/decorators/get-user.decorator';
 import { IUserSession } from 'src/core/interfaces/user-session';
-import { ProjectMemberApplicationService } from '../services/project-member-application.service';
+import { ProjectMemberService } from './project-member.service';
+import { ProjectPositionApplicationService } from '../services/project-position-application.service';
 
 @Controller('project-member')
 export class ProjectMemberController {
   constructor(
-    private projectMemberApplicationService: ProjectMemberApplicationService,
+    private projectMemberService: ProjectMemberService,
+     private ProjectPositionApplicationService : ProjectPositionApplicationService
   ) {}
 
   @UseGuards(AuthGuard)
-  @Post('/apply/:id')
-  async applyProject(
-    @Param('id', ParseIntPipe) memberId: number,
-    @Body() projectApplyData: ProjectApplyDto,
+  @Post('/')
+  async createMember(
+    @Body() createMemberData: CreateProjectMemberDto,
     @GetUser() user: IUserSession,
   ) {
-    return await this.projectMemberApplicationService.projectApply(
-      memberId,
-      user.id,
-      projectApplyData,
-    );
+    return await this.projectMemberService.create(createMemberData);
   }
 
   @UseGuards(AuthGuard)
-  @Get('applications')
-  async getApplications(@GetUser() user: IUserSession) {
-    return this.projectMemberApplicationService.allApplications(user.id);
+  @Get('/project/:projectId')
+  async getMembersByProject(
+    @Param('projectId', ParseIntPipe) projectId: number,
+  ) {
+    return this.projectMemberService.list();
   }
+
+  @UseGuards(AuthGuard)
+  @Get('/:id')
+  async getMemberById(@Param('id', ParseIntPipe) id: number) {
+    return this.projectMemberService.findById(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('/:id')
+  async updateMember(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateData: UpdateProjectMemberDto,
+  ) {
+    return this.projectMemberService.update(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/:id')
+  async deleteMember(@Param('id', ParseIntPipe) id: number) {
+    return this.projectMemberService.delete(id);
+  }
+
 }

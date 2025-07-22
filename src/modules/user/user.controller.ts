@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +16,8 @@ import { AuthGuard } from 'src/core/guards/auth.guard';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
+import { IUsersQueryInterface } from 'si-shared-library';
+import { Pagination } from 'src/core/models/pagination';
 
 @Controller('user')
 export class UserController {
@@ -35,6 +38,14 @@ export class UserController {
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getById(id);
+  }
+
+  @Post('search')
+  async searchUsers(
+    @Body() body: { query: IUsersQueryInterface; pagination: Pagination },
+  ) {
+    const { query, pagination } = body;
+    return this.userService.searchUsers(query, pagination);
   }
 
   @UseGuards(AuthGuard)

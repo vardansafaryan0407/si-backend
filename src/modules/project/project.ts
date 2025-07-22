@@ -13,6 +13,7 @@ import { ProjectMember } from './models/project-member';
 import { Country } from 'src/core/models/country';
 import { Industry } from 'src/core/models/industry';
 import { User } from '../user/user';
+import { ProjectPosition } from './models/project-position';
 
 @Table({ tableName: 'project', timestamps: false })
 export class Project extends Model<Project> {
@@ -26,6 +27,9 @@ export class Project extends Model<Project> {
 
   @Column({ allowNull: false })
   description: string;
+
+  @HasMany(() => ProjectPosition)
+  positions: ProjectPosition[];
 
   @HasMany(() => ProjectMember)
   members: ProjectMember[];

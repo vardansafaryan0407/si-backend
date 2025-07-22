@@ -6,6 +6,11 @@ import { UserUpdateDto } from './dto/user-update.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { UserCreateDto } from './dto/user-create.dto';
 import { Skill } from 'src/core/models/skill';
+import { IUsersQueryInterface } from 'si-shared-library';
+import { Pagination } from 'src/core/models/pagination';
+import { Op } from 'sequelize';
+import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
+import { ProjectQueryBuilder } from '../project/services/project-query-builder';
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -42,5 +47,52 @@ export class UserService extends BaseService<User> {
       }
       return user;
     });
+  }
+
+  public async findAll(): Promise<User[]> {
+    return this.repository.findAll();
+  }
+
+  public async getById(id: number): Promise<User> {
+    return this.repository.getById(id);
+  }
+
+  public async searchUsers(
+    searchQuery: IUsersQueryInterface,
+    pagination: Pagination,
+  ) {
+    const { query = '', locations = [], skills = [] } = searchQuery;
+
+    const where: any = {};
+
+    if (query) {
+      where['$or'] = [{ name: { [Op.like]: `%${query}%` } }];
+    }
+
+    if (locations.length) {
+      where['country_id'] = { [Op.in]: locations };
+    }
+
+    const includes = [];
+
+    const skillsQuery = ProjectQueryBuilder.buildSkillsQuery(skills);
+
+    if (skills.length) {
+      includes.push({
+        model: Skill,
+        through: { attributes: [] },
+        ...skillsQuery,
+        required: true,
+      });
+    }
+
+    const findOptions: IBaseSearchParams = {
+      where,
+      include: includes,
+      pagination,
+      subQuery: false,
+    };
+
+    return this.repository.list(findOptions);
   }
 }

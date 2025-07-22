@@ -31,11 +31,12 @@ export class ProjectController {
     try {
       await this.projectService.createProject(createProjectDto, user.id);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
+  
 
-  @Post('/search')
+     @Post('/search')
   async listProjects(
     @Body() query: ProjectQuery,
     @Query() pagination: Pagination,
@@ -47,16 +48,15 @@ export class ProjectController {
       return error;
     }
   }
-
+  
   @UseGuards(AuthGuard)
   @Get('/mine')
   async getMyProjects(
     @Query() query: ProjectQuery,
-    @Query() pagination: Pagination,
     @GetUser() user: IUserSession,
   ) {
     try {
-      return await this.projectService.getUserProjects(user.id, pagination);
+      return await this.projectService.getUserProjects(user.id, query);
     } catch (error) {
       return error;
     }
