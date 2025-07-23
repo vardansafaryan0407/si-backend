@@ -121,10 +121,8 @@ export class ProjectMember extends Model<ProjectMember> {
   @BelongsTo(() => Role)
   role: Role;
 
-@HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
+  @HasMany(() => Equity, { as: 'equity', foreignKey: 'member_id' })
   equity: Equity;
-
-
 
   @Column({
     type: DataType.ENUM('active', 'inactive', 'removed'),

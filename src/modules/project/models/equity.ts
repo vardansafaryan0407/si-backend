@@ -31,15 +31,10 @@ export class Equity extends Model<Equity> {
   @Column({ type: DataType.INTEGER, allowNull: true })
   actual_percent: number;
 
-  @Column({})
-  @ForeignKey(() => ProjectMember)
-  member: number;
-
-
   @ForeignKey(() => ProjectPosition)
-@Column
-project_position_id: number;
+  @Column
+  project_position_id: number;
 
-@BelongsTo(() => ProjectPosition)
-projectPosition: ProjectPosition;
+  @BelongsTo(() => ProjectPosition)
+  projectPosition: ProjectPosition;
 }

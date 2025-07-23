@@ -34,9 +34,8 @@ export class ProjectController {
       throw error;
     }
   }
-  
 
-     @Post('/search')
+  @Post('/search')
   async listProjects(
     @Body() query: ProjectQuery,
     @Query() pagination: Pagination,
@@ -48,7 +47,7 @@ export class ProjectController {
       return error;
     }
   }
-  
+
   @UseGuards(AuthGuard)
   @Get('/mine')
   async getMyProjects(

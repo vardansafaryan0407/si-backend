@@ -14,15 +14,19 @@ import { ProjectMemberModule } from '../project-member/project-member.module';
   imports: [
     SequelizeModule.forFeature([ProjectPosition, ProjectPositionApplication]),
     EmailModule,
-   forwardRef(() => ProjectMemberModule)
+    forwardRef(() => ProjectMemberModule),
   ],
   providers: [
     ProjectPositionApplicationService,
     ProjectPositionService,
     ProjectPositionRepository,
-    ProjectPositionApplicationRepository
+    ProjectPositionApplicationRepository,
   ],
   controllers: [ProjectPositionController],
-  exports: [ProjectPositionApplicationService, ProjectPositionService,ProjectPositionApplicationRepository],
+  exports: [
+    ProjectPositionApplicationService,
+    ProjectPositionService,
+    ProjectPositionApplicationRepository,
+  ],
 })
 export class ProjectPositionModule {}

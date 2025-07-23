@@ -15,13 +15,8 @@ import { ProjectPositionModule } from '../project-position/project-position.modu
     ProjectModule,
     EmailModule,
   ],
-  providers: [
-    ProjectMemberRepository,
-    ProjectMemberService,
-    
-    
-  ],
+  providers: [ProjectMemberRepository, ProjectMemberService],
   controllers: [ProjectMemberController],
-  exports: [ProjectMemberService,ProjectMemberRepository],
+  exports: [ProjectMemberService, ProjectMemberRepository],
 })
 export class ProjectMemberModule {}

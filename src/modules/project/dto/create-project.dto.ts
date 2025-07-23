@@ -24,5 +24,5 @@ export class CreateProjectDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateProjectPositionDto)
-  positions?: CreateProjectPositionDto[]; 
+  positions?: CreateProjectPositionDto[];
 }

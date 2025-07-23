@@ -64,9 +64,9 @@ export class ProjectPositionApplication extends Model<ProjectPositionApplication
   equity: number;
 
   @HasOne(() => ProjectMember, {
-  foreignKey: 'application_id',
-})
-member: ProjectMember;
+    foreignKey: 'application_id',
+  })
+  member: ProjectMember;
 
   @Column({
     type: DataType.TEXT('long'),

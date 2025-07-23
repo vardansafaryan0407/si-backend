@@ -23,19 +23,19 @@ export class ProjectPositionRepository extends BaseRepository<ProjectPosition> {
     });
   }
 
-async findById(id: number): Promise<ProjectPosition | null> {
-  return this.model.findOne({
-    where: { id },
-    include: [
-      { model: Country },
-      { model: Role },
-      {
-        model: Skill,
-        through: { attributes: [] },
-      },
-      { model: ProjectPositionApplication },
-      { model: Equity }
-    ]
-  });
-}
+  async findById(id: number): Promise<ProjectPosition | null> {
+    return this.model.findOne({
+      where: { id },
+      include: [
+        { model: Country },
+        { model: Role },
+        {
+          model: Skill,
+          through: { attributes: [] },
+        },
+        { model: ProjectPositionApplication },
+        { model: Equity },
+      ],
+    });
+  }
 }

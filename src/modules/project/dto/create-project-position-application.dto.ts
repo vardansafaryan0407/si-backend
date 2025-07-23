@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsOptional, IsNumber, IsString, Min, Max } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsString,
+  Min,
+  Max,
+} from 'class-validator';
 
 export class CreateProjectPositionApplicationDto {
   @IsNotEmpty()

@@ -38,10 +38,10 @@ export class ProjectPositionController {
     });
   }
 
-    @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get('applications')
   async getApplicationss(@GetUser() user: IUserSession) {
-    return this.projectPositionApplicationService.getApplicationsByPosition(user.id);
+    return this.projectPositionService.getApplicationsByOwner(user.id);
   }
 
   @UseGuards(AuthGuard)
@@ -53,18 +53,9 @@ export class ProjectPositionController {
   }
 
   @UseGuards(AuthGuard)
-   @Get('/:id')
+  @Get('/:id')
   async getApplicationsByPositionId(@Param('id', ParseIntPipe) id: number) {
     return this.projectPositionApplicationService.getApplicationById(id);
-  }
-
-  @UseGuards(AuthGuard)
-  @Put('/:id')
-  async updatePosition(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateData: UpdateProjectPositionDto,
-  ) {
-   // return this.projectPositionService.updatePosition(id, updateData);
   }
 
   @UseGuards(AuthGuard)
@@ -74,34 +65,40 @@ export class ProjectPositionController {
   }
 
   @UseGuards(AuthGuard)
-@Post('/:id/apply')
-async applyToPosition(
-  @Param('id', ParseIntPipe) positionId: number,
-  @Body() applicationData: CreateProjectPositionApplicationDto,
-  @GetUser() user: IUserSession,
-) {
-  return this.projectPositionApplicationService.createApplication(
-    applicationData,
-    positionId,
-    user.id,
-  );
-}
+  @Post('/:id/apply')
+  async applyToPosition(
+    @Param('id', ParseIntPipe) positionId: number,
+    @Body() applicationData: CreateProjectPositionApplicationDto,
+    @GetUser() user: IUserSession,
+  ) {
+    return this.projectPositionApplicationService.createApplication(
+      applicationData,
+      positionId,
+      user.id,
+    );
+  }
   @UseGuards(AuthGuard)
   @Get('/:id/applications')
   async getApplications(@Param('id', ParseIntPipe) positionId: number) {
-    return this.projectPositionApplicationService.getApplicationsByPosition(positionId);
+    return this.projectPositionApplicationService.getApplicationsByPosition(
+      positionId,
+    );
   }
 
   @UseGuards(AuthGuard)
   @Patch('/applications/:id/approve')
   async approveApplication(@Param('id', ParseIntPipe) applicationId: number) {
-    return this.projectPositionApplicationService.approveApplication(applicationId);
+    return this.projectPositionApplicationService.approveApplication(
+      applicationId,
+    );
   }
 
   @UseGuards(AuthGuard)
   @Patch('/applications/:id/reject')
   async rejectApplication(@Param('id', ParseIntPipe) applicationId: number) {
-    return this.projectPositionApplicationService.rejectApplication(applicationId);
+    return this.projectPositionApplicationService.rejectApplication(
+      applicationId,
+    );
   }
 
   @UseGuards(AuthGuard)
@@ -110,8 +107,7 @@ async applyToPosition(
     return this.projectPositionApplicationService.getUserApplications(user.id);
   }
 
-
-    @Patch(':id/status')
+  @Patch(':id/status')
   async updateStatus(
     @Param('id') id: number,
     @Body('status') status: 'approved' | 'rejected',
@@ -119,9 +115,10 @@ async applyToPosition(
     return this.projectPositionApplicationService.updateStatus(id, status);
   }
 
-
   @Get('approved-members/:projectId')
-async getApprovedMembers(@Param('projectId') projectId: number) {
-  return this.projectPositionApplicationService.getApprovedMembers(+projectId);
-}
+  async getApprovedMembers(@Param('projectId') projectId: number) {
+    return this.projectPositionApplicationService.getApprovedMembersByProject(
+      +projectId,
+    );
+  }
 }

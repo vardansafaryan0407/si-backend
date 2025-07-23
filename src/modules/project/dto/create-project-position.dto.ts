@@ -1,5 +1,4 @@
-import { IsNotEmpty} from 'class-validator';
-
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateProjectPositionDto {
   @IsNotEmpty()
@@ -17,5 +16,5 @@ export class CreateProjectPositionDto {
   @IsNotEmpty()
   skills: number[];
 
-  project_id?:number
+  project_id?: number;
 }

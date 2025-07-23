@@ -1,21 +1,22 @@
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsNumber, Max, Min } from "class-validator";
+import { Type } from 'class-transformer';
+import { IsNumber, ValidateNested } from 'class-validator';
+
+class EquityRange {
+  @IsNumber()
+  min: number;
+
+  @IsNumber()
+  max: number;
+}
 
 export class UpdateProjectPositionDto {
-  @IsNumber()
-  @Min(0)
-  @Max(100)
-  equity: number;
+  @ValidateNested()
+  @Type(() => EquityRange)
+  equity: EquityRange;
 
-  @IsNumber()
-  @IsNotEmpty()
   role_id: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-  country_id: number;
+  country: number;
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsNumber()
   skills: number[];
 }

@@ -14,7 +14,7 @@ export class UpdateProjectDto {
   country: number;
 
   @IsNotEmpty()
-  industries: number[];
+  industries: number;
 
   @IsArray()
   @IsNotEmpty()
