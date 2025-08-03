@@ -5,14 +5,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
   Delete,
   Patch,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/core/guards/auth.guard';
 import { CreateProjectPositionDto } from '../dto/create-project-position.dto';
-import { UpdateProjectPositionDto } from '../dto/update-project-position.dto';
 import { CreateProjectPositionApplicationDto } from '../dto/create-project-position-application.dto';
 import { GetUser } from 'src/core/decorators/get-user.decorator';
 import { IUserSession } from 'src/core/interfaces/user-session';
@@ -77,6 +75,7 @@ export class ProjectPositionController {
       user.id,
     );
   }
+
   @UseGuards(AuthGuard)
   @Get('/:id/applications')
   async getApplications(@Param('id', ParseIntPipe) positionId: number) {

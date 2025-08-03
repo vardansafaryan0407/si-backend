@@ -35,6 +35,23 @@ export class ProjectController {
     }
   }
 
+  @UseGuards(AuthGuard)
+  @Get('/mine-with-positions')
+  async userProjectsWithPositions(
+    @Body() query: ProjectQuery,
+
+    @GetUser() user: IUserSession,
+  ) {
+    try {
+      return await this.projectService.getUserProjectsWithPositions(
+        user.id,
+        query,
+      );
+    } catch (error) {
+      return error;
+    }
+  }
+
   @Post('/search')
   async listProjects(
     @Body() query: ProjectQuery,

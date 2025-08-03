@@ -6,7 +6,6 @@ import { CreateProjectPositionDto } from '../dto/create-project-position.dto';
 import { UpdateProjectPositionDto } from '../dto/update-project-position.dto';
 import { ProjectPositionApplication } from '../models/project-position-application';
 import { Project } from '../project';
-import { log } from 'node:util';
 
 @Injectable()
 export class ProjectPositionService extends BaseService<ProjectPosition> {
@@ -61,8 +60,6 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
     updateData: UpdateProjectPositionDto,
   ): Promise<ProjectPosition> {
     const position = await this.repository.findById(id);
-    console.log(position);
-
     if (!position) {
       throw new NotFoundException(`ProjectPosition with id ${id} not found`);
     }

@@ -22,3 +22,15 @@ export class CreateProjectPositionApplicationDto {
   @Max(100, { message: 'Equity should be 100 percent maximum' })
   equity?: number;
 }
+
+export class CreateInvitePositionDto {
+  @IsNotEmpty()
+  @IsString()
+  message: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  user_id: number;
+
+  position_id: number;
+}

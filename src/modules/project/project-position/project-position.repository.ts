@@ -23,9 +23,8 @@ export class ProjectPositionRepository extends BaseRepository<ProjectPosition> {
     });
   }
 
-  async findById(id: number): Promise<ProjectPosition | null> {
-    return this.model.findOne({
-      where: { id },
+  async findById(id: number): Promise<ProjectPosition> {
+    return this.model.findByPk(id, {
       include: [
         { model: Country },
         { model: Role },

@@ -17,6 +17,7 @@ import { ProjectPositionModule } from './modules/project/project-position/projec
 import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/email.config';
 import { PassportModule } from '@nestjs/passport';
+import { ProjectInviteModule } from './modules/project/project-invite/project-invite.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PassportModule } from '@nestjs/passport';
     ProjectModule,
     ProjectMemberModule,
     ProjectPositionModule,
+    ProjectInviteModule,
     SharedModule,
     EmailModule,
     PassportModule.register({ session: true }),

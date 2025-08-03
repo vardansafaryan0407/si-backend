@@ -54,8 +54,21 @@ export class ProjectService extends BaseService<Project> {
       throw new NotFoundException('project not found');
     }
 
-    // TODO remove any and implement correct types
     await project.update(updateProjectDto as any);
+
+    for (const position of updateProjectDto.positions) {
+      if (position.project_id) {
+        await this.projectPositionService.updatePosition(
+          position.project_id,
+          position,
+        );
+      } else {
+        await this.projectPositionService.create({
+          ...position,
+          project_id: id,
+        });
+      }
+    }
     return project;
   }
 
@@ -66,6 +79,26 @@ export class ProjectService extends BaseService<Project> {
       },
       pagination,
     };
+    return this.repository.list(findOptions);
+  }
+
+  async getUserProjectsWithPositions(
+    userId: number,
+    pagination: IPaginationParams,
+  ) {
+    const findOptions: IBaseSearchParams = {
+      where: {
+        owner_id: userId,
+      },
+      include: [
+        {
+          model: ProjectPosition,
+          include: [{ model: Role }],
+        },
+      ],
+      pagination,
+    };
+
     return this.repository.list(findOptions);
   }
 
