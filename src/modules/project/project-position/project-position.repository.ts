@@ -34,8 +34,8 @@ export class ProjectPositionRepository extends BaseRepository<ProjectPosition> {
         },
         {
           model: Skill,
-          attributes: ['id'], // только id навыков
-          through: { attributes: [] }, // убираем промежуточную таблицу project_position_skills из результата
+          attributes: ['id'], 
+          through: { attributes: [] },
         },
         {
           model: ProjectPositionApplication,
