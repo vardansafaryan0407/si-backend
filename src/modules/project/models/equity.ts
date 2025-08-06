@@ -9,7 +9,6 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { ProjectMember } from './project-member';
 import { ProjectPosition } from './project-position';
 
 @Table({ timestamps: true, tableName: 'equity' })

@@ -26,14 +26,23 @@ export class ProjectPositionRepository extends BaseRepository<ProjectPosition> {
   async findById(id: number): Promise<ProjectPosition> {
     return this.model.findByPk(id, {
       include: [
-        { model: Country },
-        { model: Role },
+        {
+          model: Country,
+        },
+        {
+          model: Role,
+        },
         {
           model: Skill,
-          through: { attributes: [] },
+          attributes: ['id'], // только id навыков
+          through: { attributes: [] }, // убираем промежуточную таблицу project_position_skills из результата
         },
-        { model: ProjectPositionApplication },
-        { model: Equity },
+        {
+          model: ProjectPositionApplication,
+        },
+        {
+          model: Equity,
+        },
       ],
     });
   }

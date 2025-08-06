@@ -57,6 +57,10 @@ export class UserService extends BaseService<User> {
     return this.repository.getById(id);
   }
 
+  async updateAvatarUrl(userId: number, url: string) {
+    return this.repository.updateAvatarUrl(userId, url);
+  }
+
   public async searchUsers(
     searchQuery: IUsersQueryInterface,
     pagination: Pagination,

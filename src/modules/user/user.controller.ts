@@ -6,9 +6,10 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Query,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user';
@@ -18,6 +19,9 @@ import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
 import { IUsersQueryInterface } from 'si-shared-library';
 import { Pagination } from 'src/core/models/pagination';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -55,5 +59,31 @@ export class UserController {
     @GetUser() user: IUserSession,
   ): Promise<User> {
     return this.userService.updateUserWithSkills(user.id, userData);
+  }
+
+  @Post('upload-avatar')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: diskStorage({
+        destination: './uploads/avatars',
+        filename: (req, file, cb) => {
+          const ext = extname(file.originalname);
+          const user = req.user as IUserSession;
+          const fileName = `user-${user.id}-${Date.now()}${ext}`;
+          cb(null, fileName);
+        },
+      }),
+    }),
+  )
+  async uploadAvatar(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req,
+  ) {
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const url = `${protocol}://${host}/uploads/avatars/${file.filename}`;
+    await this.userService.updateAvatarUrl(req.user.id, url);
+    return { url };
   }
 }

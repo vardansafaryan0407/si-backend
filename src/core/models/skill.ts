@@ -5,6 +5,6 @@ export class Skill extends Model<Skill> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
   id: number;
 
-  @Column({ type: DataType.STRING(50), allowNull: false })
+  @Column({ type: DataType.STRING(50), allowNull: true })
   name: string;
 }

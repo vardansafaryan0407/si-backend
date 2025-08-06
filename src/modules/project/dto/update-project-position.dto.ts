@@ -10,6 +10,8 @@ class EquityRange {
 }
 
 export class UpdateProjectPositionDto {
+  id: number;
+
   project_id: number;
 
   @ValidateNested()

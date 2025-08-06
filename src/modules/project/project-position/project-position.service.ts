@@ -13,7 +13,7 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
     super(repository);
   }
 
-  async create(data: CreateProjectPositionDto & { project_id: number }) {
+  async create(data: CreateProjectPositionDto) {
     const position = await this.repository.create(data);
 
     if (data.skills && data.skills.length > 0) {
