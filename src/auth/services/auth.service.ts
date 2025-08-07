@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthRepository } from '../repositories/auth.repository';
@@ -14,6 +15,10 @@ import { UserService } from '../../modules/user/user.service';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
+import { EmailService } from '../../core/email/email.service';
+import { RequestPasswordResetDto } from '../dto/request-password-reset.dto';
+import { ResetPasswordDto } from '../dto/reset-password.dto';
+import * as crypto from 'crypto';
 
 const bcrypt = require('bcryptjs');
 
@@ -24,6 +29,7 @@ export class AuthService extends BaseService<User> {
     private jwtService: JwtService,
     private userService: UserService,
     private configService: ConfigService,
+    private emailService: EmailService,
   ) {
     super(repository);
   }
@@ -174,5 +180,61 @@ export class AuthService extends BaseService<User> {
     } catch (error) {
       throw new BadRequestException(error.response?.data || error.message);
     }
+  }
+
+  public async requestPasswordReset(requestPasswordResetDto: RequestPasswordResetDto) {
+    const { email, baseUrl } = requestPasswordResetDto;
+    
+    const user = await this.userService.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetExpires = new Date();
+    resetExpires.setHours(resetExpires.getHours() + 1);
+
+    await this.userService.updateUser(user.id, {
+      resetPasswordToken: resetToken,
+      resetPasswordExpires: resetExpires,
+    } as any);
+
+    await this.emailService.sendPasswordResetEmail(email, resetToken, baseUrl);
+
+    return { message: 'Password reset email sent successfully' };
+  }
+
+  public async verifyResetToken(token: string) {
+    const user = await this.userService.findOne({
+      where: { resetPasswordToken: token },
+    });
+
+    if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    return { message: 'Reset token is valid' };
+  }
+
+  public async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    const { code, password } = resetPasswordDto;
+
+    const user = await this.userService.findOne({
+      where: { resetPasswordToken: code },
+    });
+
+    if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    const hashedPassword = await PasswordUtils.hashPassword(password);
+
+    await this.userService.updateUser(user.id, {
+      password: hashedPassword,
+      resetPasswordToken: null,
+      resetPasswordExpires: null,
+    } as any);
+
+    return { message: 'Password reset successfully', email: user.email };
   }
 }

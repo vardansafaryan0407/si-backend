@@ -49,6 +49,12 @@ export class User extends Model<User> {
   @Column({ type: DataType.STRING(255), allowNull: false })
   password: string;
 
+  @Column({ type: DataType.STRING(255), allowNull: true, field: 'reset_password_token' })
+  resetPasswordToken: string;
+
+  @Column({ type: DataType.DATE, allowNull: true, field: 'reset_password_expires' })
+  resetPasswordExpires: Date;
+
   @HasMany(() => Project, { foreignKey: 'owner_id' })
   projects: Project[];
 
