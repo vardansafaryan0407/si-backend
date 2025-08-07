@@ -2,6 +2,7 @@ import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 import { UpdateProjectPositionDto } from './update-project-position.dto';
 
 export class UpdateProjectDto {
+  id?: number;
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -14,7 +15,7 @@ export class UpdateProjectDto {
   country: number;
 
   @IsNotEmpty()
-  industries: number[];
+  industries: number;
 
   @IsArray()
   @IsNotEmpty()

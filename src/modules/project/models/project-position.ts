@@ -6,6 +6,7 @@ import {
   DataType,
   ForeignKey,
   HasMany,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
@@ -34,8 +35,8 @@ export class ProjectPosition extends Model<ProjectPosition> {
   country: number;
 
   @BelongsTo(() => Country)
-  country_id: Country; 
- 
+  country_id: Country;
+
   @ForeignKey(() => Role)
   @Column({
     type: DataType.INTEGER,
@@ -61,11 +62,8 @@ export class ProjectPosition extends Model<ProjectPosition> {
   @BelongsTo(() => Project)
   project: Project;
 
-   @HasMany(() => Equity, { as: 'equity', foreignKey: 'project_position_id'})
+  @HasOne(() => Equity, { foreignKey: 'project_position_id' })
   equity: Equity;
-
-
-
 
   @BelongsToMany(() => Skill, {
     through: 'project_position_skills',

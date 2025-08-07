@@ -34,9 +34,25 @@ export class ProjectController {
       throw error;
     }
   }
-  
 
-     @Post('/search')
+  @UseGuards(AuthGuard)
+  @Get('/mine-with-positions')
+  async userProjectsWithPositions(
+    @Body() query: ProjectQuery,
+
+    @GetUser() user: IUserSession,
+  ) {
+    try {
+      return await this.projectService.getUserProjectsWithPositions(
+        user.id,
+        query,
+      );
+    } catch (error) {
+      return error;
+    }
+  }
+
+  @Post('/search')
   async listProjects(
     @Body() query: ProjectQuery,
     @Query() pagination: Pagination,
@@ -48,7 +64,7 @@ export class ProjectController {
       return error;
     }
   }
-  
+
   @UseGuards(AuthGuard)
   @Get('/mine')
   async getMyProjects(

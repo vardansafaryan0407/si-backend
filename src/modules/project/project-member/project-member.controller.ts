@@ -21,7 +21,7 @@ import { ProjectPositionApplicationService } from '../services/project-position-
 export class ProjectMemberController {
   constructor(
     private projectMemberService: ProjectMemberService,
-     private ProjectPositionApplicationService : ProjectPositionApplicationService
+    private ProjectPositionApplicationService: ProjectPositionApplicationService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -48,18 +48,8 @@ export class ProjectMemberController {
   }
 
   @UseGuards(AuthGuard)
-  @Put('/:id')
-  async updateMember(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateData: UpdateProjectMemberDto,
-  ) {
-    return this.projectMemberService.update(id);
-  }
-
-  @UseGuards(AuthGuard)
   @Delete('/:id')
   async deleteMember(@Param('id', ParseIntPipe) id: number) {
     return this.projectMemberService.delete(id);
   }
-
 }

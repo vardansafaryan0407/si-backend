@@ -17,7 +17,7 @@ import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id: number;
+  id!: number;
 
   @Column({ type: DataType.STRING(50), allowNull: false })
   firstName: string;
@@ -51,6 +51,9 @@ export class User extends Model<User> {
 
   @HasMany(() => Project, { foreignKey: 'owner_id' })
   projects: Project[];
+
+  @Column({ allowNull: true })
+  url: string;
 
   public declare setSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }

@@ -29,6 +29,10 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
+  async updateAvatarUrl(userId: number, url: string): Promise<void> {
+    await this.model.update({ url: url }, { where: { id: userId } });
+  }
+
   public async findAll(): Promise<User[]> {
     return this.model.findAll({
       attributes: { exclude: ['password'] },

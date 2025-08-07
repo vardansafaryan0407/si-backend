@@ -26,13 +26,10 @@ import { ProjectPositionService } from './project-position/project-position.serv
   providers: [
     ProjectRepository,
     ProjectService,
-    ProjectPositionRepository,  
-    ProjectPositionService,    
+    ProjectPositionRepository,
+    ProjectPositionService,
   ],
   controllers: [ProjectController],
-  exports: [
-    ProjectService,
-    ProjectPositionService,     
-  ],
+  exports: [ProjectService, ProjectPositionService],
 })
 export class ProjectModule {}
