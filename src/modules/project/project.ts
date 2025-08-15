@@ -15,7 +15,7 @@ import { Industry } from 'src/core/models/industry';
 import { User } from '../user/user';
 import { ProjectPosition } from './models/project-position';
 
-@Table({ tableName: 'project', timestamps: false })
+@Table({ tableName: 'project', timestamps: true })
 export class Project extends Model<Project> {
   @AutoIncrement
   @PrimaryKey

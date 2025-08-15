@@ -1,6 +1,6 @@
 import { BaseRepository } from '../../../core/repositories/base.repository';
 import { Project } from '../project';
-import { Injectable, } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Equity } from '../models/equity';
 import { Skill } from 'src/core/models/skill';

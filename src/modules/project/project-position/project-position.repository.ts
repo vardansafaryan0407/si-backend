@@ -34,7 +34,7 @@ export class ProjectPositionRepository extends BaseRepository<ProjectPosition> {
         },
         {
           model: Skill,
-          attributes: ['id'], 
+          attributes: ['id'],
           through: { attributes: [] },
         },
         {

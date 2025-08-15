@@ -29,7 +29,11 @@ export class EmailService {
     return await this.transporter.sendMail(mailOptions);
   }
 
-  async sendPasswordResetEmail(email: string, resetToken: string, baseUrl: string) {
+  async sendPasswordResetEmail(
+    email: string,
+    resetToken: string,
+    baseUrl: string,
+  ) {
     const resetUrl = `${baseUrl}${resetToken}`;
     const mailOptions = {
       from: 'info@startnowapp.com',
