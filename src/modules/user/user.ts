@@ -5,6 +5,7 @@ import {
   DataType,
   ForeignKey,
   HasMany,
+  HasOne,
   Model,
   Table,
   Unique,
@@ -13,6 +14,7 @@ import { Country } from 'src/core/models/country';
 import { Skill } from 'src/core/models/skill';
 import { Project } from '../project/project';
 import { BelongsToManyAddAssociationsMixin } from 'sequelize';
+import { PremiumUser } from './premium-user';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -55,6 +57,13 @@ export class User extends Model<User> {
     field: 'reset_password_token',
   })
   resetPasswordToken: string;
+
+  @HasOne(() => PremiumUser, {
+    foreignKey: 'user_id',
+    as: 'premium',
+    onDelete: 'CASCADE',
+  })
+  premium: PremiumUser;
 
   @Column({
     type: DataType.DATE,

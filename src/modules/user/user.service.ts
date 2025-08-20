@@ -1,7 +1,7 @@
 import { BaseService } from '../../core/services/base.service';
 import { UserRepository } from './user.repository';
 import { User } from './user';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { UserCreateDto } from './dto/user-create.dto';
@@ -11,6 +11,7 @@ import { Pagination } from 'src/core/models/pagination';
 import { Op } from 'sequelize';
 import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
 import { ProjectQueryBuilder } from '../project/services/project-query-builder';
+import { PremiumUser } from './premium-user';
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -21,15 +22,39 @@ export class UserService extends BaseService<User> {
     super(repository);
   }
 
+  async getPremiumUserById(userId: number): Promise<User> {
+    const user = await this.repository.findOne({
+      where: { id: userId },
+      include: [
+        {
+          model: PremiumUser,
+          as: 'premium',
+          where: { status: 'active' },
+          required: true,
+        },
+      ],
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        `Active premium user with ID ${userId} not found`,
+      );
+    }
+
+    return user;
+  }
+
   public async find(userId: number): Promise<User> {
     return this.repository.findOne({
       where: { id: userId },
       include: [
         {
           model: Skill,
-          through: {
-            attributes: [],
-          },
+          through: { attributes: [] },
+        },
+        {
+          model: PremiumUser,
+          as: 'premium',
         },
       ],
     });
