@@ -6,7 +6,6 @@ import { join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
 import * as bodyParser from 'body-parser';
 
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
@@ -15,14 +14,11 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      whitelist: true,
     }),
   );
 
- app.use(
-    '/payment/webhook',
-    bodyParser.raw({ type: 'application/json' }),
-  );
-
+  app.use('/payment/webhook', bodyParser.raw({ type: 'application/json' }));
 
   app.enableCors({
     origin: ['http://localhost:4200'],

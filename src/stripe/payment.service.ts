@@ -1,4 +1,4 @@
-import { Injectable, Logger, Inject } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import Stripe from 'stripe';
 import { InjectModel } from '@nestjs/sequelize';
 import { PremiumUser } from 'src/modules/user/premium-user';
@@ -6,22 +6,21 @@ import { UserService } from 'src/modules/user/user.service';
 import { STRIPE } from './strtipe.provider';
 import { ConfigService } from '@nestjs/config';
 
-
 @Injectable()
 export class PaymentService {
-
   constructor(
     @Inject(STRIPE) private readonly stripe: Stripe,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
     @InjectModel(PremiumUser) private readonly premiumModel: typeof PremiumUser,
   ) {
-    this.stripe = new Stripe(this.configService.get<string>('STRIPE_SECRET_KEY'), {
-      apiVersion: '2025-02-24.acacia' as any,
-    });
+    this.stripe = new Stripe(
+      this.configService.get<string>('STRIPE_SECRET_KEY'),
+      {
+        apiVersion: '2025-02-24.acacia' as any,
+      },
+    );
   }
-
-
 
   async createCheckoutSessionForUser(userId: number) {
     const user = await this.userService.find(userId);
@@ -44,37 +43,48 @@ export class PaymentService {
   }
 
   async markPremiumActiveByUserId(userId: number) {
-        console.log(`Incoming userId: ${userId}`);
+    console.log(`Incoming userId: ${userId}`);
 
     const user = await this.userService.find(userId);
     if (!user) {
-       console.log(`User not found: ${userId}`);
+      console.log(`User not found: ${userId}`);
       return;
     }
 
-let premium = await this.premiumModel.findOne({ where: { user_id: userId } });
+    let premium = await this.premiumModel.findOne({
+      where: { user_id: userId },
+    });
 
-if (!premium) {
-  try {
-    premium = await this.premiumModel.create({ user_id: userId, status: 'premium' });
-     console.log('PremiumUser created:');
-  } catch (err) {
-   console.log('Error creating PremiumUser:', err);
-  }
-} else if (premium.status !== 'premium') {
-  await premium.update({ status: 'premium' });
-   console.log('PremiumUser updated to premium:');
-} else {
-    console.log('PremiumUser already active');
-}
+    if (!premium) {
+      try {
+        premium = await this.premiumModel.create({
+          user_id: userId,
+          status: 'premium',
+        });
+        console.log('PremiumUser created:');
+      } catch (err) {
+        console.log('Error creating PremiumUser:', err);
+      }
+    } else if (premium.status !== 'premium') {
+      await premium.update({ status: 'premium' });
+      console.log('PremiumUser updated to premium:');
+    } else {
+      console.log('PremiumUser already active');
+    }
   }
 
-async handleWebhook(rawBody: Buffer, signature: string) {
-    const signingSecret = this.configService.get<string>('STRIPE_WEBHOOK_SECRET');
+  async handleWebhook(rawBody: Buffer, signature: string) {
+    const signingSecret = this.configService.get<string>(
+      'STRIPE_WEBHOOK_SECRET',
+    );
     let event: Stripe.Event;
 
     try {
-      event = this.stripe.webhooks.constructEvent(rawBody, signature, signingSecret);
+      event = this.stripe.webhooks.constructEvent(
+        rawBody,
+        signature,
+        signingSecret,
+      );
     } catch (err) {
       return { error: `Webhook Error: ${err.message}` };
     }
@@ -84,17 +94,16 @@ async handleWebhook(rawBody: Buffer, signature: string) {
         const session = event.data.object as Stripe.Checkout.Session;
         const userId = Number(session.metadata?.userId);
 
-    if (!userId || isNaN(userId)) {
-      console.log
-      ('Invalid userId in checkout.session.completed');
-      break;
-    }
+        if (!userId || isNaN(userId)) {
+          console.log('Invalid userId in checkout.session.completed');
+          break;
+        }
 
-    if (session.payment_status === 'paid') {
-      await this.markPremiumActiveByUserId(userId);
-    }
-    break;
-  }
+        if (session.payment_status === 'paid') {
+          await this.markPremiumActiveByUserId(userId);
+        }
+        break;
+      }
 
       case 'payment_intent.succeeded': {
         const intent = event.data.object as Stripe.PaymentIntent;
@@ -112,7 +121,6 @@ async handleWebhook(rawBody: Buffer, signature: string) {
 
         if (userId) {
           console.log(userId);
-          
         }
         break;
       }
@@ -123,4 +131,4 @@ async handleWebhook(rawBody: Buffer, signature: string) {
 
     return { received: true };
   }
-  }
+}

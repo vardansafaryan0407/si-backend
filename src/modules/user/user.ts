@@ -15,6 +15,7 @@ import { Skill } from 'src/core/models/skill';
 import { Project } from '../project/project';
 import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 import { PremiumUser } from './premium-user';
+import { Message } from 'src/modules/messages/message';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -57,6 +58,12 @@ export class User extends Model<User> {
     field: 'reset_password_token',
   })
   resetPasswordToken: string;
+
+  @HasMany(() => Message, 'senderId')
+  sentMessages: Message[];
+
+  @HasMany(() => Message, 'receiverId')
+  receivedMessages: Message[];
 
   @HasOne(() => PremiumUser, {
     foreignKey: 'user_id',

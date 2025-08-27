@@ -33,7 +33,7 @@ export class UserRepository extends BaseRepository<User> {
     await this.model.update({ url: url }, { where: { id: userId } });
   }
 
-  public async findAll(): Promise<User[]> {
+  public async findAll(options?: any): Promise<User[]> {
     return this.model.findAll({
       attributes: { exclude: ['password'] },
       include: [
@@ -42,6 +42,7 @@ export class UserRepository extends BaseRepository<User> {
           through: { attributes: [] },
         },
       ],
+      ...options,
     });
   }
 }
