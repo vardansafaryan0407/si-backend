@@ -18,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/email.config';
 import { PassportModule } from '@nestjs/passport';
 import { ProjectInviteModule } from './modules/project/project-invite/project-invite.module';
+import { PaymentModule } from './stripe/payment.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ProjectInviteModule } from './modules/project/project-invite/project-in
     ProjectInviteModule,
     SharedModule,
     EmailModule,
+    PaymentModule,
     PassportModule.register({ session: true }),
   ],
   controllers: [AppController],

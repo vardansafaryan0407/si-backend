@@ -30,14 +30,19 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
       include: [
         {
           model: ProjectPosition,
+          required: true,
           include: [
             {
               model: Project,
               where: { owner_id: userId },
+              required: true,
             },
           ],
         },
-        'user',
+        {
+          association: 'user',
+          required: true,
+        },
       ],
       order: [['createdAt', 'DESC']],
     });

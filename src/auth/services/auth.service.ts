@@ -182,9 +182,11 @@ export class AuthService extends BaseService<User> {
     }
   }
 
-  public async requestPasswordReset(requestPasswordResetDto: RequestPasswordResetDto) {
+  public async requestPasswordReset(
+    requestPasswordResetDto: RequestPasswordResetDto,
+  ) {
     const { email, baseUrl } = requestPasswordResetDto;
-    
+
     const user = await this.userService.findOne({ where: { email } });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -209,7 +211,11 @@ export class AuthService extends BaseService<User> {
       where: { resetPasswordToken: token },
     });
 
-    if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+    if (
+      !user ||
+      !user.resetPasswordExpires ||
+      user.resetPasswordExpires < new Date()
+    ) {
       throw new BadRequestException('Invalid or expired reset token');
     }
 
@@ -223,7 +229,11 @@ export class AuthService extends BaseService<User> {
       where: { resetPasswordToken: code },
     });
 
-    if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+    if (
+      !user ||
+      !user.resetPasswordExpires ||
+      user.resetPasswordExpires < new Date()
+    ) {
       throw new BadRequestException('Invalid or expired reset token');
     }
 

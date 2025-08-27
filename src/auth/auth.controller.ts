@@ -39,9 +39,13 @@ export class AuthController {
   }
 
   @Post('request-password')
-  async requestPassword(@Body() requestPasswordResetDto: RequestPasswordResetDto) {
+  async requestPassword(
+    @Body() requestPasswordResetDto: RequestPasswordResetDto,
+  ) {
     try {
-      return await this.authService.requestPasswordReset(requestPasswordResetDto);
+      return await this.authService.requestPasswordReset(
+        requestPasswordResetDto,
+      );
     } catch (error) {
       throw new BadRequestException(error.message);
     }

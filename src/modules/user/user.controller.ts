@@ -44,6 +44,13 @@ export class UserController {
     return this.userService.getById(id);
   }
 
+  @Get('premium/:id')
+  async getPremiumUserById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<User> {
+    return this.userService.getPremiumUserById(id);
+  }
+
   @Post('search')
   async searchUsers(
     @Body() body: { query: IUsersQueryInterface; pagination: Pagination },
