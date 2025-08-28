@@ -16,6 +16,10 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
+  public async findbyPk(id: number) {
+    return await this.model.findByPk(id);
+  }
+
   public async getById(id: number): Promise<User | null> {
     return this.model.findOne({
       where: { id },

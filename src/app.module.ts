@@ -20,6 +20,8 @@ import { PassportModule } from '@nestjs/passport';
 import { ProjectInviteModule } from './modules/project/project-invite/project-invite.module';
 import { PaymentModule } from './stripe/payment.module';
 import { MessagesModule } from './modules/messages/message.module';
+import { ConnectInvite } from './modules/connections/connection-invite';
+import { ConnectionsModule } from './modules/connections/connections.module';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { MessagesModule } from './modules/messages/message.module';
     ProjectInviteModule,
     SharedModule,
     EmailModule,
+    ConnectionsModule,
     MessagesModule,
     PaymentModule,
     PassportModule.register({ session: true }),
