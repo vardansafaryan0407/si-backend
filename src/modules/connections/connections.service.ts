@@ -47,7 +47,7 @@ export class ConnectionsService {
   }
 
   async acceptInvite(inviteId: number, userId: number) {
-    const invite = await this.connectInviteRepository.findeByPk(inviteId);
+    const invite = await this.connectInviteRepository.findById(inviteId);
     if (!invite) throw new NotFoundException('Not found ');
     if (invite.receiverId !== userId) {
       throw new BadRequestException('you cant apply others application');
@@ -69,7 +69,7 @@ export class ConnectionsService {
   }
 
   async rejectInvite(inviteId: number, userId: number) {
-    const invite = await this.connectInviteRepository.findeByPk(inviteId);
+    const invite = await this.connectInviteRepository.findById(inviteId);
     if (!invite) throw new NotFoundException('not found');
     if (invite.receiverId !== userId) {
       throw new BadRequestException('You cant reject other application');

@@ -10,10 +10,6 @@ export class ConnectInviteRepository extends BaseRepository<ConnectInvite> {
     super(model);
   }
 
-  public async findeByPk(id: number) {
-    return await this.model.findByPk(id);
-  }
-
   public async getInvites(userId: number) {
     return this.model.findAll({
       where: { receiverId: userId, status: InviteStatus.PENDING },

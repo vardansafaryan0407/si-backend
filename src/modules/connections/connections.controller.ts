@@ -5,42 +5,53 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ConnectionsService } from './connections.service';
-import { CreateConnectInviteDto } from './create-connection-invite.dto';
+import { GetUser } from 'src/core/decorators/get-user.decorator';
+import { IUserSession } from 'src/core/interfaces/user-session';
+import { AuthGuard } from 'src/core/guards/auth.guard';
 
 @Controller('connections')
 export class ConnectionsController {
   constructor(private readonly connectionsService: ConnectionsService) {}
 
+  @UseGuards(AuthGuard)
   @Post('invite')
-  sendInvite(@Body() dto: CreateConnectInviteDto) {
-    return this.connectionsService.sendInvite(dto.senderId, dto.receiverId);
+  sendInvite(
+    @GetUser() user: IUserSession,
+    @Body('receiverId', ParseIntPipe) receiverId: number,
+  ) {
+    return this.connectionsService.sendInvite(user.id, receiverId);
   }
 
+  @UseGuards(AuthGuard)
   @Post('invite/:id/accept')
   acceptInvite(
+    @GetUser() user: IUserSession,
     @Param('id', ParseIntPipe) id: number,
-    @Body('userId', ParseIntPipe) userId: number,
   ) {
-    return this.connectionsService.acceptInvite(id, userId);
+    return this.connectionsService.acceptInvite(id, user.id);
   }
 
+  @UseGuards(AuthGuard)
   @Post('invite/:id/reject')
   rejectInvite(
+    @GetUser() user: IUserSession,
     @Param('id', ParseIntPipe) id: number,
-    @Body('userId', ParseIntPipe) userId: number,
   ) {
-    return this.connectionsService.rejectInvite(id, userId);
+    return this.connectionsService.rejectInvite(id, user.id);
   }
 
-  @Get(':userId/friends')
-  getFriends(@Param('userId', ParseIntPipe) userId: number) {
-    return this.connectionsService.getFriends(userId);
+  @UseGuards(AuthGuard)
+  @Get('friends')
+  getFriends(@GetUser() user: IUserSession) {
+    return this.connectionsService.getFriends(user.id);
   }
 
-  @Get(':userId/invites')
-  getInvites(@Param('userId', ParseIntPipe) userId: number) {
-    return this.connectionsService.getInvites(userId);
+  @UseGuards(AuthGuard)
+  @Get('invites')
+  getInvites(@GetUser() user: IUserSession) {
+    return this.connectionsService.getInvites(user.id);
   }
 }
