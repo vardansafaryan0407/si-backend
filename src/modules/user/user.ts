@@ -16,6 +16,8 @@ import { Project } from '../project/project';
 import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 import { PremiumUser } from './premium-user';
 import { Message } from 'src/modules/messages/message';
+import { Connection } from '../connections/connection';
+import { ConnectInvite } from '../connections/connection-invite';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -34,6 +36,15 @@ export class User extends Model<User> {
   })
   @Column({ type: DataType.STRING(50), allowNull: false })
   email: string;
+
+  @HasMany(() => ConnectInvite, 'senderId')
+  sentInvites: ConnectInvite[];
+
+  @HasMany(() => ConnectInvite, 'receiverId')
+  receivedInvites: ConnectInvite[];
+
+  @BelongsToMany(() => User, () => Connection, 'userId', 'friendId')
+  friends: User[];
 
   @BelongsTo(() => Country)
   country: Country;
