@@ -45,19 +45,7 @@ export class UserService extends BaseService<User> {
   }
 
   public async find(userId: number): Promise<User> {
-    return this.repository.findOne({
-      where: { id: userId },
-      include: [
-        {
-          model: Skill,
-          through: { attributes: [] },
-        },
-        {
-          model: PremiumUser,
-          as: 'premium',
-        },
-      ],
-    });
+    return this.repository.find(userId);
   }
 
   public async updateUser(id: number, userData: UserUpdateDto) {
