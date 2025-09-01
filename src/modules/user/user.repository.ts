@@ -47,6 +47,10 @@ export class UserRepository extends BaseRepository<User> {
           model: Skill,
           through: { attributes: [] },
         },
+        {
+          model: PremiumUser,
+          as: 'premium',
+        },
       ],
     });
   }

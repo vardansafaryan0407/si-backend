@@ -7,9 +7,10 @@ import { MessagesController } from './message.controler';
 import { MessagesGateway } from './message.gateway';
 import { MessageRepository } from './message.repository';
 import { UserRepository } from '../user/user.repository';
+import { ConnectionsModule } from '../connections/connections.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Message, User])],
+  imports: [SequelizeModule.forFeature([Message, User]), ConnectionsModule],
   providers: [
     MessagesService,
     MessagesGateway,
