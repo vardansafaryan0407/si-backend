@@ -26,6 +26,15 @@ export class ConnectionsController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('relationship/:id')
+  getRelationship(
+    @GetUser() user: IUserSession,
+    @Param('id', ParseIntPipe) targetUserId: number,
+  ) {
+    return this.connectionsService.getRelationship(user.id, targetUserId);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('invite/:id/accept')
   acceptInvite(
     @GetUser() user: IUserSession,

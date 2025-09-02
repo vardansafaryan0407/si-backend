@@ -3,6 +3,7 @@ import { BaseRepository } from '../../core/repositories/base.repository';
 import { User } from './user';
 import { InjectModel } from '@nestjs/sequelize';
 import { Skill } from 'src/core/models/skill';
+import { PremiumUser } from './premium-user';
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
@@ -16,18 +17,39 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
-  public async findbyPk(id: number) {
-    return await this.model.findByPk(id);
+  public async find(userId: number): Promise<User> {
+    return this.model.findOne({
+      where: { id: userId },
+      attributes: {
+        exclude: ['password', 'resetPasswordExpires', 'resetPasswordToken'],
+      },
+      include: [
+        {
+          model: Skill,
+          through: { attributes: [] },
+        },
+        {
+          model: PremiumUser,
+          as: 'premium',
+        },
+      ],
+    });
   }
 
   public async getById(id: number): Promise<User | null> {
     return this.model.findOne({
       where: { id },
-      attributes: { exclude: ['password'] },
+      attributes: {
+        exclude: ['password', 'resetPasswordExpires', 'resetPasswordToken'],
+      },
       include: [
         {
           model: Skill,
           through: { attributes: [] },
+        },
+        {
+          model: PremiumUser,
+          as: 'premium',
         },
       ],
     });

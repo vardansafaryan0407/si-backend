@@ -18,6 +18,6 @@ import { ConnectInviteRepository } from './connect-invite.repository';
     ConnectInviteRepository,
   ],
   controllers: [ConnectionsController],
-  exports: [ConnectionsService],
+  exports: [ConnectionsService, ConnectionRepository],
 })
 export class ConnectionsModule {}

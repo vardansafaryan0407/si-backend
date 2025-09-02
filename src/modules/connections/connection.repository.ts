@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/core/repositories/base.repository';
 import { Connection } from './connection';
 import { InjectModel } from '@nestjs/sequelize';

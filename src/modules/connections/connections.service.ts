@@ -3,9 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { User } from '../user/user';
-import { ConnectInvite, InviteStatus } from './connection-invite';
+import { InviteStatus } from './connection-invite';
 import { ConnectionRepository } from './connection.repository';
 import { UserRepository } from '../user/user.repository';
 import { ConnectInviteRepository } from './connect-invite.repository';
@@ -13,7 +11,6 @@ import { ConnectInviteRepository } from './connect-invite.repository';
 @Injectable()
 export class ConnectionsService {
   constructor(
-    @InjectModel(ConnectInvite) private inviteModel: typeof ConnectInvite,
     private userRepository: UserRepository,
     private connectionRepository: ConnectionRepository,
     private connectInviteRepository: ConnectInviteRepository,
@@ -24,7 +21,7 @@ export class ConnectionsService {
       throw new BadRequestException('Yoy cant send an yourself');
     }
 
-    const receiver = await this.userRepository.findbyPk(receiverId);
+    const receiver = await this.userRepository.findById(receiverId);
     if (!receiver) throw new NotFoundException('Not found');
 
     const existingConnection = await this.connectionRepository.findOne({
@@ -66,6 +63,13 @@ export class ConnectionsService {
     });
 
     return invite;
+  }
+
+  async getRelationship(userId: number, targetUserId: number) {
+    return await this.connectInviteRepository.getRelationship(
+      userId,
+      targetUserId,
+    );
   }
 
   async rejectInvite(inviteId: number, userId: number) {
