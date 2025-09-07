@@ -52,18 +52,11 @@ export class ProjectController {
     }
   }
 
-  @Post('/search')
-  async listProjects(
-    @Body() query: ProjectQuery,
-    @Query() pagination: Pagination,
-  ) {
-    try {
-      return await this.projectService.searchProjects(query, pagination);
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  }
+@Post('/search')
+async listProjects(@Body() body: { query: ProjectQuery, pagination: Pagination }) {
+  const { query, pagination } = body;
+  return await this.projectService.searchProjects(query, pagination);
+}
 
   @UseGuards(AuthGuard)
   @Get('/mine')

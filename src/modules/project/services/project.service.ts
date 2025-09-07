@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from '../../../core/services/base.service';
 import { Project } from '../project';
 import { ProjectRepository } from '../repositories/project.repository';
-import { Op } from 'sequelize';
 import { Role } from '../../../core/models/role';
 import { Pagination } from '../../../core/models/pagination';
 import { CreateProjectDto } from '../dto/create-project.dto';
@@ -17,6 +16,7 @@ import { ProjectQueryBuilder } from './project-query-builder';
 import { ProjectPosition } from '../models/project-position';
 import { ProjectPositionService } from '../project-position/project-position.service';
 import { Country } from 'src/core/models/country';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
