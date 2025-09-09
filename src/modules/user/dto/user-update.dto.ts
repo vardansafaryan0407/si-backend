@@ -13,5 +13,8 @@ export class UserUpdateDto {
   skills: number[];
 
   @IsNotEmpty()
+  description: string;
+
+  @IsNotEmpty()
   country_id: number;
 }

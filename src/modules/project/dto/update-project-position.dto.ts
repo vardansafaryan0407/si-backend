@@ -10,17 +10,17 @@ class EquityRange {
 }
 
 export class UpdateProjectPositionDto {
-  id: number;
+  @IsNumber()
+  id?: number;
 
-  project_id: number;
+  @IsNumber()
+  project_id?: number;
 
   @ValidateNested()
   @Type(() => EquityRange)
   equity: EquityRange;
 
   role_id: number;
-
   country: number;
-
   skills: number[];
 }
