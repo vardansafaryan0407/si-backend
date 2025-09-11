@@ -21,10 +21,10 @@ export class ConnectionsController {
   sendInvite(
     @GetUser() user: IUserSession,
     @Body('receiverId', ParseIntPipe) receiverId: number,
+    @Body('message') message: string,
   ) {
-    return this.connectionsService.sendInvite(user.id, receiverId);
+    return this.connectionsService.sendInvite(user.id, receiverId, message);
   }
-
   @UseGuards(AuthGuard)
   @Get('relationship/:id')
   getRelationship(

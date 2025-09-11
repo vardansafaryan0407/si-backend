@@ -25,6 +25,12 @@ export class ConnectInvite extends Model<ConnectInvite> {
   receiverId: number;
 
   @Column({
+    type: DataType.STRING(250),
+    allowNull: true,
+  })
+  message: string;
+
+  @Column({
     type: DataType.ENUM(...Object.values(InviteStatus)),
     defaultValue: InviteStatus.PENDING,
   })

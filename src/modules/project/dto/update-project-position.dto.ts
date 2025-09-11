@@ -11,10 +11,10 @@ class EquityRange {
 
 export class UpdateProjectPositionDto {
   @IsNumber()
-  id?: number;
+  id: number;
 
   @IsNumber()
-  project_id?: number;
+  project_id: number;
 
   @ValidateNested()
   @Type(() => EquityRange)

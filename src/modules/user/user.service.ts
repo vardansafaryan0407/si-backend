@@ -97,23 +97,24 @@ export class UserService extends BaseService<User> {
     const includes: any[] = [
       {
         model: Skill,
+        attributes: ['id'],
         through: { attributes: [] },
         required: false,
       },
     ];
 
     if (skills.length) {
-      const skillsQuery = ProjectQueryBuilder.buildSkillsQuery(skills);
-      Object.assign(includes[0], skillsQuery);
+      includes[0].where = { id: { [Op.in]: skills } };
+      includes[0].required = true;
     }
 
-    const findOptions: IBaseSearchParams = {
+    const findOptions: any = {
       where,
       include: includes,
-      pagination,
+      ...pagination,
       subQuery: false,
     };
 
-    return this.repository.list(findOptions);
+    return this.repository.findAll(findOptions);
   }
 }
