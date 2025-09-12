@@ -15,7 +15,18 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
   }
 
   async create(data: CreateProjectPositionDto) {
-    const position = await this.repository.create(data);
+    const position = await this.repository.create({
+      role_id: data.role_id,
+      country: data.country,
+      project_id: data.project_id,
+    });
+
+    if (data.equity) {
+      await position.$create('equity', {
+        min: data.equity.min,
+        max: data.equity.max,
+      });
+    }
 
     if (data.skills && data.skills.length > 0) {
       await position.addSkills(data.skills);
