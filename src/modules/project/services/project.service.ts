@@ -57,7 +57,7 @@ export class ProjectService extends BaseService<Project> {
     await project.update(updateProjectDto as any);
 
     for (const position of updateProjectDto.positions) {
-      if (position.project_id) {
+      if (position.id) {
         await this.projectPositionService.updatePosition(position.id, position);
       } else {
         await this.projectPositionService.create({

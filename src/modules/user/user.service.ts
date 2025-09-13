@@ -83,33 +83,38 @@ export class UserService extends BaseService<User> {
     const where: any = {};
 
     if (query) {
-      where['$or'] = [{ name: { [Op.like]: `%${query}%` } }];
+      where['$or'] = [
+        { firstName: { [Op.like]: `%${query}%` } },
+        { lastName: { [Op.like]: `%${query}%` } },
+        { email: { [Op.like]: `%${query}%` } },
+      ];
     }
 
     if (locations.length) {
       where['country_id'] = { [Op.in]: locations };
     }
 
-    const includes = [];
-
-    const skillsQuery = ProjectQueryBuilder.buildSkillsQuery(skills);
+    const includes: any[] = [
+      {
+        model: Skill,
+        attributes: ['id'],
+        through: { attributes: [] },
+        required: false,
+      },
+    ];
 
     if (skills.length) {
-      includes.push({
-        model: Skill,
-        through: { attributes: [] },
-        ...skillsQuery,
-        required: true,
-      });
+      includes[0].where = { id: { [Op.in]: skills } };
+      includes[0].required = true;
     }
 
-    const findOptions: IBaseSearchParams = {
+    const findOptions: any = {
       where,
       include: includes,
-      pagination,
+      ...pagination,
       subQuery: false,
     };
 
-    return this.repository.list(findOptions);
+    return this.repository.findAll(findOptions);
   }
 }

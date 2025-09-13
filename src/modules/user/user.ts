@@ -30,6 +30,9 @@ export class User extends Model<User> {
   @Column({ type: DataType.STRING(100), allowNull: false })
   lastName: string;
 
+  @Column({ type: DataType.STRING(100), allowNull: true })
+  description: string;
+
   @Unique({
     name: 'email',
     msg: 'This email is already registered, please sign in',

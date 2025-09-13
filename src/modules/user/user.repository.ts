@@ -26,6 +26,7 @@ export class UserRepository extends BaseRepository<User> {
       include: [
         {
           model: Skill,
+          attributes: ['id'],
           through: { attributes: [] },
         },
         {
@@ -45,6 +46,8 @@ export class UserRepository extends BaseRepository<User> {
       include: [
         {
           model: Skill,
+          attributes: ['id'],
+
           through: { attributes: [] },
         },
         {
@@ -65,6 +68,8 @@ export class UserRepository extends BaseRepository<User> {
       include: [
         {
           model: Skill,
+          attributes: ['id'],
+
           through: { attributes: [] },
         },
       ],

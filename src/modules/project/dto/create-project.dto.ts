@@ -20,4 +20,3 @@ export class CreateProjectDto {
   @Type(() => CreateProjectPositionDto)
   positions: CreateProjectPositionDto[];
 }
-

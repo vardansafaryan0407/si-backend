@@ -16,9 +16,9 @@ export class ConnectionsService {
     private connectInviteRepository: ConnectInviteRepository,
   ) {}
 
-  async sendInvite(senderId: number, receiverId: number) {
+  async sendInvite(senderId: number, receiverId: number, message: string) {
     if (senderId === receiverId) {
-      throw new BadRequestException('Yoy cant send an yourself');
+      throw new BadRequestException('You can’t send to yourself');
     }
 
     const receiver = await this.userRepository.findById(receiverId);
@@ -27,18 +27,21 @@ export class ConnectionsService {
     const existingConnection = await this.connectionRepository.findOne({
       where: { userId: senderId, friendId: receiverId },
     });
-    if (existingConnection)
+    if (existingConnection) {
       throw new BadRequestException('User is already a friend');
+    }
 
     const existingInvite = await this.connectInviteRepository.findOne({
       where: { senderId, receiverId, status: InviteStatus.PENDING },
     });
-    if (existingInvite)
-      throw new BadRequestException('the application has already been sent');
+    if (existingInvite) {
+      throw new BadRequestException('The application has already been sent');
+    }
 
     return this.connectInviteRepository.create({
       senderId,
       receiverId,
+      message,
       status: InviteStatus.PENDING,
     });
   }

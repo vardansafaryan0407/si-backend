@@ -17,9 +17,7 @@ import { ProjectMemberService } from './project-member.service';
 
 @Controller('project-member')
 export class ProjectMemberController {
-  constructor(
-    private projectMemberService: ProjectMemberService,
-  ) {}
+  constructor(private projectMemberService: ProjectMemberService) {}
 
   @UseGuards(AuthGuard)
   @Post('/')
