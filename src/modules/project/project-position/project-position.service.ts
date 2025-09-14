@@ -19,6 +19,7 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
       role_id: data.role_id,
       country: data.country,
       project_id: data.project_id,
+      description: data.description,
     });
 
     if (data.equity) {
@@ -86,6 +87,7 @@ export class ProjectPositionService extends BaseService<ProjectPosition> {
       project_id: updateData.project_id,
       role_id: updateData.role_id,
       country: updateData.country,
+      description: updateData.description,
     });
 
     if (updateData.equity) {

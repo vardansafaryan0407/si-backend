@@ -14,6 +14,9 @@ export class CreateProjectPositionDto {
   country: number;
 
   @IsNotEmpty()
+  description: string;
+
+  @IsNotEmpty()
   skills: number[];
 
   project_id?: number;
