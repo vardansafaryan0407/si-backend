@@ -9,15 +9,16 @@ import { Skill } from 'src/core/models/skill';
 import { IUsersQueryInterface } from 'si-shared-library';
 import { Pagination } from 'src/core/models/pagination';
 import { Op } from 'sequelize';
-import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
-import { ProjectQueryBuilder } from '../project/services/project-query-builder';
 import { PremiumUser } from './premium-user';
+import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
+import { S3Service } from './s3service/s3.service';
 
 @Injectable()
 export class UserService extends BaseService<User> {
   constructor(
     protected readonly repository: UserRepository,
     private sequelize: Sequelize,
+    private s3Service: S3Service
   ) {
     super(repository);
   }
@@ -45,7 +46,11 @@ export class UserService extends BaseService<User> {
   }
 
   public async find(userId: number): Promise<User> {
-    return this.repository.find(userId);
+    const user = await this.repository.find(userId);
+    if (!user) throw new NotFoundException('User not found');
+
+    if (user.url) user.url = this.s3Service.getPublicUrl(user.url);
+    return user;
   }
 
   public async updateUser(id: number, userData: UserUpdateDto) {
@@ -70,9 +75,19 @@ export class UserService extends BaseService<User> {
     return this.repository.getById(id);
   }
 
-  async updateAvatarUrl(userId: number, url: string) {
-    return this.repository.updateAvatarUrl(userId, url);
+  public async updateAvatarUrl(userId: number, key: string): Promise<User> {
+    const user = await this.repository.updateAvatarUrl(userId, key);
+    if (!user) throw new NotFoundException('User not found');
+
+    if (user.url) user.url = this.s3Service.getPublicUrl(user.url);
+    return user;
   }
+
+  public getPublicAvatarUrl(user: User): string | null {
+  if (!user.url) return null;
+  return this.s3Service.getPublicUrl(user.url);
+}
+
 
   public async searchUsers(
     searchQuery: IUsersQueryInterface,
@@ -108,13 +123,14 @@ export class UserService extends BaseService<User> {
       includes[0].required = true;
     }
 
-    const findOptions: any = {
-      where,
-      include: includes,
-      ...pagination,
-      subQuery: false,
-    };
-
+const findOptions: IBaseSearchParams = {
+  where,
+  include: includes,
+  limit: pagination.limit,
+  offset: pagination.page * pagination.limit,
+  subQuery: false,
+};
     return this.repository.findAll(findOptions);
   }
 }
+

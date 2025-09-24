@@ -8,6 +8,7 @@ import { UserSkill } from 'src/core/models/user-skill';
 import { Skill } from 'src/core/models/skill';
 import { PremiumUser } from './premium-user';
 import { Connection } from '../connections/connection';
+import { S3Service } from './s3service/s3.service';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Connection } from '../connections/connection';
       Connection,
     ]),
   ],
-  providers: [UserRepository, UserService],
+  providers: [UserRepository, UserService,S3Service],
   exports: [UserService, UserRepository],
   controllers: [UserController],
 })
