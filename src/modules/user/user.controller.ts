@@ -25,12 +25,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from './s3service/s3.service';
 import { memoryStorage } from 'multer';
 
-
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService,       
-     private readonly s3Service: S3Service,
-) {}
+  constructor(
+    private userService: UserService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Get('')
@@ -73,12 +73,12 @@ export class UserController {
     return this.userService.updateUserWithSkills(user.id, userData);
   }
 
-   @UseGuards(AuthGuard)
   @Post('upload-avatar')
+  @UseGuards(AuthGuard)
   @UseInterceptors(
     FileInterceptor('avatar', {
       storage: memoryStorage(),
-      limits: { fileSize: 2 * 1024 * 1024 }, 
+      limits: { fileSize: 2 * 1024 * 1024 },
       fileFilter: (req, file, cb) => {
         const allowed = ['image/jpeg', 'image/png', 'image/webp'];
         if (allowed.includes(file.mimetype)) cb(null, true);
@@ -86,15 +86,19 @@ export class UserController {
       },
     }),
   )
-  public async uploadAvatar(@UploadedFile() file: Express.Multer.File, @Request() req) {
+  async uploadAvatar(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req,
+  ) {
     if (!file) throw new BadRequestException('File is required');
 
+    const user = req.user;
     const ext = extname(file.originalname) || '';
-    const key = `avatars/user-${req.user.id}-${Date.now()}${ext}`;
+    const key = `avatars/user-${user.id}-${Date.now()}${ext}`;
 
     await this.s3Service.uploadFile(file, key);
-    const user = await this.userService.updateAvatarUrl(req.user.id, key);
+    const signedUrl = await this.userService.updateAvatar(user.id, key);
 
-    return { url: user.url }; 
+    return { url: signedUrl };
   }
 }

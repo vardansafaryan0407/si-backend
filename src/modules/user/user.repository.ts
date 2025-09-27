@@ -59,14 +59,14 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
-async updateAvatarUrl(userId: number, key: string): Promise<User> {
-  const user = await this.model.findByPk(userId);
-  if (!user) throw new NotFoundException('user not found');
+  async updateAvatarUrl(userId: number, key: string): Promise<User> {
+    const user = await this.model.findByPk(userId);
+    if (!user) throw new NotFoundException('user not found');
 
-  user.url = key;
-  await user.save();
-  return user;
-}
+    user.url = key;
+    await user.save();
+    return user;
+  }
 
   public async findAll(options?: any): Promise<User[]> {
     return this.model.findAll({

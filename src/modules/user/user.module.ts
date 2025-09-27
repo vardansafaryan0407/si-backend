@@ -20,7 +20,7 @@ import { S3Service } from './s3service/s3.service';
       Connection,
     ]),
   ],
-  providers: [UserRepository, UserService,S3Service],
+  providers: [UserRepository, UserService, S3Service],
   exports: [UserService, UserRepository],
   controllers: [UserController],
 })

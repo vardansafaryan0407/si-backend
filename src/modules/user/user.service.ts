@@ -18,7 +18,7 @@ export class UserService extends BaseService<User> {
   constructor(
     protected readonly repository: UserRepository,
     private sequelize: Sequelize,
-    private s3Service: S3Service
+    private s3Service: S3Service,
   ) {
     super(repository);
   }
@@ -46,11 +46,7 @@ export class UserService extends BaseService<User> {
   }
 
   public async find(userId: number): Promise<User> {
-    const user = await this.repository.find(userId);
-    if (!user) throw new NotFoundException('User not found');
-
-    if (user.url) user.url = this.s3Service.getPublicUrl(user.url);
-    return user;
+    return this.repository.find(userId);
   }
 
   public async updateUser(id: number, userData: UserUpdateDto) {
@@ -75,19 +71,11 @@ export class UserService extends BaseService<User> {
     return this.repository.getById(id);
   }
 
-  public async updateAvatarUrl(userId: number, key: string): Promise<User> {
-    const user = await this.repository.updateAvatarUrl(userId, key);
-    if (!user) throw new NotFoundException('User not found');
+  async updateAvatar(userId: number, key: string): Promise<string> {
+    await this.repository.updateAvatarUrl(userId, key);
 
-    if (user.url) user.url = this.s3Service.getPublicUrl(user.url);
-    return user;
+    return this.s3Service.getSignedUrlForGet(key);
   }
-
-  public getPublicAvatarUrl(user: User): string | null {
-  if (!user.url) return null;
-  return this.s3Service.getPublicUrl(user.url);
-}
-
 
   public async searchUsers(
     searchQuery: IUsersQueryInterface,
@@ -123,14 +111,13 @@ export class UserService extends BaseService<User> {
       includes[0].required = true;
     }
 
-const findOptions: IBaseSearchParams = {
-  where,
-  include: includes,
-  limit: pagination.limit,
-  offset: pagination.page * pagination.limit,
-  subQuery: false,
-};
+    const findOptions: IBaseSearchParams = {
+      where,
+      include: includes,
+      limit: pagination.limit,
+      offset: pagination.page * pagination.limit,
+      subQuery: false,
+    };
     return this.repository.findAll(findOptions);
   }
 }
-

@@ -1,5 +1,10 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -23,7 +28,9 @@ export class S3Service {
   }
 
   async uploadFile(file: Express.Multer.File, key: string): Promise<string> {
-    if (!file || !file.buffer) throw new BadRequestException('Empty file buffer');
+    if (!file || !file.buffer) {
+      throw new BadRequestException('Empty file buffer');
+    }
 
     const command = new PutObjectCommand({
       Bucket: this.bucket,
@@ -33,10 +40,15 @@ export class S3Service {
     });
 
     await this.s3.send(command);
+
     return key;
   }
 
-  public getPublicUrl(key: string): string {
-    return `https://${this.bucket}.s3.${this.region}.amazonaws.com/${key}`;
+  async getSignedUrlForGet(key: string, expiresInSec = 3600): Promise<string> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucket,
+      Key: key,
+    });
+    return getSignedUrl(this.s3, command, { expiresIn: expiresInSec });
   }
 }
