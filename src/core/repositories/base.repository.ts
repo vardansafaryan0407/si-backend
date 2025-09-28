@@ -54,7 +54,7 @@ export class BaseRepository<T extends Model> implements IBaseRepository {
     }
 
     options.limit = +(pagination.limit || DEFAULT_LIMIT);
-    options.offset = +(pagination.page || DEFAULT_PAGE * options.limit);
+    options.offset = +((pagination.page || DEFAULT_PAGE) * options.limit);
     return this.model.findAll(options);
   }
 }
