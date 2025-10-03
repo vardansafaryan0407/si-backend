@@ -9,15 +9,16 @@ import { Skill } from 'src/core/models/skill';
 import { IUsersQueryInterface } from 'si-shared-library';
 import { Pagination } from 'src/core/models/pagination';
 import { Op } from 'sequelize';
-import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
-import { ProjectQueryBuilder } from '../project/services/project-query-builder';
 import { PremiumUser } from './premium-user';
+import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
+import { S3Service } from './s3service/s3.service';
 
 @Injectable()
 export class UserService extends BaseService<User> {
   constructor(
     protected readonly repository: UserRepository,
     private sequelize: Sequelize,
+    private s3Service: S3Service,
   ) {
     super(repository);
   }
@@ -70,8 +71,10 @@ export class UserService extends BaseService<User> {
     return this.repository.getById(id);
   }
 
-  async updateAvatarUrl(userId: number, url: string) {
-    return this.repository.updateAvatarUrl(userId, url);
+  async updateAvatar(userId: number, key: string): Promise<string> {
+    await this.repository.updateAvatarUrl(userId, key);
+
+    return this.s3Service.getSignedUrlForGet(key);
   }
 
   public async searchUsers(
@@ -108,13 +111,13 @@ export class UserService extends BaseService<User> {
       includes[0].required = true;
     }
 
-    const findOptions: any = {
+    const findOptions: IBaseSearchParams = {
       where,
       include: includes,
-      ...pagination,
+      limit: pagination.limit,
+      offset: pagination.page * pagination.limit,
       subQuery: false,
     };
-
     return this.repository.findAll(findOptions);
   }
 }

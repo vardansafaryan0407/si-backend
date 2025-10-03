@@ -20,6 +20,7 @@ export class UpdateProjectPositionDto {
   @Type(() => EquityRange)
   equity: EquityRange;
 
+  description: string;
   role_id: number;
   country: number;
   skills: number[];

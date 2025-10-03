@@ -59,6 +59,9 @@ export class ProjectPosition extends Model<ProjectPosition> {
   })
   project_id?: number;
 
+  @Column({})
+  description: string;
+
   @BelongsTo(() => Project)
   project: Project;
 

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -19,13 +20,17 @@ import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
 import { IUsersQueryInterface } from 'si-shared-library';
 import { Pagination } from 'src/core/models/pagination';
-import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { S3Service } from './s3service/s3.service';
+import { memoryStorage } from 'multer';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Get('')
@@ -72,25 +77,28 @@ export class UserController {
   @UseGuards(AuthGuard)
   @UseInterceptors(
     FileInterceptor('avatar', {
-      storage: diskStorage({
-        destination: './uploads/avatars',
-        filename: (req, file, cb) => {
-          const ext = extname(file.originalname);
-          const user = req.user as IUserSession;
-          const fileName = `user-${user.id}-${Date.now()}${ext}`;
-          cb(null, fileName);
-        },
-      }),
+      storage: memoryStorage(),
+      limits: { fileSize: 2 * 1024 * 1024 },
+      fileFilter: (req, file, cb) => {
+        const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+        if (allowed.includes(file.mimetype)) cb(null, true);
+        else cb(new BadRequestException('Invalid file type'), false);
+      },
     }),
   )
   async uploadAvatar(
     @UploadedFile() file: Express.Multer.File,
     @Request() req,
   ) {
-    const host = req.get('host');
-    const protocol = req.protocol;
-    const url = `${protocol}://${host}/uploads/avatars/${file.filename}`;
-    await this.userService.updateAvatarUrl(req.user.id, url);
-    return { url };
+    if (!file) throw new BadRequestException('File is required');
+
+    const user = req.user;
+    const ext = extname(file.originalname) || '';
+    const key = `avatars/user-${user.id}-${Date.now()}${ext}`;
+
+    await this.s3Service.uploadFile(file, key);
+    const signedUrl = await this.userService.updateAvatar(user.id, key);
+
+    return { url: signedUrl };
   }
 }
