@@ -111,13 +111,12 @@ export class UserService extends BaseService<User> {
       includes[0].required = true;
     }
 
-    const findOptions: IBaseSearchParams = {
+   const findOptions: IBaseSearchParams = {
       where,
       include: includes,
-      limit: pagination.limit,
-      offset: pagination.page * pagination.limit,
+      pagination,
       subQuery: false,
     };
-    return this.repository.findAll(findOptions);
+    return this.repository.list(findOptions);
   }
 }
