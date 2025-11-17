@@ -19,6 +19,12 @@ import { Message } from 'src/modules/messages/message';
 import { Connection } from '../connections/connection';
 import { ConnectInvite } from '../connections/connection-invite';
 
+
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
@@ -98,6 +104,13 @@ export class User extends Model<User> {
 
   @Column({ allowNull: true })
   url: string;
+
+    @Column({
+    type: DataType.ENUM(...Object.values(Role)),
+    allowNull: false,
+    defaultValue: Role.USER,
+  })
+  role: Role;
 
   public declare setSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
 }
