@@ -89,6 +89,7 @@ jobs:
           jq -n --arg region "$AWS_REGION" --arg registry "$REGISTRY" --arg image "$IMAGE" --arg tag "$TAG" '{
             commands: [
               "set -euo pipefail",
+              "until [ -f /var/log/si-bootstrap.done ]; do echo waiting for first-boot setup; sleep 5; done",
               "mkdir -p /opt/si",
               ("aws ecr get-login-password --region " + $region + " | docker login --username AWS --password-stdin " + $registry),
               ("docker pull " + $image),
