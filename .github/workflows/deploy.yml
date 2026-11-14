@@ -1,0 +1,135 @@
+name: Deploy API
+
+# Push to main: build the image for the current commit, push it to ECR, deploy it on the
+# production instance. Run by hand with a tag to redeploy an earlier image (rollback).
+#
+# Repository variables (Settings > Secrets and variables > Actions > Variables):
+#   AWS_REGION            us-west-1
+#   AWS_DEPLOY_ROLE_ARN   IAM role GitHub assumes through OIDC (created by Terraform)
+#   ECR_REPOSITORY        si-api
+#   EC2_INSTANCE_ID       the production instance
+#   API_HEALTH_URL        https://api.startnowapp.com/health
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing image tag (git SHA) to deploy. Leave empty to build this commit.
+        required: false
+        default: ""
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+
+jobs:
+  build:
+    name: Build and push image
+    if: ${{ github.event.inputs.tag == '' }}
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - id: login
+        uses: aws-actions/amazon-ecr-login@v2
+      - id: meta
+        run: echo "tag=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          tags: |
+            ${{ steps.login.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
+            ${{ steps.login.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:latest
+          build-args: |
+            APP_VERSION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy on the instance
+    needs: [build]
+    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Run deploy.sh on the instance through SSM
+        env:
+          INSTANCE_ID: ${{ vars.EC2_INSTANCE_ID }}
+          TAG: ${{ github.event.inputs.tag || github.sha }}
+        run: |
+          set -euo pipefail
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          REGISTRY="${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+          IMAGE="${REGISTRY}/${ECR_REPOSITORY}:${TAG}"
+
+          # Bootstrap: fetch deploy.sh from the image itself, then hand over to it.
+          jq -n --arg region "$AWS_REGION" --arg registry "$REGISTRY" --arg image "$IMAGE" --arg tag "$TAG" '{
+            commands: [
+              "set -euo pipefail",
+              "mkdir -p /opt/si",
+              ("aws ecr get-login-password --region " + $region + " | docker login --username AWS --password-stdin " + $registry),
+              ("docker pull " + $image),
+              ("docker run --rm " + $image + " cat deploy/deploy.sh > /opt/si/deploy.sh"),
+              "chmod +x /opt/si/deploy.sh",
+              ("AWS_REGION=" + $region + " ECR_REPOSITORY=" + env.ECR_REPOSITORY + " /opt/si/deploy.sh " + $tag)
+            ],
+            executionTimeout: ["900"]
+          }' > params.json
+
+          CMD_ID=$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name AWS-RunShellScript \
+            --comment "deploy ${ECR_REPOSITORY} ${TAG}" \
+            --parameters file://params.json \
+            --query Command.CommandId --output text)
+          echo "SSM command $CMD_ID"
+
+          STATUS=Pending
+          for _ in $(seq 1 90); do
+            STATUS=$(aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$INSTANCE_ID" \
+              --query Status --output text 2>/dev/null || echo Pending)
+            case "$STATUS" in
+              Success|Failed|Cancelled|TimedOut) break ;;
+            esac
+            sleep 10
+          done
+
+          echo "--- instance output ---"
+          aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$INSTANCE_ID" \
+            --query StandardOutputContent --output text || true
+          echo "--- instance errors ---"
+          aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$INSTANCE_ID" \
+            --query StandardErrorContent --output text || true
+
+          [ "$STATUS" = "Success" ] || { echo "Deploy finished with status $STATUS"; exit 1; }
+
+      - name: Check the public health endpoint
+        run: |
+          for _ in $(seq 1 12); do
+            if curl -fsS "${{ vars.API_HEALTH_URL }}"; then echo; exit 0; fi
+            sleep 5
+          done
+          echo "health check failed"; exit 1

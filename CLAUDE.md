@@ -66,7 +66,15 @@ This is a **NestJS-based startup incubator platform** built with TypeScript, Seq
 - **ORM**: Sequelize with TypeScript decorators
 - **Migrations**: Located in `database/migrations/`
 - **Seeders**: Located in `database/seeders/` with initial data for countries, industries, roles, and skills
-- **Configuration**: `database/config/config.json` for different environments
+- **Configuration**: `database/config/config.js` reads `DB_*` from the environment (see `.env.example`)
+- **Schema changes are migrations only**: `20250101000000-baseline-schema.js` holds the full schema; `synchronize` runs only when `DB_SYNC=true` locally and never in production
+
+### Configuration and Deployment
+- All configuration comes from environment variables listed in `.env.example`; `.env` is git-ignored. Production values live in AWS SSM Parameter Store under `/si/production/`.
+- `Dockerfile` builds the production image (`node dist/main`, non-root, health check); `Dockerfile.dev` is the hot-reload image used by si-docker-compose.
+- `deploy/` holds the production stack for the single EC2 instance: `docker-compose.prod.yml` (Caddy + API), `Caddyfile`, and `deploy.sh`, which pulls the image, renders `.env`, runs migrations and seeders, and swaps the container.
+- `.github/workflows/ci.yml` runs lint, tests and the image build on pull requests; `deploy.yml` builds, pushes to ECR and deploys on push to `main` (or by hand with an image tag to roll back).
+- `GET /health` returns 200 with a database check and is what the container health check and deploy script poll.
 
 ### Authentication & Authorization
 - JWT-based authentication with refresh tokens

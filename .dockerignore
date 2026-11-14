@@ -1,1 +1,14 @@
 node_modules
+node_modules.broken
+dist
+coverage
+uploads
+.git
+.github
+.env
+.env.*
+!.env.example
+test
+*.log
+.idea
+.DS_Store
