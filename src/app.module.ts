@@ -1,32 +1,53 @@
-import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {AuthModule} from './auth/auth.module';
-import {UserModule} from './modules/user/user.module';
-import {SequelizeModule} from "@nestjs/sequelize";
-import {CONFIG_DB} from "./config/config.db";
-import {SequelizeOptions} from "sequelize-typescript";
-import {JwtSharedModule} from "./core/modules/jwt.module";
-import {ProjectModule} from './modules/project/project.module';
-import {CoreModule} from "./core/core.module";
-import {RouterModule} from "@nestjs/core";
-import {appRoutes} from "./app.routes";
-import {SharedModule} from "./modules/shared/shared.module";
-
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { CONFIG_DB } from './config/config.db';
+import { SequelizeOptions } from 'sequelize-typescript';
+import { JwtSharedModule } from './core/modules/jwt.module';
+import { ProjectModule } from './modules/project/project.module';
+import { RouterModule } from '@nestjs/core';
+import { appRoutes } from './app.routes';
+import { SharedModule } from './modules/shared/shared.module';
+import { EmailModule } from './core/email/email.module';
+import { ProjectMemberModule } from './modules/project/project-member/project-member.module';
+import { ProjectPositionModule } from './modules/project/project-position/project-position.module';
+import { ConfigModule } from '@nestjs/config';
+import emailConfig from './config/email.config';
+import { PassportModule } from '@nestjs/passport';
+import { ProjectInviteModule } from './modules/project/project-invite/project-invite.module';
+import { PaymentModule } from './stripe/payment.module';
+import { MessagesModule } from './modules/messages/message.module';
+import { ConnectInvite } from './modules/connections/connection-invite';
+import { ConnectionsModule } from './modules/connections/connections.module';
+import { ConnectUsModule } from './connectus/connect-us.module';
 
 @Module({
-    imports: [
-        RouterModule.register(appRoutes),
-        SequelizeModule.forRoot(CONFIG_DB as SequelizeOptions),
-        AuthModule,
-        UserModule,
-        JwtSharedModule,
-        ProjectModule,
-        CoreModule,
-        SharedModule
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+  imports: [
+    RouterModule.register(appRoutes),
+    ConfigModule.forRoot({
+      load: [emailConfig],
+      isGlobal: true,
+    }),
+    SequelizeModule.forRoot(CONFIG_DB as SequelizeOptions),
+    AuthModule,
+    UserModule,
+    JwtSharedModule,
+    ProjectModule,
+    ProjectMemberModule,
+    ProjectPositionModule,
+    ProjectInviteModule,
+    SharedModule,
+    EmailModule,
+    ConnectUsModule,
+    ConnectionsModule,
+    MessagesModule,
+    PaymentModule,
+    PassportModule.register({ session: true }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

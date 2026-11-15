@@ -33,3 +33,9 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Local secrets and uploads. Production values live in SSM Parameter Store.
+.env
+.env.*
+!.env.example
+/uploads

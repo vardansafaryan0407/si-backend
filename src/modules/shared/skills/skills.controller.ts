@@ -1,17 +1,13 @@
-import {Controller, Get} from '@nestjs/common';
-import {Skill} from 'src/core/models/skill';
-import {SkillsService} from './skills.service';
+import { Controller, Get } from '@nestjs/common';
+import { Skill } from 'src/core/models/skill';
+import { SkillsService } from './skills.service';
 
 @Controller('')
 export class SkillsController {
+  constructor(private skillsService: SkillsService) {}
 
-    constructor(private skillsService: SkillsService) {
-    }
-
-    @Get()
-    async getAll(): Promise<Skill[]> {
-        return this.skillsService.findAll();
-
-    }
-
+  @Get()
+  async getAll(): Promise<Skill[]> {
+    return this.skillsService.findAll();
+  }
 }

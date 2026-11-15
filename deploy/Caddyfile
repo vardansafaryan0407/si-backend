@@ -1,0 +1,8 @@
+# Reverse proxy for the API on the production instance.
+# Caddy obtains and renews the Let's Encrypt certificate for API_DOMAIN by itself
+# and passes websockets through to socket.io without extra configuration.
+
+{$API_DOMAIN} {
+	encode gzip
+	reverse_proxy api:3000
+}

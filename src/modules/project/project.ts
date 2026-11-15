@@ -1,39 +1,67 @@
 import {
-    AutoIncrement,
-    BelongsToMany,
-    Column,
-    DataType,
-    HasMany,
-    HasOne,
-    Model,
-    PrimaryKey,
-    Table
-} from "sequelize-typescript";
-import {ProjectMember} from "./models/project-member";
-import {Industry} from "../../core/models/industry";
-import {Country} from "../../core/models/country";
+  AutoIncrement,
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
+import { ProjectMember } from './models/project-member';
+import { Country } from 'src/core/models/country';
+import { Industry } from 'src/core/models/industry';
+import { User } from '../user/user';
+import { ProjectPosition } from './models/project-position';
 
-
-@Table({tableName:'project'})
+@Table({ tableName: 'project', timestamps: true })
 export class Project extends Model<Project> {
+  @AutoIncrement
+  @PrimaryKey
+  @Column(DataType.INTEGER)
+  id: number;
 
-    @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.INTEGER)
-    id: number
+  @Column({ allowNull: false })
+  title: string;
 
-    @Column
-    title: string
+  @Column({ allowNull: false })
+  description: string;
 
-    @Column
-    description: string
+  @HasMany(() => ProjectPosition)
+  positions: ProjectPosition[];
 
-    @HasOne(() => Industry, 'industry_id')
-    industries: Industry[]
+  @HasMany(() => ProjectMember)
+  members: ProjectMember[];
 
-    @HasOne(() => Country, 'country_id')
-    location: Country
+  @ForeignKey(() => Country)
+  @Column({
+    type: DataType.INTEGER,
+    references: {
+      model: 'country',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
+  country: number;
 
-    @HasMany(() => ProjectMember)
-    members: ProjectMember[]
+  @ForeignKey(() => Industry)
+  @Column({
+    type: DataType.INTEGER,
+    references: {
+      model: 'industry',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
+  industries: number;
+
+  @ForeignKey(() => User)
+  @Column
+  owner_id: number;
+
+  @BelongsTo(() => User, { foreignKey: 'owner_id' })
+  owner: User;
 }
