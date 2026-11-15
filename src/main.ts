@@ -1,3 +1,5 @@
+// Load .env before any module reads process.env (config.db.ts, jwt.constant.ts, the gateway).
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -20,8 +22,14 @@ async function bootstrap() {
 
   app.use('/payment/webhook', bodyParser.raw({ type: 'application/json' }));
 
+  // Comma-separated list of allowed browser origins, e.g. "https://startnowapp.com,https://www.startnowapp.com".
+  const corsOrigins = (process.env.CORS_ORIGINS ?? 'http://localhost:4200')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin: ['http://localhost:4200'],
+    origin: corsOrigins,
     credentials: true,
   });
 
@@ -31,6 +39,8 @@ async function bootstrap() {
 
   app.useStaticAssets(uploadsDir, { prefix: '/uploads/' });
 
-  await app.listen(3000);
+  app.enableShutdownHooks();
+
+  await app.listen(Number(process.env.PORT ?? 3000), '0.0.0.0');
 }
 bootstrap();

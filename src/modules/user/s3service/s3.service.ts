@@ -17,13 +17,23 @@ export class S3Service {
     this.region = this.config.get<string>('AWS_REGION');
     this.bucket = this.config.get<string>('AWS_BUCKET_NAME');
 
+    // Explicit keys are for local development. When they are absent (the EC2 instance),
+    // the SDK falls back to the default chain, i.e. the instance role.
+    const accessKeyId = this.config.get<string>('AWS_ACCESS_KEY_ID');
+    const secretAccessKey = this.config.get<string>('AWS_SECRET_ACCESS_KEY');
+    const sessionToken = this.config.get<string>('AWS_SESSION_TOKEN');
+
     this.s3 = new S3Client({
       region: this.region,
-      credentials: {
-        accessKeyId: this.config.get<string>('AWS_ACCESS_KEY_ID'),
-        secretAccessKey: this.config.get<string>('AWS_SECRET_ACCESS_KEY'),
-        sessionToken: this.config.get<string>('AWS_SESSION_TOKEN'),
-      },
+      ...(accessKeyId && secretAccessKey
+        ? {
+            credentials: {
+              accessKeyId,
+              secretAccessKey,
+              sessionToken: sessionToken || undefined,
+            },
+          }
+        : {}),
     });
   }
 

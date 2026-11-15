@@ -8,8 +8,14 @@ import {
 import { Server, Socket } from 'socket.io';
 import { MessagesService } from './message.service';
 
+// Same origin list as the HTTP CORS setup in main.ts.
+const corsOrigins = (process.env.CORS_ORIGINS ?? 'http://localhost:4200')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 @WebSocketGateway({
-  cors: { origin: 'http://localhost:4200' },
+  cors: { origin: corsOrigins, credentials: true },
 })
 export class MessagesGateway {
   @WebSocketServer() server: Server;
