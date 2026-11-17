@@ -6,3 +6,11 @@
 	encode gzip
 	reverse_proxy api:3000
 }
+
+# The server-rendered frontend: container si-web from the si-frontend repository, started
+# by /opt/si-web/deploy.sh on this same docker network. CloudFront is its only intended
+# client and reaches it over HTTPS on WEB_DOMAIN (Caddy issues that certificate too).
+{$WEB_DOMAIN} {
+	encode gzip
+	reverse_proxy si-web:4000
+}
