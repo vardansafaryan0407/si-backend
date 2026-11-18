@@ -39,7 +39,7 @@ aws ssm get-parameters-by-path --path "$PARAM_PATH" --recursive --with-decryptio
 grep -q '^DB_HOST=' .env.new || { echo "DB_HOST missing from Parameter Store; aborting"; rm -f .env.new; exit 1; }
 chmod 600 .env.new
 mv .env.new .env
-printf 'API_IMAGE=%s\nAPI_DOMAIN=%s\n' "$IMAGE" "$(grep -E '^API_DOMAIN=' .env | cut -d= -f2-)" > .deploy.env
+printf 'API_IMAGE=%s\nAPI_DOMAIN=%s\nWEB_DOMAIN=%s\n' "$IMAGE" "$(grep -E '^API_DOMAIN=' .env | cut -d= -f2-)" "$(grep -E '^WEB_DOMAIN=' .env | cut -d= -f2-)" > .deploy.env
 
 echo "==> Running database migrations"
 docker run --rm --env-file .env "$IMAGE" npx sequelize db:migrate --env production
