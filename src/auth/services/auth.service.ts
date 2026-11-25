@@ -63,7 +63,7 @@ export class AuthService extends BaseService<User> {
   }
 
   private async validateUser(email: string, password: string): Promise<User> {
-    const user = await this.userService.findOne({ where: { email } });
+    const user = await this.userService.findWithCredentials({ email });
     if (!user) {
       return null;
     }
@@ -207,8 +207,8 @@ export class AuthService extends BaseService<User> {
   }
 
   public async verifyResetToken(token: string) {
-    const user = await this.userService.findOne({
-      where: { resetPasswordToken: token },
+    const user = await this.userService.findWithCredentials({
+      resetPasswordToken: token,
     });
 
     if (
@@ -225,8 +225,8 @@ export class AuthService extends BaseService<User> {
   public async resetPassword(resetPasswordDto: ResetPasswordDto) {
     const { code, password } = resetPasswordDto;
 
-    const user = await this.userService.findOne({
-      where: { resetPasswordToken: code },
+    const user = await this.userService.findWithCredentials({
+      resetPasswordToken: code,
     });
 
     if (

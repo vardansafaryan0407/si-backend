@@ -4,12 +4,20 @@ import { User } from './user';
 import { InjectModel } from '@nestjs/sequelize';
 import { Skill } from 'src/core/models/skill';
 import { PremiumUser } from './premium-user';
-import { url } from 'inspector';
+import { WhereOptions } from 'sequelize';
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(@InjectModel(User) model: typeof User) {
     super(model);
+  }
+
+  /**
+   * The only lookup that returns the password hash and the reset fields. For sign-in
+   * and password reset; everything else goes through the default scope, which omits them.
+   */
+  public async findWithCredentials(where: WhereOptions): Promise<User | null> {
+    return this.model.unscoped().findOne({ where });
   }
 
   public async createUser(createUserData) {

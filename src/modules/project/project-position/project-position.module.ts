@@ -9,6 +9,7 @@ import { ProjectPositionRepository } from './project-position.repository';
 import { EmailModule } from '../../../core/email/email.module';
 import { ProjectPositionApplicationRepository } from '../models/project-position-application.repository';
 import { ProjectMemberModule } from '../project-member/project-member.module';
+import { ProjectAccessService } from '../services/project-access.service';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ProjectMemberModule } from '../project-member/project-member.module';
     forwardRef(() => ProjectMemberModule),
   ],
   providers: [
+    ProjectAccessService,
     ProjectPositionApplicationService,
     ProjectPositionService,
     ProjectPositionRepository,

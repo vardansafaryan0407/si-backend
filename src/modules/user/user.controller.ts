@@ -39,16 +39,20 @@ export class UserController {
     return this.userService.find(userId);
   }
 
+  // People data (names, emails) is for signed-in users only.
+  @UseGuards(AuthGuard)
   @Get('list')
   async getAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('premium/:id')
   async getPremiumUserById(
     @Param('id', ParseIntPipe) id: number,
@@ -56,6 +60,7 @@ export class UserController {
     return this.userService.getPremiumUserById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post('search')
   async searchUsers(
     @Body() body: { query: IUsersQueryInterface; pagination: Pagination },
