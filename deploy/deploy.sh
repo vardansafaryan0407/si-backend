@@ -39,7 +39,16 @@ aws ssm get-parameters-by-path --path "$PARAM_PATH" --recursive --with-decryptio
 grep -q '^DB_HOST=' .env.new || { echo "DB_HOST missing from Parameter Store; aborting"; rm -f .env.new; exit 1; }
 chmod 600 .env.new
 mv .env.new .env
-printf 'API_IMAGE=%s\nAPI_DOMAIN=%s\nWEB_DOMAIN=%s\n' "$IMAGE" "$(grep -E '^API_DOMAIN=' .env | cut -d= -f2-)" "$(grep -E '^WEB_DOMAIN=' .env | cut -d= -f2-)" > .deploy.env
+# Values the compose file itself needs (Caddy's environment); absent ones stay empty.
+param() { grep -E "^$1=" .env | cut -d= -f2- || true; }
+{
+  printf 'API_IMAGE=%s\n' "$IMAGE"
+  printf 'API_DOMAIN=%s\n' "$(param API_DOMAIN)"
+  printf 'WEB_DOMAIN=%s\n' "$(param WEB_DOMAIN)"
+  printf 'WEB_ORIGIN_SECRET=%s\n' "$(param WEB_ORIGIN_SECRET)"
+  printf 'WEB_PUBLIC_URL=%s\n' "$(param FRONTEND_URL)"
+} > .deploy.env
+chmod 600 .deploy.env
 
 echo "==> Running database migrations"
 docker run --rm --env-file .env "$IMAGE" npx sequelize db:migrate --env production
