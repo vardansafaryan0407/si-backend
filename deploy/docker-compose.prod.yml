@@ -11,6 +11,9 @@ services:
     environment:
       API_DOMAIN: ${API_DOMAIN}
       WEB_DOMAIN: ${WEB_DOMAIN:-ssr.startnowapp.com}
+      # CloudFront's secret for the page origin and where to send everyone else.
+      WEB_ORIGIN_SECRET: ${WEB_ORIGIN_SECRET:-}
+      WEB_PUBLIC_URL: ${WEB_PUBLIC_URL:-https://startnowapp.com}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data

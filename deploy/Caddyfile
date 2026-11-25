@@ -12,5 +12,15 @@
 # client and reaches it over HTTPS on WEB_DOMAIN (Caddy issues that certificate too).
 {$WEB_DOMAIN} {
 	encode gzip
+
+	# Only CloudFront is meant to use this hostname. It sends the secret header
+	# X-Origin-Verify (Terraform: random_password.web_origin_secret, delivered here as
+	# WEB_ORIGIN_SECRET). Anyone else who opens it is sent to the public site, so this
+	# name never becomes a second, indexable copy of the site. /healthz stays open for the
+	# deploy workflow. While the secret is unset nothing is enforced, which keeps a deploy
+	# that arrives before the Terraform apply harmless.
+	@direct expression `{env.WEB_ORIGIN_SECRET} != "" && {http.request.header.X-Origin-Verify} != {env.WEB_ORIGIN_SECRET} && {http.request.uri.path} != "/healthz"`
+	redir @direct {$WEB_PUBLIC_URL:https://startnowapp.com}{uri} 301
+
 	reverse_proxy si-web:4000
 }
