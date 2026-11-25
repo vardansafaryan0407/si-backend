@@ -35,6 +35,11 @@ export class ProjectPositionApplicationService {
     if (!position) {
       throw new NotFoundException('Position not found');
     }
+    if (position.currentState() !== 'open') {
+      throw new BadRequestException(
+        'This position is no longer accepting applications',
+      );
+    }
 
     const existingApplication =
       await this.projectPositionApplicationRepository.findOne({
