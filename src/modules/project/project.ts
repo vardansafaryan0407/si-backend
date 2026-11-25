@@ -25,7 +25,7 @@ export class Project extends Model<Project> {
   @Column({ allowNull: false })
   title: string;
 
-  @Column({ allowNull: false })
+  @Column({ type: DataType.TEXT, allowNull: false })
   description: string;
 
   @HasMany(() => ProjectPosition)

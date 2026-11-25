@@ -23,6 +23,7 @@ import { MessagesModule } from './modules/messages/message.module';
 import { ConnectInvite } from './modules/connections/connection-invite';
 import { ConnectionsModule } from './modules/connections/connections.module';
 import { ConnectUsModule } from './connectus/connect-us.module';
+import { PositionsModule } from './modules/positions/positions.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ConnectUsModule } from './connectus/connect-us.module';
     ProjectMemberModule,
     ProjectPositionModule,
     ProjectInviteModule,
+    PositionsModule,
     SharedModule,
     EmailModule,
     ConnectUsModule,
