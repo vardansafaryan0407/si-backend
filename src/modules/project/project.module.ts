@@ -12,6 +12,7 @@ import { ProjectPosition } from './models/project-position';
 import { ProjectPositionApplication } from './models/project-position-application';
 import { ProjectPositionRepository } from './project-position/project-position.repository';
 import { ProjectPositionService } from './project-position/project-position.service';
+import { ProjectAccessService } from './services/project-access.service';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProjectPositionService } from './project-position/project-position.serv
     ]),
   ],
   providers: [
+    ProjectAccessService,
     ProjectRepository,
     ProjectService,
     ProjectPositionRepository,

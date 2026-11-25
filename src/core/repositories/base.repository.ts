@@ -42,7 +42,8 @@ export class BaseRepository<T extends Model> implements IBaseRepository {
 
   public async list(searchParams: IBaseSearchParams): Promise<T[]> {
     const options: FindOptions = {};
-    const { where, include, pagination, order } = searchParams;
+    const { where, include, order } = searchParams;
+    const pagination = searchParams.pagination ?? {};
     if (where) {
       options.where = where;
     }

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -13,14 +14,18 @@ import { ProjectService } from './services/project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { AuthGuard } from 'src/core/guards/auth.guard';
 import { ProjectQuery } from './dto/project-query.dto';
-import { Pagination } from '../../core/models/pagination';
+import { ProjectSearchDto } from './dto/project-search.dto';
+import { ProjectAccessService } from './services/project-access.service';
 import { GetUser } from '../../core/decorators/get-user.decorator';
 import { IUserSession } from '../../core/interfaces/user-session';
 import { UpdateProjectDto } from './dto/project-update.dto';
 
 @Controller('project')
 export class ProjectController {
-  constructor(private projectService: ProjectService) {}
+  constructor(
+    private projectService: ProjectService,
+    private projectAccess: ProjectAccessService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Post('')
@@ -53,11 +58,11 @@ export class ProjectController {
   }
 
   @Post('/search')
-  async listProjects(
-    @Body() body: { query: ProjectQuery; pagination: Pagination },
-  ) {
-    const { query, pagination } = body;
-    return await this.projectService.searchProjects(query, pagination);
+  async listProjects(@Body() body: ProjectSearchDto) {
+    return await this.projectService.searchProjects(
+      body.query,
+      body.pagination,
+    );
   }
 
   @UseGuards(AuthGuard)
@@ -74,15 +79,22 @@ export class ProjectController {
   }
 
   @Get(':id')
-  async getId(@Param('id') id: number) {
-    return await this.projectService.findById(id);
+  async getId(@Param('id', ParseIntPipe) id: number) {
+    const project = await this.projectService.findById(id);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return project;
   }
 
+  @UseGuards(AuthGuard)
   @Put('update/:id')
   async updateProject(
     @Param('id', ParseIntPipe) id: number,
-    @Body() UpdateProjectDto: UpdateProjectDto,
+    @Body() updateProjectDto: UpdateProjectDto,
+    @GetUser() user: IUserSession,
   ) {
-    return this.projectService.updateProject(id, UpdateProjectDto);
+    await this.projectAccess.assertProjectOwner(id, user.id);
+    return this.projectService.updateProject(id, updateProjectDto);
   }
 }

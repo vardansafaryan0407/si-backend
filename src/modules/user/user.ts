@@ -3,6 +3,7 @@ import {
   BelongsToMany,
   Column,
   DataType,
+  DefaultScope,
   ForeignKey,
   HasMany,
   HasOne,
@@ -19,12 +20,34 @@ import { Message } from 'src/modules/messages/message';
 import { Connection } from '../connections/connection';
 import { ConnectInvite } from '../connections/connection-invite';
 
-
 export enum Role {
   ADMIN = 'admin',
   USER = 'user',
 }
 
+/** Attributes that must never leave the API, whatever endpoint returns a user. */
+export const USER_PRIVATE_ATTRIBUTES = [
+  'password',
+  'resetPasswordToken',
+  'resetPasswordExpires',
+] as const;
+
+/** A copy of a user's values without the credential attributes. */
+export function withoutPrivateAttributes<T extends object>(values: T): T {
+  const copy = { ...values } as Record<string, unknown>;
+  for (const attribute of USER_PRIVATE_ATTRIBUTES) {
+    delete copy[attribute];
+  }
+  return copy as T;
+}
+
+// Queries leave the credential columns out unless they ask for them through
+// `User.unscoped()` (sign-in and password reset do, see UserRepository). The scope also
+// applies when a user is joined into another query, for example the applicant of an
+// application or the owner of a project.
+@DefaultScope(() => ({
+  attributes: { exclude: [...USER_PRIVATE_ATTRIBUTES] },
+}))
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
@@ -105,7 +128,7 @@ export class User extends Model<User> {
   @Column({ allowNull: true })
   url: string;
 
-    @Column({
+  @Column({
     type: DataType.ENUM(...Object.values(Role)),
     allowNull: false,
     defaultValue: Role.USER,
@@ -113,4 +136,13 @@ export class User extends Model<User> {
   role: Role;
 
   public declare setSkills: BelongsToManyAddAssociationsMixin<Skill, number>;
+
+  /**
+   * Second line of defence behind the default scope: an instance that does hold the
+   * credentials (one just created at sign-up, or loaded unscoped) still serializes
+   * without them. Code that needs the hash reads the attribute from the instance.
+   */
+  toJSON<T extends User>(): T {
+    return withoutPrivateAttributes(super.toJSON<T>());
+  }
 }

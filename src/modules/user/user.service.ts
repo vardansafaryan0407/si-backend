@@ -8,7 +8,7 @@ import { UserCreateDto } from './dto/user-create.dto';
 import { Skill } from 'src/core/models/skill';
 import { IUsersQueryInterface } from 'si-shared-library';
 import { Pagination } from 'src/core/models/pagination';
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import { PremiumUser } from './premium-user';
 import { IBaseSearchParams } from 'src/core/interfaces/base-search-params';
 import { S3Service } from './s3service/s3.service';
@@ -43,6 +43,11 @@ export class UserService extends BaseService<User> {
     }
 
     return user;
+  }
+
+  /** See UserRepository.findWithCredentials: sign-in and password reset only. */
+  public async findWithCredentials(where: WhereOptions): Promise<User | null> {
+    return this.repository.findWithCredentials(where);
   }
 
   public async find(userId: number): Promise<User> {
@@ -111,7 +116,7 @@ export class UserService extends BaseService<User> {
       includes[0].required = true;
     }
 
-   const findOptions: IBaseSearchParams = {
+    const findOptions: IBaseSearchParams = {
       where,
       include: includes,
       pagination,
